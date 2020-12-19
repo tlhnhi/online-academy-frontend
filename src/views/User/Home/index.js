@@ -1,150 +1,167 @@
 import React, { memo, useState } from 'react'
-import { Container, Row, Col, Card, CardBody, Badge } from "shards-react";
-import RBCarousel from "react-bootstrap-carousel";
-import PageTitle from "../../../components/PageTitle";
-import FeaturedTopics from "./FeaturedTopics";
+import { Container, Row, Col, Card, CardBody, Badge } from 'shards-react'
+import RBCarousel from 'react-bootstrap-carousel'
+import PageTitle from '../../../components/PageTitle'
+import FeaturedTopics from './FeaturedTopics'
 
 const Home = memo(() => {
   const listTopCourses = [
     {
-      backgroundImage: require("../../../images/top_courses/python.jpg").default,
-      category: "IT",
-      categoryTheme: "dark",
-      author: "Ardit Sulce",
-      authorAvatar: require("../../../images/avatars/1.jpg"),
-      title: "The Python Mega Course: Build 10 Real World Applications",
+      backgroundImage: require('../../../images/top_courses/python.jpg')
+        .default,
+      category: 'IT',
+      categoryTheme: 'dark',
+      author: 'Ardit Sulce',
+      authorAvatar: require('../../../images/avatars/1.jpg'),
+      title: 'The Python Mega Course: Build 10 Real World Applications',
       body:
-        "A complete practical Python course for both beginners & intermediates. Master Python 3 by making 10 amazing Python apps.",
-      date: "28 February 2019"
+        'A complete practical Python course for both beginners & intermediates. Master Python 3 by making 10 amazing Python apps.',
+      date: '28 February 2019'
     },
     {
-      backgroundImage: require("../../../images/top_courses/react.png"),
-      category: "Web Development",
-      categoryTheme: "info",
-      author: "Maximilian Schwarzmüller",
-      authorAvatar: require("../../../images/avatars/2.jpg"),
-      title: "React - The Complete Guide (incl Hooks, React Router, Redux)",
+      backgroundImage: require('../../../images/top_courses/react.png'),
+      category: 'Web Development',
+      categoryTheme: 'info',
+      author: 'Maximilian Schwarzmüller',
+      authorAvatar: require('../../../images/avatars/2.jpg'),
+      title: 'React - The Complete Guide (incl Hooks, React Router, Redux)',
       body:
-        "Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!",
-      date: "29 February 2019"
+        'Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!',
+      date: '29 February 2019'
     },
     {
-      backgroundImage: require("../../../images/top_courses/postman.png"),
-      category: "Web Development",
-      categoryTheme: "royal-blue",
-      author: "Valentin Despa",
-      authorAvatar: require("../../../images/avatars/3.jpg"),
-      title: "Postman: The Complete Guide - REST API Testing",
+      backgroundImage: require('../../../images/top_courses/postman.png'),
+      category: 'Web Development',
+      categoryTheme: 'royal-blue',
+      author: 'Valentin Despa',
+      authorAvatar: require('../../../images/avatars/3.jpg'),
+      title: 'Postman: The Complete Guide - REST API Testing',
       body:
-        "Postman API testing for manual and automated tests. Automate with Newman, Jenkins or any other CI tool.",
-      date: "29 February 2019"
+        'Postman API testing for manual and automated tests. Automate with Newman, Jenkins or any other CI tool.',
+      date: '29 February 2019'
     },
     {
-      backgroundImage: require("../../../images/top_courses/react-native.png"),
-      category: "Mobile App Development",
-      categoryTheme: "warning",
-      author: "Maximilian Schwarzmüller",
-      authorAvatar: require("../../../images/avatars/2.jpg"),
-      title: "React Native - The Practical Guide [2020 Edition]",
+      backgroundImage: require('../../../images/top_courses/react-native.png'),
+      category: 'Mobile App Development',
+      categoryTheme: 'warning',
+      author: 'Maximilian Schwarzmüller',
+      authorAvatar: require('../../../images/avatars/2.jpg'),
+      title: 'React Native - The Practical Guide [2020 Edition]',
       body:
-        "Use React Native and your React knowledge to build native iOS and Android Apps - incl. Push Notifications, Hooks, Redux",
-      date: "29 February 2019"
+        'Use React Native and your React knowledge to build native iOS and Android Apps - incl. Push Notifications, Hooks, Redux',
+      date: '29 February 2019'
     }
-  ];
+  ]
   const listTopViewed = [
     {
-      backgroundImage: require("../../../images/top_viewed/leadership.jpg"),
-      category: "Management",
-      categoryTheme: "dark",
-      author: "Lawrence M. Miller",
-      authorAvatar: require("../../../images/avatars/1.jpg"),
-      title:
-        "Lean Leadership Skills, Lean Culture & Lean Management",
+      backgroundImage: require('../../../images/top_viewed/leadership.jpg'),
+      category: 'Management',
+      categoryTheme: 'dark',
+      author: 'Lawrence M. Miller',
+      authorAvatar: require('../../../images/avatars/1.jpg'),
+      title: 'Lean Leadership Skills, Lean Culture & Lean Management',
       body:
-        "Leading Change: Lean Culture, Lean Manufacturing, Continuous Improvement & Toyota Production System",
-      date: "29 February 2019"
+        'Leading Change: Lean Culture, Lean Manufacturing, Continuous Improvement & Toyota Production System',
+      date: '29 February 2019'
     },
     {
-      backgroundImage: require("../../../images/top_viewed/sales.jpg"),
-      category: "Sales",
-      categoryTheme: "info",
-      author: "Lawrence M. Miller",
-      authorAvatar: require("../../../images/avatars/1.jpg"),
-      title:
-        "Sales Skills Training: Consultative Selling Master Class",
+      backgroundImage: require('../../../images/top_viewed/sales.jpg'),
+      category: 'Sales',
+      categoryTheme: 'info',
+      author: 'Lawrence M. Miller',
+      authorAvatar: require('../../../images/avatars/1.jpg'),
+      title: 'Sales Skills Training: Consultative Selling Master Class',
       body:
-        "Sales Training - Professional B2B Selling Skills for Consultants, Entrepreneurs and all Who Bring in the Business!",
-      date: "29 February 2019"
+        'Sales Training - Professional B2B Selling Skills for Consultants, Entrepreneurs and all Who Bring in the Business!',
+      date: '29 February 2019'
     }
-  ];
-  const [topCourses, setTopCourses] = useState(listTopCourses);
-  const [topViewed, setTopViewed] = useState(listTopViewed);
-
+  ]
+  const [topCourses, setTopCourses] = useState(listTopCourses)
+  const [topViewed, setTopViewed] = useState(listTopViewed)
 
   return (
     <Container fluid className="main-content-container px-4">
-    <Row small>
-      <Col sm="9">
-        <div noGutters className="page-header py-4">
-          <PageTitle sm="12" title="Most Popular Courses Last Week" subtitle="" className="text-sm-left" />
-        </div>
-        {/* <RBCarousel
-          className="carousel-fade"
-          animation={true}
-          autoplay={true}
-          slideshowSpeed={2000}
-          defaultActiveIndex={0}
-          version={4}
-        >
-          {topCourses.map((course, idx) => (
-            <Card small className="card-post card-post--1" key={idx}>
-              <div
-                className="card-post__image "
-                style={{ backgroundImage: `url(${course.backgroundImage})`, height: `250px` }}
-              >
-                <Badge
-                  pill
-                  className={`card-post__category bg-${course.categoryTheme}`}
+      <Row small>
+        <Col sm="9">
+          <div noGutters className="page-header py-4">
+            <PageTitle
+              sm="12"
+              title="Most Popular Courses Last Week"
+              subtitle=""
+              className="text-sm-left"
+            />
+          </div>
+          <RBCarousel
+            className="carousel-fade"
+            animation={true}
+            autoplay={true}
+            slideshowSpeed={2000}
+            defaultActiveIndex={0}
+            version={4}
+          >
+            {topCourses.map((course, idx) => (
+              <Card small className="card-post card-post--1" key={idx}>
+                <div
+                  className="card-post__image "
+                  style={{
+                    backgroundImage: `url(${course.backgroundImage})`,
+                    height: `250px`
+                  }}
                 >
-                  {course.category}
-                </Badge>
-                <div className="card-post__author d-flex">
-                  <a
-                    href="#"
-                    className="card-post__author-avatar card-post__author-avatar--small"
-                    style={{ backgroundImage: `url('${course.authorAvatar}')` }}
+                  <Badge
+                    pill
+                    className={`card-post__category bg-${course.categoryTheme}`}
                   >
-                    Written by {course.author}
-                  </a>
+                    {course.category}
+                  </Badge>
+                  <div className="card-post__author d-flex">
+                    <a
+                      href="#"
+                      className="card-post__author-avatar card-post__author-avatar--small"
+                      style={{
+                        backgroundImage: `url('${course.authorAvatar}')`
+                      }}
+                    >
+                      Written by {course.author}
+                    </a>
+                  </div>
                 </div>
-              </div>
-              <CardBody>
-                <h4 className="card-title">
-                  <a href="#" className="text-fiord-blue">
-                    {course.title}
-                  </a>
-                </h4>
-                <p className="text-muted d-block mb-3">{course.author}</p>
-                <p className="card-text d-inline-block mb-3">{course.body}</p>
-                <p className="text-muted">{course.date}</p>
-              </CardBody>
-            </Card>
-          ))
-          }
-        </RBCarousel> */}
-      </Col>
-      <Col sm="3">
-        <div noGutters className="page-header py-4">
-          <PageTitle sm="12" title="Featured Topics Last Week" subtitle="" className="text-sm-left" />
-        </div>
-        <FeaturedTopics />
-      </Col>
-    </Row> 
+                <CardBody>
+                  <h4 className="card-title">
+                    <a href="#" className="text-fiord-blue">
+                      {course.title}
+                    </a>
+                  </h4>
+                  <p className="text-muted d-block mb-3">{course.author}</p>
+                  <p className="card-text d-inline-block mb-3">{course.body}</p>
+                  <p className="text-muted">{course.date}</p>
+                </CardBody>
+              </Card>
+            ))}
+          </RBCarousel>
+        </Col>
+        <Col sm="3">
+          <div noGutters className="page-header py-4">
+            <PageTitle
+              sm="12"
+              title="Featured Topics Last Week"
+              subtitle=""
+              className="text-sm-left"
+            />
+          </div>
+          <FeaturedTopics />
+        </Col>
+      </Row>
 
-    <Row noGutters className="page-header py-4">
-      <PageTitle sm="4" title="Top Viewed Courses" subtitle="" className="text-sm-left" />
-    </Row>
-    {/* <RBCarousel version={4}>
+      <Row noGutters className="page-header py-4">
+        <PageTitle
+          sm="4"
+          title="Top Viewed Courses"
+          subtitle=""
+          className="text-sm-left"
+        />
+      </Row>
+      {/* <RBCarousel version={4}>
       <Row>
         {PostsListTwo.map((post, idx) => (
           <Col lg="6" sm="12" key={idx}>
@@ -221,11 +238,16 @@ const Home = memo(() => {
       </Row>
     </RBCarousel> */}
 
-    <Row noGutters className="page-header py-4">
-      <PageTitle sm="4" title="Newest Courses" subtitle="" className="text-sm-left" />
-    </Row>
+      <Row noGutters className="page-header py-4">
+        <PageTitle
+          sm="4"
+          title="Newest Courses"
+          subtitle=""
+          className="text-sm-left"
+        />
+      </Row>
 
-    {/* <RBCarousel version={4} className="mb-100">
+      {/* <RBCarousel version={4} className="mb-100">
       <Row>
         {PostsListOne.map((post, idx) => (
           <Col lg="3" md="6" sm="12" key={idx}>
@@ -299,8 +321,8 @@ const Home = memo(() => {
           </Col>
         ))}</Row>
     </RBCarousel>  */}
-  </Container>
-  );
+    </Container>
+  )
 })
 
 export default Home

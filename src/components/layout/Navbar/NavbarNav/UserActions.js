@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { Link } from 'react-router-dom'
 import {
   Dropdown,
   DropdownToggle,
@@ -8,23 +8,23 @@ import {
   Collapse,
   NavItem,
   NavLink
-} from "shards-react";
+} from 'shards-react'
 
 export default class UserActions extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       visible: false
-    };
+    }
 
-    this.toggleUserActions = this.toggleUserActions.bind(this);
+    this.toggleUserActions = this.toggleUserActions.bind(this)
   }
 
   toggleUserActions() {
     this.setState({
       visible: !this.state.visible
-    });
+    })
   }
 
   render() {
@@ -33,9 +33,9 @@ export default class UserActions extends React.Component {
         <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
           <img
             className="user-avatar rounded-circle mr-2"
-            src={require("./../../../../images/avatars/0.jpg").default}
+            src={require('./../../../../images/avatars/0.jpg').default}
             alt="User Avatar"
-          />{" "}
+          />{' '}
           <span className="d-none d-md-inline-block">Sierra Brooks</span>
         </DropdownToggle>
         <Collapse tag={DropdownMenu} right small open={this.state.visible}>
@@ -57,6 +57,6 @@ export default class UserActions extends React.Component {
           </DropdownItem>
         </Collapse>
       </NavItem>
-    );
+    )
   }
 }

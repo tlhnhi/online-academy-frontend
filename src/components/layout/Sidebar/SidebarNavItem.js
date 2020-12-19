@@ -1,14 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { NavLink as RouteNavLink } from "react-router-dom";
-import { NavItem, NavLink } from "shards-react";
+import React from 'react'
+import PropTypes from 'prop-types'
+import { NavLink as RouteNavLink } from 'react-router-dom'
+import { NavItem, NavLink } from 'shards-react'
 import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   Collapse
-} from "shards-react";
+} from 'shards-react'
 
 const SidebarNavItem = ({ item }) => (
   <NavItem tag={Dropdown} caret>
@@ -36,13 +36,13 @@ const SidebarNavItem = ({ item }) => (
       </DropdownItem>
     </Collapse>
   </NavItem>
-);
+)
 
 SidebarNavItem.propTypes = {
   /**
    * The item object.
    */
   item: PropTypes.object
-};
+}
 
-export default SidebarNavItem;
+export default SidebarNavItem

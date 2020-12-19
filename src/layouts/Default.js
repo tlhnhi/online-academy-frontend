@@ -1,10 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Container, Row, Col } from "shards-react";
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Container, Row, Col } from 'shards-react'
 
-import MainNavbar from "../components/layout/Navbar/MainNavbar";
-import Sidebar from "../components/layout/Sidebar/Sidebar";
-import Footer from "../components/layout/Footer";
+import MainNavbar from '../components/layout/Navbar/MainNavbar'
+import Sidebar from '../components/layout/Sidebar/Sidebar'
+import Footer from '../components/layout/Footer'
 
 const DefaultLayout = ({ children, noNavbar, noFooter }) => (
   <Container fluid>
@@ -23,7 +23,7 @@ const DefaultLayout = ({ children, noNavbar, noFooter }) => (
       </Col>
     </Row>
   </Container>
-);
+)
 
 DefaultLayout.propTypes = {
   /**
@@ -34,11 +34,11 @@ DefaultLayout.propTypes = {
    * Whether to display the footer, or not.
    */
   noFooter: PropTypes.bool
-};
+}
 
 DefaultLayout.defaultProps = {
   noNavbar: false,
   noFooter: false
-};
+}
 
-export default DefaultLayout;
+export default DefaultLayout

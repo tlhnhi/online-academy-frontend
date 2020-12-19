@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import { Col } from 'shards-react'
 
 import SidebarNavbar from './SidebarNavbar'
-import SidebarNavItems from "./SidebarNavItems";
-
+import SidebarNavItems from './SidebarNavItems'
 
 const Sidebar = () => (
   <Col

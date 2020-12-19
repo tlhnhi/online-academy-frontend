@@ -25,7 +25,7 @@ const SidebarNavbar = () => (
         </div>
       </NavbarBrand>
       {/* eslint-disable-next-line */}
-      
+
       <a className="toggle-sidebar d-sm-inline d-md-none d-lg-none">
         <i className="material-icons">&#xE5C4;</i>
       </a>
