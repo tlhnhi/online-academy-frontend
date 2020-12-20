@@ -25,7 +25,7 @@ const SidebarNavItems = memo(() => {
       to2: 'management'
     }
   ]
-  const [items, setItems] = useState(listItems)
+  const [items] = useState(listItems)
 
   return (
     <div className="nav-wrapper">

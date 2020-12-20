@@ -1,13 +1,13 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-import { NavLink as RouteNavLink } from 'react-router-dom'
-import { NavItem, NavLink } from 'shards-react'
+import React from 'react'
 import {
+  Collapse,
   Dropdown,
-  DropdownToggle,
-  DropdownMenu,
   DropdownItem,
-  Collapse
+  DropdownMenu,
+  DropdownToggle,
+  NavItem,
+  NavLink
 } from 'shards-react'
 
 const SidebarNavItem = ({ item }) => (
@@ -27,11 +27,11 @@ const SidebarNavItem = ({ item }) => (
         />
       )}
     </DropdownToggle>
-    <Collapse tag={DropdownMenu} right small open>
-      <DropdownItem tag={RouteNavLink} to={item.to1}>
+    <Collapse tag={DropdownMenu} right open>
+      <DropdownItem to={item.to1}>
         <i className="material-icons">&#xe051;</i> {item.subtitle1}
       </DropdownItem>
-      <DropdownItem tag={RouteNavLink} to={item.to2}>
+      <DropdownItem to={item.to2}>
         <i className="material-icons">&#xe325;</i> {item.subtitle2}
       </DropdownItem>
     </Collapse>
