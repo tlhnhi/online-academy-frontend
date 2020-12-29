@@ -6,10 +6,12 @@ import '../../shards/styles/shards-dashboards.1.1.0.min.css'
 import { DefaultLayout } from 'layouts'
 
 const Home = lazy(() => import('./Home'))
+const Course = lazy(() => import('./Course'))
+
 
 const Route = ({
   component: Component,
-  layout: Layout = DefaultLayout,
+  layout: Layout,
   ...rest
 }) => {
   return (
@@ -30,7 +32,8 @@ const User = memo(() => {
   return (
     <Suspense fallback={<Loading />}>
       <Switch>
-        <Route path={path} component={Home} layout={DefaultLayout} />
+        <Route exact path={path} component={Home} layout={DefaultLayout} />
+        <Route path="/course" component={Course} layout={DefaultLayout} />
       </Switch>
     </Suspense>
   )

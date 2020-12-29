@@ -21,7 +21,7 @@ const FeaturedTopics = ({ col1, col2, referralData }) => (
       <ListGroup small flush className="list-group-small">
         {referralData.map((item, idx) => (
           <ListGroupItem key={idx} className="d-flex px-3">
-            <a href="#" className="text-semibold text-fiord-blue">{item.title}</a>
+            <a href="/#" className="text-semibold text-fiord-blue">{item.title}</a>
             <span className="ml-auto text-right text-semibold text-reagent-gray">
               {item.value} <i className="material-icons">&#xe7fb;</i>
             </span>
