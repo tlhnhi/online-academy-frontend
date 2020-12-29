@@ -1,15 +1,13 @@
-import React from "react";
-import { Nav } from "shards-react";
+import React, { memo } from 'react'
+import { Nav } from 'shards-react'
+import Notifications from './Notifications'
+import UserActions from './UserActions'
 
-import Notifications from "./Notifications";
-import UserActions from "./UserActions";
-
-const NavbarNav = () => (
+const NavbarNav = memo(() => (
   <Nav navbar className="border-left flex-row">
     <Notifications />
     <UserActions />
   </Nav>
-);
+))
 
-export default NavbarNav;
-
+export default NavbarNav

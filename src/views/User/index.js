@@ -1,8 +1,6 @@
 import Loading from 'components/Loading'
 import React, { lazy, memo, Suspense } from 'react'
 import { Route as DefaultRoute, Switch, useRouteMatch } from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import '../../shards/styles/shards-dashboards.1.1.0.min.css'
 import { DefaultLayout } from 'layouts'
 
 const Home = lazy(() => import('./Home'))
