@@ -1,5 +1,5 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { Navbar, NavbarBrand } from 'shards-react'
 
 const SidebarNavbar = () => (
@@ -10,8 +10,8 @@ const SidebarNavbar = () => (
     >
       <NavbarBrand
         className="w-100 mr-0"
-        href="#"
         style={{ lineHeight: '25px' }}
+        href="/"
       >
         <div className="d-table m-auto">
           <img

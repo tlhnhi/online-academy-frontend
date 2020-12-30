@@ -8,7 +8,8 @@ import FeaturedTopics from './FeaturedTopics'
 const Home = memo(() => {
   const listTopCourses = [
     {
-      backgroundImage: require('../../../images/top_courses/python.jpg').default,
+      backgroundImage: require('../../../images/top_courses/python.jpg')
+        .default,
       category: 'IT',
       categoryTheme: 'dark',
       author: 'Ardit Sulce',
@@ -30,7 +31,8 @@ const Home = memo(() => {
       date: '29 February 2019'
     },
     {
-      backgroundImage: require('../../../images/top_courses/postman.png').default,
+      backgroundImage: require('../../../images/top_courses/postman.png')
+        .default,
       category: 'Web Development',
       categoryTheme: 'royal-blue',
       author: 'Valentin Despa',
@@ -56,7 +58,8 @@ const Home = memo(() => {
 
   const listTopViewed = [
     {
-      backgroundImage: require('../../../images/top_viewed/leadership.jpg').default,
+      backgroundImage: require('../../../images/top_viewed/leadership.jpg')
+        .default,
       category: 'Management',
       categoryTheme: 'dark',
       author: 'Lawrence M. Miller',
@@ -84,9 +87,9 @@ const Home = memo(() => {
 
   return (
     <Container fluid className="main-content-container p-4">
-      <Row small>
+      <Row>
         <Col sm="9">
-          <div noGutters className="page-header pb-4">
+          <div className="page-header pb-4">
             <PageTitle
               sm="12"
               title="Most Popular Courses Last Week"
@@ -96,8 +99,8 @@ const Home = memo(() => {
           </div>
           <Carousel interval={2000}>
             {topCourses.map((course, idx) => (
-              <Carousel.Item>
-                <Card small className="card-post card-post--1" key={idx}>
+              <Carousel.Item key={idx}>
+                <Card small className="card-post card-post--1">
                   <div
                     className="card-post__image "
                     style={{
@@ -141,7 +144,7 @@ const Home = memo(() => {
           </Carousel>
         </Col>
         <Col sm="3">
-          <div noGutters className="page-header pb-4">
+          <div className="page-header pb-4">
             <PageTitle
               sm="12"
               title="Featured Topics Last Week"
@@ -204,8 +207,8 @@ const Home = memo(() => {
         </Row>
         <Row>
           {topViewed.map((post, idx) => (
-            <Carousel.Item>
-              <Col lg="6" sm="12" key={idx}>
+            <Carousel.Item key={idx}>
+              <Col lg="6" sm="12">
                 <Card
                   small
                   className="card-post card-post--aside card-post--1 h-100"
