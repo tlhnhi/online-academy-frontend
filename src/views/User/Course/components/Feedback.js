@@ -5,7 +5,7 @@ const Feedback = memo(() => {
   const feedbackList = [
     {
       name: 'Yulia Lantzberg',
-      avatar: require('./../../../images/avatars/1.jpg').default,
+      avatar: require('../../../../images/avatars/1.jpg').default,
       date: '2 months ago',
       fullStar: 5,
       halfStar: 0,
@@ -14,7 +14,7 @@ const Feedback = memo(() => {
     },
     {
       name: 'Rob Arbittier',
-      avatar: require('./../../../images/avatars/3.jpg').default,
+      avatar: require('../../../../images/avatars/3.jpg').default,
       date: '4 months ago',
       fullStar: 4,
       halfStar: 1,
@@ -23,7 +23,7 @@ const Feedback = memo(() => {
     },
     {
       name: 'Fachreza Ghifary',
-      avatar: require('./../../../images/avatars/0.jpg').default,
+      avatar: require('../../../../images/avatars/0.jpg').default,
       date: '2 months ago',
       fullStar: 5,
       halfStar: 0,
@@ -32,7 +32,7 @@ const Feedback = memo(() => {
     },
     {
       name: 'Nathan Reidy',
-      avatar: require('./../../../images/avatars/2.jpg').default,
+      avatar: require('../../../../images/avatars/2.jpg').default,
       date: '4 months ago',
       fullStar: 1,
       halfStar: 0,
@@ -41,7 +41,7 @@ const Feedback = memo(() => {
     },
     {
       name: 'Charles',
-      avatar: require('./../../../images/avatars/4.jpg').default,
+      avatar: require('../../../../images/avatars/4.jpg').default,
       date: 'a months ago',
       fullStar: 4,
       halfStar: 0,
@@ -58,13 +58,12 @@ const Feedback = memo(() => {
           <div>
             <CardHeader className="border-bottom border-top d-flex">
               <div className="card-post__author d-flex">
-                <a
-                  href="/#"
+                <span
                   className="card-post__author-avatar card-post__author-avatar--small"
                   style={{
                     backgroundImage: `url(${item.avatar})`,
                 }}
-                > </a>
+                > </span>
                 <div className="d-flex flex-column justify-content-center ml-3">
                   <span className="card-post__author-name">{item.name}</span>
                   <small className="text-muted">{item.date}</small>

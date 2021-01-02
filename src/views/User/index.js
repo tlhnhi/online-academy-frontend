@@ -4,7 +4,10 @@ import { Route as DefaultRoute, Switch, useRouteMatch } from 'react-router-dom'
 import { DefaultLayout } from 'layouts'
 
 const Home = lazy(() => import('./Home'))
+const Category = lazy(() => import('./Category'))
 const Course = lazy(() => import('./Course'))
+const Profile = lazy(() => import('./Profile'))
+
 
 
 const Route = ({
@@ -32,6 +35,8 @@ const User = memo(() => {
       <Switch>
         <Route exact path={path} component={Home} layout={DefaultLayout} />
         <Route path="/course" component={Course} layout={DefaultLayout} />
+        <Route path="/category" component={Category} layout={DefaultLayout} />
+        <Route path="/profile" component={Profile} layout={DefaultLayout} />
       </Switch>
     </Suspense>
   )
