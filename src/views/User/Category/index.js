@@ -7,259 +7,259 @@ import Pagination from '@material-ui/lab/Pagination'
 const Category = memo(() => {
   const coursesInfo = [
     {
-      image: require('../../../images/related/micro.jpg').default,
+      avatar: require('../../../images/related/micro.jpg').default,
       title: "Microfrontends with React: A Complete Developer's Guide",
-      description:
+      describe:
         'Build incredibly scalable apps with a microfrontend architecture',
-      author: 'Stephen Grider',
+      lerturer: 'Stephen Grider',
       date: '11/2020',
       rating: 4.8,
       num_rating: '588',
       students: '6,297',
-      price: '129.99',
-      discount: '9.99',
-      isLiked: false
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
     },
     {
-      image: require('../../../images/related/complete.jpg').default,
+      avatar: require('../../../images/related/complete.jpg').default,
       title: 'Complete React Developer in 2021 (Redux, Hooks, GraphQL)',
-      description:
+      describe:
         'Become a Senior React Developer! Build a massive E-commerce app with Redux, Hooks, GraphQL, ContextAPI, Stripe, Firebase',
-      author: 'Andrei Neagoie',
+      lerturer: 'Andrei Neagoie',
       date: '12/2020',
       rating: 4.7,
       num_rating: '11,681',
       students: '56,788',
-      price: '129.99',
-      discount: '',
-      isLiked: false
+      price: 129.99,
+      discount: 0,
+      favourite: false
     },
     {
-      image: require('../../../images/related/modern.jpg').default,
+      avatar: require('../../../images/related/modern.jpg').default,
       title: 'Modern React with Redux [2020 Update]',
-      description:
+      describe:
         'Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!',
-      author: 'Stephen Grider',
+      lerturer: 'Stephen Grider',
       date: '12/2020',
       rating: 4.7,
       num_rating: '64,107',
       students: '217,223',
-      price: '129.99',
-      discount: '9.99',
-      isLiked: false
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
     },
     {
-      image: require('../../../images/related/advanced.jpg').default,
+      avatar: require('../../../images/related/advanced.jpg').default,
       title: 'Advanced React and Redux',
-      description:
+      describe:
         "Walkthroughs on advanced React v16.6.3 and Redux v4.0.0 - Authentication, Testing, Middlewares, HOC's, and Deployment",
-      author: 'Stephen Grider',
+      lerturer: 'Stephen Grider',
       date: '12/2020',
       rating: 4.6,
       num_rating: '9,568',
       students: '68,713',
-      price: '129.99',
-      discount: '9.99',
-      isLiked: false
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
     },
     {
-      image: require('../../../images/related/graphql.jpg').default,
+      avatar: require('../../../images/related/graphql.jpg').default,
       title: 'GraphQL with React: The Complete Developers Guide',
-      description:
+      describe:
         'Learn and master GraphQL by building real web apps with React and Node',
-      author: 'Stephen Grider',
+      lerturer: 'Stephen Grider',
       date: '12/2020',
       rating: 4.6,
       num_rating: '7,363',
       students: '42,228',
-      price: '129.99',
-      discount: '9.99',
-      isLiked: false
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
     },
     {
-        image: require('../../../images/related/advanced.jpg').default,
-        title: 'Advanced React and Redux',
-        description:
-          "Walkthroughs on advanced React v16.6.3 and Redux v4.0.0 - Authentication, Testing, Middlewares, HOC's, and Deployment",
-        author: 'Stephen Grider',
-        date: '12/2020',
-        rating: 4.6,
-        num_rating: '9,568',
-        students: '68,713',
-        price: '129.99',
-        discount: '9.99',
-        isLiked: false
-      },
-      {
-        image: require('../../../images/related/graphql.jpg').default,
-        title: 'GraphQL with React: The Complete Developers Guide',
-        description:
-          'Learn and master GraphQL by building real web apps with React and Node',
-        author: 'Stephen Grider',
-        date: '12/2020',
-        rating: 4.6,
-        num_rating: '7,363',
-        students: '42,228',
-        price: '129.99',
-        discount: '9.99',
-        isLiked: false
-      },
-      {
-        image: require('../../../images/related/complete.jpg').default,
-        title: 'Complete React Developer in 2021 (Redux, Hooks, GraphQL)',
-        description:
-          'Become a Senior React Developer! Build a massive E-commerce app with Redux, Hooks, GraphQL, ContextAPI, Stripe, Firebase',
-        author: 'Andrei Neagoie',
-        date: '12/2020',
-        rating: 4.7,
-        num_rating: '11,681',
-        students: '56,788',
-        price: '129.99',
-        discount: '',
-        isLiked: false
-      },
-      {
-        image: require('../../../images/related/micro.jpg').default,
-        title: "Microfrontends with React: A Complete Developer's Guide",
-        description:
-          'Build incredibly scalable apps with a microfrontend architecture',
-        author: 'Stephen Grider',
-        date: '11/2020',
-        rating: 4.8,
-        num_rating: '588',
-        students: '6,297',
-        price: '129.99',
-        discount: '9.99',
-        isLiked: false
-      },
-     
-      {
-        image: require('../../../images/related/modern.jpg').default,
-        title: 'Modern React with Redux [2020 Update]',
-        description:
-          'Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!',
-        author: 'Stephen Grider',
-        date: '12/2020',
-        rating: 4.7,
-        num_rating: '64,107',
-        students: '217,223',
-        price: '129.99',
-        discount: '9.99',
-        isLiked: false
-      },
-      {
-        image: require('../../../images/related/complete.jpg').default,
-        title: 'Complete React Developer in 2021 (Redux, Hooks, GraphQL)',
-        description:
-          'Become a Senior React Developer! Build a massive E-commerce app with Redux, Hooks, GraphQL, ContextAPI, Stripe, Firebase',
-        author: 'Andrei Neagoie',
-        date: '12/2020',
-        rating: 4.7,
-        num_rating: '11,681',
-        students: '56,788',
-        price: '129.99',
-        discount: '',
-        isLiked: false
-      },
-      {
-        image: require('../../../images/related/advanced.jpg').default,
-        title: 'Advanced React and Redux',
-        description:
-          "Walkthroughs on advanced React v16.6.3 and Redux v4.0.0 - Authentication, Testing, Middlewares, HOC's, and Deployment",
-        author: 'Stephen Grider',
-        date: '12/2020',
-        rating: 4.6,
-        num_rating: '9,568',
-        students: '68,713',
-        price: '129.99',
-        discount: '9.99',
-        isLiked: false
-      },
-      {
-        image: require('../../../images/related/micro.jpg').default,
-        title: "Microfrontends with React: A Complete Developer's Guide",
-        description:
-          'Build incredibly scalable apps with a microfrontend architecture',
-        author: 'Stephen Grider',
-        date: '11/2020',
-        rating: 4.8,
-        num_rating: '588',
-        students: '6,297',
-        price: '129.99',
-        discount: '9.99',
-        isLiked: false
-      },
-     
-      {
-        image: require('../../../images/related/graphql.jpg').default,
-        title: 'GraphQL with React: The Complete Developers Guide',
-        description:
-          'Learn and master GraphQL by building real web apps with React and Node',
-        author: 'Stephen Grider',
-        date: '12/2020',
-        rating: 4.6,
-        num_rating: '7,363',
-        students: '42,228',
-        price: '129.99',
-        discount: '9.99',
-        isLiked: false
-      },
-      {
-        image: require('../../../images/related/modern.jpg').default,
-        title: 'Modern React with Redux [2020 Update]',
-        description:
-          'Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!',
-        author: 'Stephen Grider',
-        date: '12/2020',
-        rating: 4.7,
-        num_rating: '64,107',
-        students: '217,223',
-        price: '129.99',
-        discount: '9.99',
-        isLiked: false
-      },
-      {
-        image: require('../../../images/related/advanced.jpg').default,
-        title: 'Advanced React and Redux',
-        description:
-          "Walkthroughs on advanced React v16.6.3 and Redux v4.0.0 - Authentication, Testing, Middlewares, HOC's, and Deployment",
-        author: 'Stephen Grider',
-        date: '12/2020',
-        rating: 4.6,
-        num_rating: '9,568',
-        students: '68,713',
-        price: '129.99',
-        discount: '9.99',
-        isLiked: false
-      },
-      {
-        image: require('../../../images/related/graphql.jpg').default,
-        title: 'GraphQL with React: The Complete Developers Guide',
-        description:
-          'Learn and master GraphQL by building real web apps with React and Node',
-        author: 'Stephen Grider',
-        date: '12/2020',
-        rating: 4.6,
-        num_rating: '7,363',
-        students: '42,228',
-        price: '129.99',
-        discount: '9.99',
-        isLiked: false
-      },
-      {
-        image: require('../../../images/related/complete.jpg').default,
-        title: 'Complete React Developer in 2021 (Redux, Hooks, GraphQL)',
-        description:
-          'Become a Senior React Developer! Build a massive E-commerce app with Redux, Hooks, GraphQL, ContextAPI, Stripe, Firebase',
-        author: 'Andrei Neagoie',
-        date: '12/2020',
-        rating: 4.7,
-        num_rating: '11,681',
-        students: '56,788',
-        price: '129.99',
-        discount: '',
-        isLiked: false
-      }
+      avatar: require('../../../images/related/advanced.jpg').default,
+      title: 'Advanced React and Redux',
+      describe:
+        "Walkthroughs on advanced React v16.6.3 and Redux v4.0.0 - Authentication, Testing, Middlewares, HOC's, and Deployment",
+      lerturer: 'Stephen Grider',
+      date: '12/2020',
+      rating: 4.6,
+      num_rating: '9,568',
+      students: '68,713',
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
+    },
+    {
+      avatar: require('../../../images/related/graphql.jpg').default,
+      title: 'GraphQL with React: The Complete Developers Guide',
+      describe:
+        'Learn and master GraphQL by building real web apps with React and Node',
+      lerturer: 'Stephen Grider',
+      date: '12/2020',
+      rating: 4.6,
+      num_rating: '7,363',
+      students: '42,228',
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
+    },
+    {
+      avatar: require('../../../images/related/complete.jpg').default,
+      title: 'Complete React Developer in 2021 (Redux, Hooks, GraphQL)',
+      describe:
+        'Become a Senior React Developer! Build a massive E-commerce app with Redux, Hooks, GraphQL, ContextAPI, Stripe, Firebase',
+      lerturer: 'Andrei Neagoie',
+      date: '12/2020',
+      rating: 4.7,
+      num_rating: '11,681',
+      students: '56,788',
+      price: 129.99,
+      discount: 0,
+      favourite: false
+    },
+    {
+      avatar: require('../../../images/related/micro.jpg').default,
+      title: "Microfrontends with React: A Complete Developer's Guide",
+      describe:
+        'Build incredibly scalable apps with a microfrontend architecture',
+      lerturer: 'Stephen Grider',
+      date: '11/2020',
+      rating: 4.8,
+      num_rating: '588',
+      students: '6,297',
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
+    },
+
+    {
+      avatar: require('../../../images/related/modern.jpg').default,
+      title: 'Modern React with Redux [2020 Update]',
+      describe:
+        'Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!',
+      lerturer: 'Stephen Grider',
+      date: '12/2020',
+      rating: 4.7,
+      num_rating: '64,107',
+      students: '217,223',
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
+    },
+    {
+      avatar: require('../../../images/related/complete.jpg').default,
+      title: 'Complete React Developer in 2021 (Redux, Hooks, GraphQL)',
+      describe:
+        'Become a Senior React Developer! Build a massive E-commerce app with Redux, Hooks, GraphQL, ContextAPI, Stripe, Firebase',
+      lerturer: 'Andrei Neagoie',
+      date: '12/2020',
+      rating: 4.7,
+      num_rating: '11,681',
+      students: '56,788',
+      price: 129.99,
+      discount: 0,
+      favourite: false
+    },
+    {
+      avatar: require('../../../images/related/advanced.jpg').default,
+      title: 'Advanced React and Redux',
+      describe:
+        "Walkthroughs on advanced React v16.6.3 and Redux v4.0.0 - Authentication, Testing, Middlewares, HOC's, and Deployment",
+      lerturer: 'Stephen Grider',
+      date: '12/2020',
+      rating: 4.6,
+      num_rating: '9,568',
+      students: '68,713',
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
+    },
+    {
+      avatar: require('../../../images/related/micro.jpg').default,
+      title: "Microfrontends with React: A Complete Developer's Guide",
+      describe:
+        'Build incredibly scalable apps with a microfrontend architecture',
+      lerturer: 'Stephen Grider',
+      date: '11/2020',
+      rating: 4.8,
+      num_rating: '588',
+      students: '6,297',
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
+    },
+
+    {
+      avatar: require('../../../images/related/graphql.jpg').default,
+      title: 'GraphQL with React: The Complete Developers Guide',
+      describe:
+        'Learn and master GraphQL by building real web apps with React and Node',
+      lerturer: 'Stephen Grider',
+      date: '12/2020',
+      rating: 4.6,
+      num_rating: '7,363',
+      students: '42,228',
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
+    },
+    {
+      avatar: require('../../../images/related/modern.jpg').default,
+      title: 'Modern React with Redux [2020 Update]',
+      describe:
+        'Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!',
+      lerturer: 'Stephen Grider',
+      date: '12/2020',
+      rating: 4.7,
+      num_rating: '64,107',
+      students: '217,223',
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
+    },
+    {
+      avatar: require('../../../images/related/advanced.jpg').default,
+      title: 'Advanced React and Redux',
+      describe:
+        "Walkthroughs on advanced React v16.6.3 and Redux v4.0.0 - Authentication, Testing, Middlewares, HOC's, and Deployment",
+      lerturer: 'Stephen Grider',
+      date: '12/2020',
+      rating: 4.6,
+      num_rating: '9,568',
+      students: '68,713',
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
+    },
+    {
+      avatar: require('../../../images/related/graphql.jpg').default,
+      title: 'GraphQL with React: The Complete Developers Guide',
+      describe:
+        'Learn and master GraphQL by building real web apps with React and Node',
+      lerturer: 'Stephen Grider',
+      date: '12/2020',
+      rating: 4.6,
+      num_rating: '7,363',
+      students: '42,228',
+      price: 129.99,
+      discount: 0.92,
+      favourite: false
+    },
+    {
+      avatar: require('../../../images/related/complete.jpg').default,
+      title: 'Complete React Developer in 2021 (Redux, Hooks, GraphQL)',
+      describe:
+        'Become a Senior React Developer! Build a massive E-commerce app with Redux, Hooks, GraphQL, ContextAPI, Stripe, Firebase',
+      lerturer: 'Andrei Neagoie',
+      date: '12/2020',
+      rating: 4.7,
+      num_rating: '11,681',
+      students: '56,788',
+      price: 129.99,
+      discount: 0,
+      favourite: false
+    }
   ]
 
   const [currentIndex] = useState(-1)
@@ -291,7 +291,7 @@ const Category = memo(() => {
                 <td>
                   <img
                     className="rounded"
-                    src={item.image}
+                    src={item.avatar}
                     alt=""
                     width="100"
                     style={{
@@ -310,12 +310,12 @@ const Category = memo(() => {
                     {item.title}
                   </a>
                   <br />
-                  <span className="">{item.description}</span>
+                  <span className="">{item.describe}</span>
                   <br />
                   <span className="">
                     Created by:&nbsp;
                     <a className="text-fiord-blue" href="/#">
-                      {item.author}
+                      {item.lerturer}
                     </a>
                   </span>
                   <br />
@@ -351,20 +351,21 @@ const Category = memo(() => {
                       </i>
                     ))}
                     {[
-                      ...(Array(
-                        5 - (item.rating - Math.floor(item.rating) < 0.79
-                          ? Math.floor(item.rating)
-                          : Math.floor(item.rating) + 1) 
-                        - ~~(
-                          item.rating - Math.floor(item.rating) < 0.79 &&
-                          item.rating - Math.floor(item.rating) > 0.21
-                        )))
+                      ...Array(
+                        5 -
+                          (item.rating - Math.floor(item.rating) < 0.79
+                            ? Math.floor(item.rating)
+                            : Math.floor(item.rating) + 1) -
+                          ~~(
+                            item.rating - Math.floor(item.rating) < 0.79 &&
+                            item.rating - Math.floor(item.rating) > 0.21
+                          )
+                      )
                     ].map((_, idx) => (
                       <i className="material-icons" key={idx}>
                         &#xe83a;
                       </i>
                     ))}
-                    &nbsp;
                   </span>
                   <span className="text-muted">{item.num_rating} ratings</span>
                 </td>
@@ -372,8 +373,14 @@ const Category = memo(() => {
                   {item.students}
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
-                <td className="text-center" style={{ width: `150px`, fontSize: `18px` }}>
-                  {item.discount ? item.discount : item.price}$
+                <td
+                  className="text-center"
+                  style={{ width: `150px`, fontSize: `18px` }}
+                >
+                  {item.discount !== 1
+                    ? (item.price * (1 - item.discount)).toFixed(2)
+                    : item.price}
+                  $
                   <p
                     className="text-muted"
                     style={{

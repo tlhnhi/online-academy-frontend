@@ -1,11 +1,12 @@
 import React, { memo, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Row, Col } from 'shards-react'
 
 const Lecturer = memo(() => {
   const lecturersInfo = [
     {
       name: 'Maximilian Schwarzmüller',
-      image: require('../../../../images/avatars/4.jpg').default,
+      avatar: require('../../../../images/avatars/4.jpg').default,
       rating: '4.6',
       courses: '35',
       students: '1,279,172',
@@ -27,9 +28,11 @@ const Lecturer = memo(() => {
           <Row className="mb-3 mx-auto">
             <img
               className="rounded-circle"
-              src={item.image}
+              src={item.avatar}
               alt=""
               width="100"
+              height="100"
+              object-fit="cover"
             />
             <Col className="m-auto">
               <p className="text-warning my-1">
@@ -51,4 +54,9 @@ const Lecturer = memo(() => {
     </div>
   )
 })
+
+Lecturer.propTypes = {
+  lecturersInfo : PropTypes.array
+}
+
 export default Lecturer

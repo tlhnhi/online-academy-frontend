@@ -32,17 +32,19 @@ export default class UserActions extends React.Component {
         <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
           <img
             className="user-avatar rounded-circle mr-2"
-            src={require('../../../../images/avatars/0.jpg').default}
+            src={require('../../../../images/avatars/n.png').default}
             alt="User Avatar"
-          />{' '}
-          <span className="d-none d-md-inline-block">Sierra Brooks</span>
+            height="38"
+            object-fit="cover"
+          />
+          <span className="d-none d-md-inline-block">Nhi Tran</span>
         </DropdownToggle>
         <Collapse tag={DropdownMenu} right open={this.state.visible}>
           <DropdownItem to="user-profile">
             <i className="material-icons">&#xE7FD;</i> Profile
           </DropdownItem>
           <DropdownItem to="edit-user-profile">
-            <i className="material-icons">&#xE8B8;</i> Edit Profile
+            <i className="material-icons">&#xE8B8;</i> Change Password
           </DropdownItem>
           <DropdownItem to="my-course">
             <i className="material-icons">&#xE2C7;</i> My Courses

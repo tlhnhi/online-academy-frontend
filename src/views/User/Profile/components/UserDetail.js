@@ -17,6 +17,8 @@ const UserDetails = ({ userDetails }) => (
           src={userDetails.avatar}
           alt={userDetails.name}
           width="110"
+          height="110"
+          object-fit="cover"
         />
       </div>
       <h4 className="mb-0">{userDetails.name}</h4>
@@ -37,8 +39,8 @@ UserDetails.propTypes = {
 
 UserDetails.defaultProps = {
   userDetails: {
-    name: "Sierra Brooks",
-    avatar: require('../../../../images/avatars/0.jpg').default,
+    name: "Nhi Tran",
+    avatar: require('../../../../images/avatars/n.png').default,
     jobTitle: "Engineer",
     performanceReportTitle: "Workload",
     performanceReportValue: 74,

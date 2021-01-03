@@ -1,4 +1,5 @@
 import React, { memo, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Card, CardBody, CardHeader } from 'shards-react'
 
 const Feedback = memo(() => {
@@ -98,4 +99,9 @@ const Feedback = memo(() => {
     </div>
   )
 })
+
+Feedback.propTypes = {
+  feedbackList : PropTypes.array
+}
+
 export default Feedback
