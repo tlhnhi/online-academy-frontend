@@ -40,7 +40,7 @@ const UserAccountDetails = ({ title }) => (
                   <FormInput
                     id="feLastName"
                     placeholder="Last Name"
-                    value="Tran"
+                    value="Tran Le Hong"
                     onChange={() => {}}
                   />
                 </Col>

@@ -88,7 +88,7 @@ const rows = [
     'Refreshing Next Generation JavaScript (Optional)',
     'Preview',
     '44min',
-    'https://www.youtube.com/watch?v=NA-LeuIvH5s'
+    'https://www.youtube.com/watch?v=UtIOMUQ7nWM'
   ),
   createData(3, 'Understanding the Base Features and Syntax', '', '2hr 21min',''),
   createData(4, 'Working with Lists and Conditionals', '', '1hr 1min',''),

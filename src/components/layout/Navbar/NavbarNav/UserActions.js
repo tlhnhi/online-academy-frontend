@@ -37,10 +37,10 @@ export default class UserActions extends React.Component {
             height="38"
             object-fit="cover"
           />
-          <span className="d-none d-md-inline-block">Nhi Tran</span>
+          <span className="d-none d-md-inline-block">Nhi Tran Le Hong</span>
         </DropdownToggle>
         <Collapse tag={DropdownMenu} right open={this.state.visible}>
-          <DropdownItem to="user-profile">
+          <DropdownItem to="profile">
             <i className="material-icons">&#xE7FD;</i> Profile
           </DropdownItem>
           <DropdownItem to="edit-user-profile">

@@ -7,6 +7,11 @@ const Home = lazy(() => import('./Home'))
 const Category = lazy(() => import('./Category'))
 const Course = lazy(() => import('./Course'))
 const Profile = lazy(() => import('./Profile'))
+const Login = lazy(() => import('./Login'))
+const Register = lazy(() => import('./Register'))
+const ForgotPassword = lazy(() => import('./ForgotPassword'))
+
+
 
 
 
@@ -37,6 +42,10 @@ const User = memo(() => {
         <Route path="/course" component={Course} layout={DefaultLayout} />
         <Route path="/category" component={Category} layout={DefaultLayout} />
         <Route path="/profile" component={Profile} layout={DefaultLayout} />
+        <Route path="/login" component={Login} layout={DefaultLayout} />
+        <Route path="/register" component={Register} layout={DefaultLayout} />
+        <Route path="/forgot-password" component={ForgotPassword} layout={DefaultLayout} />
+
       </Switch>
     </Suspense>
   )
