@@ -10,6 +10,7 @@ const Profile = lazy(() => import('./Profile'))
 const Login = lazy(() => import('./Login'))
 const Register = lazy(() => import('./Register'))
 const ForgotPassword = lazy(() => import('./ForgotPassword'))
+const ChangePassword = lazy(() => import('./ChangePassword'))
 
 
 
@@ -43,6 +44,8 @@ const User = memo(() => {
         <Route path="/login" component={Login} layout={DefaultLayout} />
         <Route path="/register" component={Register} layout={DefaultLayout} />
         <Route path="/forgot-password" component={ForgotPassword} layout={DefaultLayout} />
+        <Route path="/change-password" component={ChangePassword} layout={DefaultLayout} />
+
 
       </Switch>
     </Suspense>

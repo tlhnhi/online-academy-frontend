@@ -48,10 +48,8 @@ const ForgotPassword = () => (
             </FormGroup>
         </Form>
         <Row form>
-
         <label className="mx-auto text-muted mb-3" style={{fontSize:`13px`}}>You will receive an email with your new password</label>
         </Row>
-
         <Row form>
           <Button className="d-block mx-auto" pill>
             Reset Password

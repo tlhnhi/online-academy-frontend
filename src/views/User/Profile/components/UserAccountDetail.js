@@ -16,7 +16,7 @@ import {
 const UserAccountDetails = ({ title }) => (
   <Card small className="mb-4">
     <CardHeader className="border-bottom">
-      <h6 className="m-0">{title}</h6>
+      <label className="m-0" style={{fontSize:`18px`}}>{title}</label>
     </CardHeader>
     <ListGroup flush>
       <ListGroupItem className="p-3">
