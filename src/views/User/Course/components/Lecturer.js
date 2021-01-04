@@ -18,7 +18,7 @@ const Lecturer = memo(() => {
   return (
     <div>
       {lecturer.map((item, idx) => (
-        <div className="mt-3 mx-auto" style={{ width: `800px` }}>
+        <div className="mt-3 mx-auto" style={{ width: `800px` }} key={idx}>
           <h4 className="card-title text-fiord-blue">Lecturer</h4>
           <h5>
             <a className="text-fiord-blue font-weight-bold" href="/#">
@@ -36,19 +36,20 @@ const Lecturer = memo(() => {
             />
             <Col className="m-auto">
               <p className="text-warning my-1">
-                <i className="material-icons">&#xe838;&nbsp;</i>{item.rating} Rating
+                <i className="material-icons">&#xe838;&nbsp;</i>
+                {item.rating} Rating
               </p>
               <p className="my-1">
-                <i className="fas">&#xf144;&nbsp;</i>{item.courses} Courses
+                <i className="fas">&#xf144;&nbsp;</i>
+                {item.courses} Courses
               </p>
               <p className="my-1">
-                <i className="material-icons">&#xe7fb;&nbsp;</i>{item.students} Students
+                <i className="material-icons">&#xe7fb;&nbsp;</i>
+                {item.students} Students
               </p>
             </Col>
           </Row>
-          <p>
-            {item.about}
-          </p>
+          <p>{item.about}</p>
         </div>
       ))}
     </div>
@@ -56,7 +57,7 @@ const Lecturer = memo(() => {
 })
 
 Lecturer.propTypes = {
-  lecturersInfo : PropTypes.array
+  lecturersInfo: PropTypes.array
 }
 
 export default Lecturer

@@ -21,7 +21,10 @@ const Related = memo(({ relatedCourses }) => {
                 />
               </td>
               <td>
-                <a className="text-fiord-blue font-weight-bold" href="/#">
+                <a
+                  className="text-fiord-blue font-weight-bold"
+                  href="/courses/1"
+                >
                   {item.name}
                 </a>
                 <br />

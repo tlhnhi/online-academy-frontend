@@ -39,9 +39,9 @@ function Row(props) {
             onClick={() => setOpen(!open)}
           >
             {open ? (
-              <i class="material-icons">&#xe316;</i>
+              <i className="material-icons">&#xe316;</i>
             ) : (
-              <i class="material-icons">&#xe313;</i>
+              <i className="material-icons">&#xe313;</i>
             )}
           </IconButton>
         </td>
@@ -58,7 +58,13 @@ function Row(props) {
                 <tbody>
                   <tr>
                     <Box mx={7.5}>
-                    {row.url ? <ReactPlayer url={row.url}/> : <span className="text-muted">Please purchase this course to view this content.</span>}
+                      {row.url ? (
+                        <ReactPlayer url={row.url} />
+                      ) : (
+                        <span className="text-muted">
+                          Please purchase this course to view this content.
+                        </span>
+                      )}
                     </Box>
                   </tr>
                 </tbody>
@@ -82,7 +88,13 @@ Row.propTypes = {
 }
 
 const rows = [
-  createData(1, 'Getting Started', 'Preview', '40min', 'https://www.youtube.com/watch?v=NA-LeuIvH5s'),
+  createData(
+    1,
+    'Getting Started',
+    'Preview',
+    '40min',
+    'https://www.youtube.com/watch?v=NA-LeuIvH5s'
+  ),
   createData(
     2,
     'Refreshing Next Generation JavaScript (Optional)',
@@ -90,10 +102,16 @@ const rows = [
     '44min',
     'https://www.youtube.com/watch?v=UtIOMUQ7nWM'
   ),
-  createData(3, 'Understanding the Base Features and Syntax', '', '2hr 21min',''),
-  createData(4, 'Working with Lists and Conditionals', '', '1hr 1min',''),
-  createData(5, 'Styling React Components and Elements', '', '1hr 5min',''),
-  createData(6, 'Debugging React Apps', '', '20min',''),
+  createData(
+    3,
+    'Understanding the Base Features and Syntax',
+    '',
+    '2hr 21min',
+    ''
+  ),
+  createData(4, 'Working with Lists and Conditionals', '', '1hr 1min', ''),
+  createData(5, 'Styling React Components and Elements', '', '1hr 5min', ''),
+  createData(6, 'Debugging React Apps', '', '20min', ''),
   createData(
     7,
     'Diving Deeper into Components and React Internals',
@@ -124,7 +142,7 @@ export default function CollapsibleTable() {
       </thead>
       <tbody style={{ fontSize: `16px` }}>
         {rows.map(row => (
-          <Row key={row.name} row={row} />
+          <Row key={row.no} row={row} />
         ))}
       </tbody>
     </table>

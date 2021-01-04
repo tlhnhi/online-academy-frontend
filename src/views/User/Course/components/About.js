@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Row, Col, Card, CardBody, Button, Badge } from 'shards-react'
 
-const About = memo(({courseInfo}) => {
+const About = memo(({ courseInfo }) => {
   const [course, setCourse] = useState(courseInfo)
   return (
     <Card className="px-5">
@@ -10,9 +10,7 @@ const About = memo(({courseInfo}) => {
         <Col sm="7">
           <CardBody>
             <h3 className="card-title text-fiord-blue">{course.name}</h3>
-            <h5 className="card-post d-inline-block mb-3">
-              {course.describe}
-            </h5>
+            <h5 className="card-post d-inline-block mb-3">{course.describe}</h5>
             <span className="card-title d-flex mb-3">
               Created by:&nbsp;
               <a className="text-fiord-blue" href="/#">
@@ -63,9 +61,13 @@ const About = memo(({courseInfo}) => {
                 ))}
                 &nbsp;
               </span>
-              <p className="card-title d-inline-block">(98,747 ratings)</p>
+              <span className="card-title d-inline-block">
+                (98,747 ratings)
+              </span>
               &nbsp;&nbsp;
-              <p className="card-title d-inline-block">334,851 students</p>
+              <span className="card-title d-inline-block">
+                334,851 students
+              </span>
             </p>
             <p className="card-title mb-3">Last updated: {course.date}</p>
             <Badge
@@ -95,7 +97,10 @@ const About = memo(({courseInfo}) => {
           <Row className="mx-5 justify-content-between">
             <span className="my-auto">
               <h2 className="card-title d-inline-block my-auto">
-                {course.discount !== 1 ? (course.price*(1-course.discount)).toFixed(2) : course.price}$&nbsp;
+                {course.discount !== 1
+                  ? (course.price * (1 - course.discount)).toFixed(2)
+                  : course.price}
+                $&nbsp;
               </h2>
               <h4
                 className="card-title d-inline-block my-auto text-muted"
@@ -123,7 +128,7 @@ About.propTypes = {
 }
 
 About.defaultProps = {
-  courseInfo : {
+  courseInfo: {
     name: 'React - The Complete Guide (Hooks, React Router, Redux)',
     describe:
       'Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!',

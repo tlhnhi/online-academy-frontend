@@ -56,15 +56,17 @@ const Feedback = memo(() => {
       <h4 className="card-title text-fiord-blue">Feedback</h4>
       <Card small className="card-post mb-4">
         {feedback.map((item, idx) => (
-          <div>
+          <div key={idx}>
             <CardHeader className="border-bottom border-top d-flex">
               <div className="card-post__author d-flex">
                 <span
                   className="card-post__author-avatar card-post__author-avatar--small"
                   style={{
-                    backgroundImage: `url(${item.avatar})`,
-                }}
-                > </span>
+                    backgroundImage: `url(${item.avatar})`
+                  }}
+                >
+                  {' '}
+                </span>
                 <div className="d-flex flex-column justify-content-center ml-3">
                   <span className="card-post__author-name">{item.name}</span>
                   <small className="text-muted">{item.date}</small>
@@ -81,7 +83,7 @@ const Feedback = memo(() => {
                     &#xe839;
                   </i>
                 ))}
-                {[...Array(5 - item.fullStar- item.halfStar)].map((_, idx) => (
+                {[...Array(5 - item.fullStar - item.halfStar)].map((_, idx) => (
                   <i className="material-icons" key={idx}>
                     &#xe83a;
                   </i>
@@ -89,9 +91,7 @@ const Feedback = memo(() => {
               </div>
             </CardHeader>
             <CardBody className="border-bottom">
-              <p className="card-text text-muted">
-                {item.review}
-              </p>
+              <p className="card-text text-muted">{item.review}</p>
             </CardBody>
           </div>
         ))}
@@ -101,7 +101,7 @@ const Feedback = memo(() => {
 })
 
 Feedback.propTypes = {
-  feedbackList : PropTypes.array
+  feedbackList: PropTypes.array
 }
 
 export default Feedback

@@ -3,6 +3,7 @@ import { Container } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
 // import Box from '@material-ui/core/Box'
 import Pagination from '@material-ui/lab/Pagination'
+import { Link } from 'react-router-dom'
 
 const Category = memo(() => {
   const coursesInfo = [
@@ -302,13 +303,13 @@ const Category = memo(() => {
                   />
                 </td>
                 <td style={{ width: `1200px` }}>
-                  <a
+                  <Link
                     className="text-fiord-blue font-weight-bold"
-                    href="/#"
+                    to="/courses/1"
                     style={{ fontSize: `18px` }}
                   >
                     {item.title}
-                  </a>
+                  </Link>
                   <br />
                   <span className="">{item.describe}</span>
                   <br />
