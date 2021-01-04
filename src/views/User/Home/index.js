@@ -8,8 +8,7 @@ import FeaturedTopics from './FeaturedTopics'
 const Home = memo(() => {
   const listtopViewed = [
     {
-      avatar: require('../../../images/top_courses/python.jpg')
-        .default,
+      avatar: require('../../../images/top_courses/python.jpg').default,
       category: 'IT',
       categoryTheme: 'dark',
       lecturer: 'Ardit Sulce',
@@ -37,8 +36,7 @@ const Home = memo(() => {
       discount: 0.92
     },
     {
-      avatar: require('../../../images/top_courses/postman.png')
-        .default,
+      avatar: require('../../../images/top_courses/postman.png').default,
       category: 'Web Development',
       categoryTheme: 'royal-blue',
       lecturer: 'Valentin Despa',
@@ -52,8 +50,7 @@ const Home = memo(() => {
       discount: 0.45
     },
     {
-      avatar: require('../../../images/top_courses/react-native.png')
-        .default,
+      avatar: require('../../../images/top_courses/react-native.png').default,
       category: 'Mobile App Development',
       categoryTheme: 'warning',
       lecturer: 'Maximilian Schwarzmüller',
@@ -67,8 +64,7 @@ const Home = memo(() => {
       discount: 0.92
     },
     {
-      avatar: require('../../../images/top_viewed/leadership.jpg')
-        .default,
+      avatar: require('../../../images/top_viewed/leadership.jpg').default,
       category: 'Management',
       categoryTheme: 'dark',
       lecturer: 'Lawrence M. Miller',
@@ -110,8 +106,7 @@ const Home = memo(() => {
       discount: 0
     },
     {
-      avatar: require('../../../images/top_courses/python.png')
-        .default,
+      avatar: require('../../../images/top_courses/python.png').default,
       category: 'IT',
       categoryTheme: 'dark',
       lecturer: 'Joseph Delgadillo',
@@ -128,8 +123,7 @@ const Home = memo(() => {
 
   const listnewCourses = [
     {
-      avatar: require('../../../images/top_viewed/leadership.jpg')
-        .default,
+      avatar: require('../../../images/top_viewed/leadership.jpg').default,
       category: 'Management',
       categoryTheme: 'dark',
       lecturer: 'Lawrence M. Miller',
@@ -171,8 +165,7 @@ const Home = memo(() => {
       discount: 0
     },
     {
-      avatar: require('../../../images/top_courses/python.png')
-        .default,
+      avatar: require('../../../images/top_courses/python.png').default,
       category: 'IT',
       categoryTheme: 'dark',
       lecturer: 'Joseph Delgadillo',
@@ -186,8 +179,7 @@ const Home = memo(() => {
       discount: 0.92
     },
     {
-      avatar: require('../../../images/top_courses/postman.png')
-        .default,
+      avatar: require('../../../images/top_courses/postman.png').default,
       category: 'Web Development',
       categoryTheme: 'royal-blue',
       lecturer: 'Valentin Despa',
@@ -201,8 +193,7 @@ const Home = memo(() => {
       discount: 0.45
     },
     {
-      avatar: require('../../../images/top_courses/react-native.png')
-        .default,
+      avatar: require('../../../images/top_courses/react-native.png').default,
       category: 'Mobile App Development',
       categoryTheme: 'warning',
       lecturer: 'Maximilian Schwarzmüller',
@@ -251,17 +242,19 @@ const Home = memo(() => {
                     </Badge>
                     <div className="card-post__author d-flex">
                       <a
-                        href="/#"
+                        href="#!"
                         className="card-post__author-avatar card-post__author-avatar--small"
                         style={{
                           backgroundImage: `url('${course.lecturerAvatar}')`
                         }}
-                      > </a>
+                      >
+                        {' '}
+                      </a>
                     </div>
                   </div>
                   <CardBody>
                     <h4 className="card-title mb-0">
-                      <a href="/#" className="text-fiord-blue">
+                      <a href="/courses/1" className="text-fiord-blue">
                         {course.name}
                       </a>
                     </h4>
@@ -270,7 +263,7 @@ const Home = memo(() => {
                       {course.describe}
                     </p>
                     <span className="card-title d-inline-block">
-                      <a className="text-fiord-blue" href="/#">
+                      <a className="text-fiord-blue" href="#!">
                         {course.author}
                       </a>
                     </span>
@@ -367,9 +360,10 @@ const Home = memo(() => {
           className="text-sm-left"
         />
       </Row>
+
       <Carousel indicators={false} interval={2000}>
         {[...Array(3)].map((_, idx) => (
-          <Carousel.Item>
+          <Carousel.Item key={idx}>
             <Row>
               {newCourses.slice(idx * 2, idx * 2 + 2).map((course, idx) => (
                 <Col lg="6" sm="12" key={idx}>
@@ -396,12 +390,14 @@ const Home = memo(() => {
                           style={{
                             backgroundImage: `url('${course.lecturerAvatar}')`
                           }}
-                        > </a>
+                        >
+                          {' '}
+                        </a>
                       </div>
                     </div>
                     <CardBody>
                       <h5 className="card-title mb-0">
-                        <a className="text-fiord-blue" href="/#">
+                        <a className="text-fiord-blue" href="/courses/1">
                           {course.name}
                         </a>
                       </h5>
@@ -409,7 +405,8 @@ const Home = memo(() => {
                         <a className="text-muted" href="/#">
                           {course.author}
                         </a>
-                      </span>                      <p className="card-text d-inline-block mb-2">
+                      </span>{' '}
+                      <p className="card-text d-inline-block mb-2">
                         {course.describe}
                       </p>
                       <br />
@@ -469,7 +466,7 @@ const Home = memo(() => {
                             : course.price}
                           $&nbsp;
                         </h5>
-                        <h7
+                        <h6
                           className="card-title d-inline-block my-auto text-muted"
                           style={{
                             textDecorationLine: 'line-through',
@@ -477,7 +474,7 @@ const Home = memo(() => {
                           }}
                         >
                           {course.discount ? course.price + '$' : ''}
-                        </h7>
+                        </h6>
                       </span>
                     </CardBody>
                   </Card>
@@ -530,7 +527,7 @@ const Home = memo(() => {
                     </div>
                     <CardBody>
                       <h5 className="card-title mb-0">
-                        <a href="/#" className="text-fiord-blue">
+                        <a href="/courses/1" className="text-fiord-blue">
                           {course.name}
                         </a>
                       </h5>
@@ -596,7 +593,7 @@ const Home = memo(() => {
                             : course.price}
                           $&nbsp;
                         </h5>
-                        <h7
+                        <h6
                           className="card-title d-inline-block my-auto text-muted"
                           style={{
                             textDecorationLine: 'line-through',
@@ -604,7 +601,7 @@ const Home = memo(() => {
                           }}
                         >
                           {course.discount ? course.price + '$' : ''}
-                        </h7>
+                        </h6>
                       </span>
                     </CardBody>
                   </Card>
