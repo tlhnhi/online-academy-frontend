@@ -43,7 +43,6 @@ const Register = () => (
               type="email"
               id="feEmail"
               placeholder="Email Address"
-              value=""
               onChange={() => {}}
               autoComplete="email"
             />
@@ -55,7 +54,6 @@ const Register = () => (
               type="password"
               id="fePassword"
               placeholder="Password"
-              value=""
               onChange={() => {}}
               autoComplete="current-password"
             />
@@ -66,7 +64,6 @@ const Register = () => (
               type="password"
               id="fePassword"
               placeholder="Password"
-              value=""
               onChange={() => {}}
               autoComplete="current-password"
             />

@@ -39,7 +39,6 @@ const ChangePassword = () => (
               type="password"
               id="fePassword"
               placeholder="Password"
-              value=""
               onChange={() => {}}
               autoComplete="current-password"
             />
@@ -50,7 +49,6 @@ const ChangePassword = () => (
               type="password"
               id="fePassword"
               placeholder="New Password"
-              value=""
               onChange={() => {}}
               autoComplete="current-password"
             />
@@ -61,7 +59,6 @@ const ChangePassword = () => (
               type="password"
               id="fePassword"
               placeholder="Confirm Password"
-              value=""
               onChange={() => {}}
               autoComplete="current-password"
             />
