@@ -22,6 +22,7 @@ const Login = memo(() => {
       .email('Email is invalid'),
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters')
+      .max(32, 'Password must be at most 32 characters')
       .required('Password is required')
   })
 
@@ -62,14 +63,17 @@ const Login = memo(() => {
             </Row>
             <Form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
               {/* Email */}
+              <FormGroup>
               <label>Email</label>
               <input
                 name="email"
-                type="text"
+                type="email"
+                placeholder="Email Address"
                 ref={register}
                 className={`form-control ${errors.email ? 'is-invalid' : ''}`}
               />
               <div className="invalid-feedback">{errors.email?.message}</div>
+              </FormGroup>
               {/* Password */}
               <FormGroup>
                 <div>
@@ -77,6 +81,7 @@ const Login = memo(() => {
                   <input
                     name="password"
                     type="password"
+                    placeholder="Password"
                     ref={register}
                     className={`form-control ${
                       errors.password ? 'is-invalid' : ''

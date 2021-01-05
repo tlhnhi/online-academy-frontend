@@ -1,5 +1,3 @@
-import axiosClient from 'api/axiosClient'
-import { useFormik } from 'formik'
 import React, { memo } from 'react'
 import { Link } from 'react-router-dom'
 import {
@@ -10,53 +8,35 @@ import {
   Col,
   Container,
   Form,
-  FormCheckbox,
   FormGroup,
-  FormInput,
   Row
 } from 'shards-react'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 
 const Register = memo(() => {
-  const formik = useFormik({
-    initialValues: {
-      feEmail: '',
-      fePassword: '',
-      feCPassword: '',
-      agree: false
-    },
-    validationSchema: Yup.object({
-      feEmail: Yup.string()
-        .required('Email is required')
-        .email('Email is invalid'),
-      fePassword: Yup.string()
-        .required('Password is required')
-        .min(3, 'Password must be more than 2 characters')
-        .max(32, 'Password must be less than 31 characters'),
-      feCPassword: Yup.string()
-        .required('Confirm password does not match')
-        .oneOf(
-          [Yup.ref('fePassword'), null],
-          'Confirm password does not match'
-        ),
-      agree: Yup.bool().oneOf([true], 'Please agree term and condition')
-    }),
-    async onSubmit({ feEmail, fePassword }) {
-      const { success, message, token } = await axiosClient({
-        method: 'post',
-        url: '/signup',
-        data: { email: feEmail, password: fePassword, name: 'New User' }
-      })
-
-      if (!success) {
-        localStorage.removeItem('token')
-        return alert(message)
-      }
-
-      localStorage.setItem('token', token)
-      alert('Account registered')
-    }
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .required('Email is required')
+      .email('Email is invalid'),
+    password: Yup.string()
+      .min(8, 'Password must be at least 8 characters')
+      .max(32, 'Password must be at most 32 characters')
+      .required('Password is required'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required('Confirm Password is required'),
+    acceptTerms: Yup.bool().oneOf([true], 'Accept Terms & Conditions is required')
   })
+
+  const { register, handleSubmit, reset, errors } = useForm({
+    resolver: yupResolver(validationSchema)
+  })
+
+  function onSubmit(data) {
+    alert(JSON.stringify(data, null, 4))
+  }
 
   return (
     <Container
@@ -85,68 +65,67 @@ const Register = memo(() => {
                 Online Academi
               </span>
             </Row>
-            <Form onSubmit={formik.handleSubmit}>
+            <Form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
               {/* Email */}
               <FormGroup>
-                <label htmlFor="feEmail">Email</label>
-                <FormInput
+                <label>Email</label>
+                <input
+                  name="email"
                   type="email"
-                  name="feEmail"
                   placeholder="Email Address"
-                  autoComplete="email"
-                  {...formik.getFieldProps('feEmail')}
+                  ref={register}
+                  className={`form-control ${errors.email ? 'is-invalid' : ''}`}
                 />
-                {formik.touched.feEmail && formik.errors.feEmail ? (
-                  <span style={{ color: 'red' }}>{formik.errors.feEmail}</span>
-                ) : (
-                  ''
-                )}
+                <div className="invalid-feedback">{errors.email?.message}</div>
               </FormGroup>
               {/* Password */}
               <FormGroup>
-                <label htmlFor="fePassword">Password</label>
-                <FormInput
+                <label>Password</label>
+                <input
+                  name="password"
                   type="password"
-                  name="fePassword"
                   placeholder="Password"
-                  autoComplete="current-password"
-                  {...formik.getFieldProps('fePassword')}
+                  ref={register}
+                  className={`form-control ${
+                    errors.password ? 'is-invalid' : ''
+                  }`}
                 />
-                {formik.touched.fePassword && formik.errors.fePassword ? (
-                  <span style={{ color: 'red' }}>
-                    {formik.errors.fePassword}
-                  </span>
-                ) : (
-                  ''
-                )}
+                <div className="invalid-feedback">
+                  {errors.password?.message}
+                </div>
               </FormGroup>
               <FormGroup>
-                <label htmlFor="feCPassword">Confirm Password</label>
-                <FormInput
+                <label>Confirm Password</label>
+                <input
+                  name="confirmPassword"
                   type="password"
-                  name="feCPassword"
-                  placeholder="Password"
-                  autoComplete="current-password"
-                  {...formik.getFieldProps('feCPassword')}
+                  placeholder="Confirm Password"
+                  ref={register}
+                  className={`form-control ${
+                    errors.confirmPassword ? 'is-invalid' : ''
+                  }`}
                 />
-                {formik.touched.feCPassword && formik.errors.feCPassword ? (
-                  <span style={{ color: 'red' }}>
-                    {formik.errors.feCPassword}
-                  </span>
-                ) : (
-                  ''
-                )}
+                <div className="invalid-feedback">
+                  {errors.confirmPassword?.message}
+                </div>
               </FormGroup>
 
-              <FormGroup>
-                <FormCheckbox name="agree" {...formik.getFieldProps('agree')}>
-                  I agreed with the Terms & condition
-                </FormCheckbox>
-                {formik.touched.agree && formik.errors.agree ? (
-                  <span style={{ color: 'red' }}>{formik.errors.agree}</span>
-                ) : (
-                  ''
-                )}
+              <FormGroup className="px-4">
+                <input
+                  name="acceptTerms"
+                  type="checkbox"
+                  ref={register}
+                  id="acceptTerms"
+                  className={`form-check-input ${
+                    errors.acceptTerms ? 'is-invalid' : ''
+                  }`}
+                />
+                <label for="acceptTerms" className="form-check-label">
+                  I agree with the Terms & Conditions.
+                </label>
+                <div className="invalid-feedback">
+                  {errors.acceptTerms?.message}
+                </div>
               </FormGroup>
 
               <Row form>
