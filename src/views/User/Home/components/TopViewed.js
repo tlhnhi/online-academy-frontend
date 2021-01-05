@@ -127,10 +127,10 @@ const TopViewed = memo(() => {
 
   return (
     <Carousel indicators={false} interval={2000}>
-        {[...Array(2)].map((_, idx) => (
-          <Carousel.Item key={idx}>
+        {[...Array(2)].map((_, index) => (
+          <Carousel.Item key={index}>
             <Row>
-              {topViewed.slice(idx * 4, idx * 4 + 4).map((course, idx) => (
+              {topViewed.slice(index * 4, index * 4 + 4).map((course, idx) => (
                 <Col lg="3" md="6" sm="12" key={idx}>
                   <Card small className="card-post card-post--1">
                     <div
@@ -175,8 +175,8 @@ const TopViewed = memo(() => {
                               ? Math.floor(course.rating)
                               : Math.floor(course.rating) + 1
                           )
-                        ].map((_, idx) => (
-                          <i className="material-icons" key={idx}>
+                        ].map((_, i) => (
+                          <i className="material-icons" key={i}>
                             &#xe838;
                           </i>
                         ))}
@@ -188,8 +188,8 @@ const TopViewed = memo(() => {
                               course.rating - Math.floor(course.rating) > 0.21
                             )
                           )
-                        ].map((_, idx) => (
-                          <i className="material-icons" key={idx}>
+                        ].map((_, i) => (
+                          <i className="material-icons" key={i}>
                             &#xe839;
                           </i>
                         ))}
@@ -205,8 +205,8 @@ const TopViewed = memo(() => {
                                 course.rating - Math.floor(course.rating) > 0.21
                               )
                           )
-                        ].map((_, idx) => (
-                          <i className="material-icons" key={idx}>
+                        ].map((_, i) => (
+                          <i className="material-icons" key={i}>
                             &#xe83a;
                           </i>
                         ))}
@@ -223,7 +223,7 @@ const TopViewed = memo(() => {
                             : course.price}
                           $&nbsp;
                         </h5>
-                        <h7
+                        <span
                           className="card-title d-inline-block my-auto text-muted"
                           style={{
                             textDecorationLine: 'line-through',
@@ -231,7 +231,7 @@ const TopViewed = memo(() => {
                           }}
                         >
                           {course.discount ? course.price + '$' : ''}
-                        </h7>
+                        </span>
                       </span>
                     </CardBody>
                   </Card>

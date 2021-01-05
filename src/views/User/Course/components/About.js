@@ -139,7 +139,7 @@ About.defaultProps = {
     date: '12/2020',
     rating: 4.6,
     num_rating: '98,747',
-    students: '334,851 ',
+    students: '334,851',
     isLiked: false
   }
 }

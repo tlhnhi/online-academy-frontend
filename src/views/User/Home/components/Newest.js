@@ -96,10 +96,10 @@ const Newest = memo(() => {
 
   return (
     <Carousel indicators={false} interval={2000}>
-      {[...Array(3)].map((_, idx) => (
-        <Carousel.Item>
+      {[...Array(3)].map((_, index) => (
+        <Carousel.Item key={index}>
           <Row>
-            {newCourses.slice(idx * 2, idx * 2 + 2).map((course, idx) => (
+            {newCourses.slice(index * 2, index * 2 + 2).map((course, idx) => (
               <Col lg="6" sm="12" key={idx}>
                 <Card
                   small
@@ -125,7 +125,7 @@ const Newest = memo(() => {
                           backgroundImage: `url('${course.lecturerAvatar}')`
                         }}
                       >
-                        {' '}
+                        
                       </a>
                     </div>
                   </div>
@@ -139,7 +139,7 @@ const Newest = memo(() => {
                       <a className="text-muted" href="/#">
                         {course.lecturer}
                       </a>
-                    </span>{' '}
+                    </span>
                     <p className="card-text d-inline-block mb-2">
                       {course.describe}
                     </p>
@@ -152,8 +152,8 @@ const Newest = memo(() => {
                             ? Math.floor(course.rating)
                             : Math.floor(course.rating) + 1
                         )
-                      ].map((_, idx) => (
-                        <i className="material-icons" key={idx}>
+                      ].map((_, i) => (
+                        <i className="material-icons" key={i}>
                           &#xe838;
                         </i>
                       ))}
@@ -164,8 +164,8 @@ const Newest = memo(() => {
                             course.rating - Math.floor(course.rating) > 0.21
                           )
                         )
-                      ].map((_, idx) => (
-                        <i className="material-icons" key={idx}>
+                      ].map((_, i) => (
+                        <i className="material-icons" key={i}>
                           &#xe839;
                         </i>
                       ))}
@@ -181,8 +181,8 @@ const Newest = memo(() => {
                               course.rating - Math.floor(course.rating) > 0.21
                             )
                         )
-                      ].map((_, idx) => (
-                        <i className="material-icons" key={idx}>
+                      ].map((_, i) => (
+                        <i className="material-icons" key={i}>
                           &#xe83a;
                         </i>
                       ))}
@@ -199,7 +199,7 @@ const Newest = memo(() => {
                           : course.price}
                         $&nbsp;
                       </h5>
-                      <h7
+                      <span
                         className="card-title d-inline-block my-auto text-muted"
                         style={{
                           textDecorationLine: 'line-through',
@@ -207,7 +207,7 @@ const Newest = memo(() => {
                         }}
                       >
                         {course.discount ? course.price + '$' : ''}
-                      </h7>
+                      </span>
                     </span>
                   </CardBody>
                 </Card>

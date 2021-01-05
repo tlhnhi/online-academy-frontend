@@ -35,12 +35,16 @@ const UserActions = memo(() => {
             <i className="material-icons">&#xE8B8;</i> Change Password
           </DropdownItem>
         </Link>
+        <Link to="/my-courses" style={{ textDecoration: 'none' }}>
         <DropdownItem to="my-course">
           <i className="material-icons">&#xE2C7;</i> My Courses
         </DropdownItem>
-        <DropdownItem to="watchlist">
-          <i className="material-icons">&#xE896;</i> Watchlist
-        </DropdownItem>
+        </Link>
+        <Link to="/watchlist" style={{ textDecoration: 'none' }}>
+          <DropdownItem to="watchlist">
+            <i className="material-icons">&#xE896;</i> Watchlist
+          </DropdownItem>
+        </Link>
         <DropdownItem divider />
         <DropdownItem to="/" className="text-danger">
           <i className="material-icons text-danger">&#xE879;</i> Logout

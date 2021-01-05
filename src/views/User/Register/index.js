@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import {
   Container,
   Card,
@@ -9,11 +9,14 @@ import {
   FormCheckbox,
   Button,
   CardBody,
-  CardFooter
+  CardFooter,
+  Col
 } from 'shards-react'
 
-const Register = () => (
-  <Container fluid className="main-content-container">
+const Register = memo(() => (
+  <Container fluid className="main-content-container d-flex flex-column justify-content-center">
+  <Col></Col>
+  <Col>
     <Card className="m-auto" style={{ width: `350px` }}>
       <CardBody>
         <Row form>
@@ -35,7 +38,7 @@ const Register = () => (
           </span>
         </Row>
         <Form>
-          {' '}
+          
           {/* Email */}
           <FormGroup>
             <label htmlFor="feEmail">Email</label>
@@ -92,7 +95,9 @@ const Register = () => (
         <label><a href="/forgot-password" className="text-muted">Forgot Password</a></label>
         <label><a href="/login" className="text-muted">Log In</a></label>
     </div>
+    </Col>
+    <Col></Col>
   </Container>
-)
+))
 
 export default Register

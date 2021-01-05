@@ -1,8 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import {
   Card,
-  CardHeader,
   ListGroup,
   ListGroupItem,
   Row,
@@ -13,11 +12,8 @@ import {
   Button
 } from "shards-react";
 
-const UserAccountDetails = ({ title }) => (
-  <Card small className="mb-4">
-    <CardHeader className="border-bottom">
-      <label className="m-0" style={{fontSize:`18px`}}>{title}</label>
-    </CardHeader>
+const UserAccountDetails = memo(() => (
+  <Card small className="mb-2">
     <ListGroup flush>
       <ListGroupItem className="p-3">
         <Row>
@@ -58,18 +54,6 @@ const UserAccountDetails = ({ title }) => (
                     autoComplete="email"
                   />
                 </Col>
-                {/* Password */}
-                {/* <Col md="6" className="form-group">
-                  <label htmlFor="fePassword">Password</label>
-                  <FormInput
-                    type="password"
-                    id="fePassword"
-                    placeholder="Password"
-                    value="EX@MPL#P@$$w0RD"
-                    onChange={() => {}}
-                    autoComplete="current-password"
-                  />
-                </Col> */}
                  <Col md="6" className="form-group">
                   <label htmlFor="feHeadline">Headline</label>
                   <FormInput
@@ -96,17 +80,13 @@ const UserAccountDetails = ({ title }) => (
       </ListGroupItem>
     </ListGroup>
   </Card>
-);
+));
 
 UserAccountDetails.propTypes = {
   /**
    * The component's title.
    */
   title: PropTypes.string
-};
-
-UserAccountDetails.defaultProps = {
-  title: "Account Details"
 };
 
 export default UserAccountDetails;

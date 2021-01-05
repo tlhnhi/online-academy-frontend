@@ -9,7 +9,7 @@ const Profile = () => (
     <Row noGutters className="page-header py-4">
       <PageTitle title="User Profile" subtitle="" md="12" className="ml-sm-auto mr-sm-auto" />
     </Row>
-    <Row>
+    <Row className="my-4">
       <Col className="mx-auto" lg="8">
         <UserDetails />
       </Col>

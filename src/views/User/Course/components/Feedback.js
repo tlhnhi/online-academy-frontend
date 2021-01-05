@@ -65,7 +65,7 @@ const Feedback = memo(() => {
                     backgroundImage: `url(${item.avatar})`
                   }}
                 >
-                  {' '}
+                  
                 </span>
                 <div className="d-flex flex-column justify-content-center ml-3">
                   <span className="card-post__author-name">{item.name}</span>

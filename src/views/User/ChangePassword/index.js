@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo }from 'react'
 import {
   Container,
   Card,
@@ -8,10 +8,13 @@ import {
   FormInput,
   Button,
   CardBody,
+  Col
 } from 'shards-react'
 
-const ChangePassword = () => (
-  <Container fluid className="main-content-container">
+const ChangePassword = memo(() => (
+  <Container fluid className="main-content-container d-flex flex-column justify-content-center">
+  <Col></Col>
+  <Col>
     <Card className="m-auto" style={{ width: `350px` }}>
       <CardBody>
         <Row form>
@@ -44,7 +47,7 @@ const ChangePassword = () => (
             />
           </FormGroup>
           <FormGroup>
-            <label htmlFor="fePassword">Password</label>
+            <label htmlFor="fePassword">New Password</label>
             <FormInput
               type="password"
               id="fePassword"
@@ -54,7 +57,7 @@ const ChangePassword = () => (
             />
           </FormGroup>
           <FormGroup>
-            <label htmlFor="fePassword">Password</label>
+            <label htmlFor="fePassword">Confirm New Password</label>
             <FormInput
               type="password"
               id="fePassword"
@@ -67,12 +70,14 @@ const ChangePassword = () => (
 
         <Row form>
           <Button className="d-block mx-auto" pill>
-            Reset Password
+            Change Password
           </Button>
         </Row>
       </CardBody>
     </Card>
+    </Col>
+    <Col></Col>
   </Container>
-)
+))
 
 export default ChangePassword
