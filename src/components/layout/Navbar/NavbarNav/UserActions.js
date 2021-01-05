@@ -24,6 +24,7 @@ const UserActions = memo(() => {
         />
         <span className="d-none d-md-inline-block">Nhi Tran Le Hong</span>
       </DropdownToggle>
+     
       <Collapse tag={DropdownMenu} right open={visible}>
         <Link to="/profile" style={{ textDecoration: 'none' }}>
           <DropdownItem to="user-profile">

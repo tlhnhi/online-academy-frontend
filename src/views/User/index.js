@@ -13,6 +13,7 @@ const Login = lazy(() => import('./Login'))
 const Register = lazy(() => import('./Register'))
 const ForgotPassword = lazy(() => import('./ForgotPassword'))
 const ChangePassword = lazy(() => import('./ChangePassword'))
+const CreateCourse = lazy(() => import('./CreateCourse'))
 
 const Route = ({ component: Component, layout: Layout, ...rest }) => {
   return (
@@ -49,6 +50,7 @@ const User = memo(() => {
         <Route path="/forgot-password" component={ForgotPassword} layout={DefaultLayout} />
         <Route path="/change-password" component={ChangePassword} layout={DefaultLayout} />
 
+        <Route path="/create-course" component={CreateCourse} layout={DefaultLayout} />
 
       </Switch>
     </Suspense>

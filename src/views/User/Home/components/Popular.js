@@ -129,7 +129,7 @@ const Popular = memo(() => {
   const [topViewed] = useState(listPopular)
 
   return (
-    <Carousel interval={2000} control={false} keyboard={false}>
+    <Carousel indicators={false} interval={2000} >
       {topViewed.map((course, idx) => (
         <Carousel.Item key={idx}>
           <Card small className="card-post card-post--1">
