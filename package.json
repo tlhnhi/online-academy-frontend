@@ -6,11 +6,7 @@
     "@hookform/resolvers": "^1.3.2",
     "@material-ui/core": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
-<<<<<<< HEAD
     "draft-js": "^0.11.7",
-=======
-    "axios": "^0.18.1",
->>>>>>> a07a041a73e57baa556173d53f5447ce5d986721
     "formik": "^2.2.6",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
