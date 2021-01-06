@@ -3,15 +3,11 @@ import { Container } from 'shards-react'
 import { Breadcrumb, BreadcrumbItem } from 'shards-react'
 import About from './components/About'
 // import Description from './components/Description'
-import Learn from './components/Learn'
 import Content from './components/Content'
-import StarsRating from './components/Rating'
-import Related from './components/Related'
 import Feedback from './components/Feedback'
-import Lecturer from './components/Lecturer'
 
 
-const Course = memo(() => {
+const LecturerCourse = memo(() => {
   return (
     <Container fluid className="main-content-container p-3">
       <Breadcrumb>
@@ -23,15 +19,11 @@ const Course = memo(() => {
         </BreadcrumbItem>
       </Breadcrumb>
       <About />
-      <Learn />
       {/* <Description /> */}
       <Content />
-      <StarsRating />
-      <Related />
-      <Lecturer />
      <Feedback />
     </Container>
   )
 })
 
-export default Course
+export default LecturerCourse

@@ -1,48 +1,61 @@
+import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
-import React from 'react'
-import {
-  Collapse,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  NavItem,
-  NavLink
-} from 'shards-react'
+import { Nav } from 'shards-react'
 
-const SidebarNavItem = ({ item }) => (
-  <NavItem tag={Dropdown} caret>
-    <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
-      {item.htmlBefore && (
-        <div
-          className="d-inline-block item-icon-wrapper"
-          dangerouslySetInnerHTML={{ __html: item.htmlBefore }}
-        />
-      )}
-      {item.title && <span>{item.title}</span>}
-      {item.htmlAfter && (
-        <div
-          className="d-inline-block item-icon-wrapper"
-          dangerouslySetInnerHTML={{ __html: item.htmlAfter }}
-        />
-      )}
-    </DropdownToggle>
-    <Collapse tag={DropdownMenu} right open>
-      <DropdownItem to={item.to1}>
-        <i className="material-icons">&#xe051;</i> {item.subtitle1}
-      </DropdownItem>
-      <DropdownItem to={item.to2}>
-        <i className="material-icons">&#xe325;</i> {item.subtitle2}
-      </DropdownItem>
-    </Collapse>
-  </NavItem>
-)
+import CollapsibleSidebar from './CollapsibleSidebar'
 
-SidebarNavItem.propTypes = {
+const SidebarNavItems = memo(() => {
+  const categories = [
+    {
+      name: 'IT',
+      child: [
+        'Web Development',
+        'Mobile App Development',
+        'Software Engineering',
+        'Data Science',
+        'Machine Learning'
+      ]
+    },
+    {
+      name: 'Business',
+      child: [
+        'Communications',
+        'Management',
+        'Sales',
+        'E-Commerce',
+        'Human Resources'
+      ]
+    },
+    {
+      name: 'Design',
+      child: [
+        'Graphic Design',
+        'Design Tools',
+        'Design Thinking',
+        '3D & Animation',
+        'Web Design'
+      ]
+    }
+  ]
+  const [items] = useState(categories)
+
+  return (
+    <div className="nav-wrapper">
+      <h6 className="m-2 mb-0 font-weight-bold">Categories</h6>
+      <Nav className="nav--no-borders flex-column">
+        {items.map(item=>(
+          <CollapsibleSidebar key={item.no} category={item} />
+        ))}
+      </Nav>
+    </div>
+  )
+})
+
+SidebarNavItems.propTypes = {
   /**
    * The item object.
    */
   item: PropTypes.object
 }
 
-export default SidebarNavItem
+export default SidebarNavItems

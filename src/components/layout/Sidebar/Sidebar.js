@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Col } from 'shards-react'
 
 import SidebarNavbar from './SidebarNavbar'
-import SidebarNavItems from './SidebarNavItems'
+import SidebarNavItem from './SidebarNavItem'
 
 const Sidebar = () => (
   <Col
@@ -13,7 +13,7 @@ const Sidebar = () => (
     md={{ size: 5 }}
   >
     <SidebarNavbar />
-    <SidebarNavItems />
+    <SidebarNavItem />
   </Col>
 )
 

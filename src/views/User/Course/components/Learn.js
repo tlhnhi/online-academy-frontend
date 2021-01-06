@@ -1,9 +1,9 @@
 import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Description = memo(() => {
+const Learn = memo(() => {
   const content = [
-    'Build powerful, fast, user-friendly and reactive web apps',
+    '<b>Build powerful</b>, fast, user-friendly and reactive web apps',
     'Apply for high-paid jobs or work as a freelancer in one the most-demanded sectors you can find in web dev right now',
     'Provide amazing user experiences by leveraging the power of JavaScript with ease',
     'Learn React Hooks & Class-based Components'
@@ -21,8 +21,8 @@ const Description = memo(() => {
   )
 })
 
-Description.propTypes = {
+Learn.propTypes = {
   content : PropTypes.array
 }
 
-export default Description
+export default Learn

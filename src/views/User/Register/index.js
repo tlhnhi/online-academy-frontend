@@ -20,6 +20,7 @@ const Register = memo(() => {
   const { push } = useHistory()
 
   const validationSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
       .min(6, 'Password must be at least 6 characters')
@@ -101,6 +102,17 @@ const Register = memo(() => {
                   className={`form-control ${errors.email ? 'is-invalid' : ''}`}
                 />
                 <div className="invalid-feedback">{errors.email?.message}</div>
+              </FormGroup>
+              <FormGroup>
+                <label>Name</label>
+                <input
+                  name="name"
+                  type="text"
+                  placeholder="Your Name"
+                  ref={register}
+                  className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                />
+                <div className="invalid-feedback">{errors.name?.message}</div>
               </FormGroup>
               {/* Password */}
               <FormGroup>

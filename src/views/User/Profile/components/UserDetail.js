@@ -27,7 +27,7 @@ const UserDetails = ({ userDetails }) => {
   return (
     <Card small className="mb-4 pt-3">
       <CardHeader className="border-bottom text-center">
-        <div className="mb-3 mx-auto">
+        <div className="mb-1 mx-auto">
           <img
             className="rounded-circle"
             src={userDetails.avatar}
@@ -37,8 +37,9 @@ const UserDetails = ({ userDetails }) => {
             object-fit="cover"
           />
         </div>
+
         <h4 className="mb-0">{userDetails.name}</h4>
-        <span className="text-muted d-block mb-2">{userDetails.jobTitle}</span>
+        {/* <span className="text-muted d-block mb-2">{userDetails.jobTitle}</span> */}
       </CardHeader>
       <CardBody>
         <UserAccountDetails />

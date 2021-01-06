@@ -7,7 +7,6 @@ import {
   Row,
   Col,
   Form,
-  FormGroup,
   FormInput,
   Button
 } from "shards-react";
@@ -21,17 +20,16 @@ const UserAccountDetails = memo(() => (
             <Form>
               <Row form>
                 {/* First Name */}
-                <Col md="6" className="form-group">
-                  <label htmlFor="feFirstName">First Name</label>
+                <Col md="12" className="form-group">
+                  <label htmlFor="feFirstName">Name</label>
                   <FormInput
-                    id="feFirstName"
-                    placeholder="First Name"
-                    value="Nhi"
+                    id="feName"
+                    placeholder="Nhi Tran Le Hong"
                     onChange={() => {}}
                   />
                 </Col>
                 {/* Last Name */}
-                <Col md="6" className="form-group">
+                {/* <Col md="6" className="form-group">
                   <label htmlFor="feLastName">Last Name</label>
                   <FormInput
                     id="feLastName"
@@ -39,22 +37,21 @@ const UserAccountDetails = memo(() => (
                     value="Tran Le Hong"
                     onChange={() => {}}
                   />
-                </Col>
+                </Col> */}
               </Row>
               <Row form>
                 {/* Email */}
-                <Col md="6" className="form-group">
+                <Col md="12" className="form-group">
                   <label htmlFor="feEmail">Email</label>
                   <FormInput
                     type="email"
                     id="feEmail"
-                    placeholder="Email Address"
-                    value="tlhnhitn@gmail.com"
+                    placeholder="tlhnhitn@gmail.com"
                     onChange={() => {}}
                     autoComplete="email"
                   />
                 </Col>
-                 <Col md="6" className="form-group">
+                 {/* <Col md="6" className="form-group">
                   <label htmlFor="feHeadline">Headline</label>
                   <FormInput
                     id="feHeadline"
@@ -62,9 +59,9 @@ const UserAccountDetails = memo(() => (
                     value="Engineer"
                     onChange={() => {}}
                   />
-                </Col>
+                </Col> */}
               </Row>
-              <FormGroup>
+              {/* <FormGroup>
                 <label htmlFor="feAddress">Address</label>
                 <FormInput
                   id="feAddress"
@@ -72,8 +69,8 @@ const UserAccountDetails = memo(() => (
                   value="CMT8 St."
                   onChange={() => {}}
                 />
-              </FormGroup>
-              <Button theme="accent">Update Account</Button>
+              </FormGroup> */}
+              <Button className="d-block mx-auto" type="submit" theme="accent">Update Account</Button>
             </Form>
           </Col>
         </Row>

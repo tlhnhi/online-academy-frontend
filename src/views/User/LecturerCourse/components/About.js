@@ -11,12 +11,7 @@ const About = memo(({ courseInfo }) => {
           <CardBody>
             <h3 className="card-title text-fiord-blue">{course.name}</h3>
             <h5 className="card-post d-inline-block mb-3">{course.describe}</h5>
-            <span className="card-title d-flex mb-3">
-              Created by:&nbsp;
-              <a className="text-fiord-blue" href="/#">
-                {course.lecturer}
-              </a>
-            </span>
+          
             <p className="card-title mb-0">
               <span className="card-title d-inline-block text-warning">
                 {course.rating}&nbsp;
@@ -62,37 +57,29 @@ const About = memo(({ courseInfo }) => {
                 &nbsp;
               </span>
               <span className="card-title d-inline-block">
-                ({course.rating} ratings)
+                ({course.num_rating} ratings)
               </span>
               &nbsp;&nbsp;
-              <span className="card-title d-inline-block">
-                {course.students} students
-              </span>
             </p>
-            <p className="card-title mb-3">Last updated: {course.date}</p>
-            <div>
-              {course.enrolled ? (
-                <div></div>
-              ) : (
-                <Badge
-                  className="my-auto"
-                  style={{ fontSize: `16px`, cursor: 'pointer' }}
-                  outline
-                  theme="danger"
-                  onClick={() => {
-                    course.isLiked
-                      ? (course.isLiked = false)
-                      : (course.isLiked = true)
-                    setCourse({ ...course })
-                  }}
-                >
-                  <i className={course.isLiked ? 'fas' : 'far'}>
-                    &#xf004;&nbsp;
-                  </i>
-                  Watchlist
-                </Badge>
-              )}
-            </div>
+            <span className="card-title d-flex mb-3">
+              You have {course.students} students in this course
+            </span>
+            <p className="card-title mb-3">Your last updated: {course.date}</p>
+            <Badge
+              className="my-auto"
+              style={{ fontSize: `16px`, cursor: 'pointer' }}
+              outline
+              theme={course.isLiked ? 'success' : 'secondary'}
+              onClick={() => {
+                course.isLiked
+                  ? (course.isLiked = false)
+                  : (course.isLiked = true)
+                setCourse({ ...course })
+              }}
+            >
+              <i className={course.isLiked ? 'fas' : 'far'}>&#xf058;&nbsp;</i>
+              {course.isLiked ? 'Completed' : 'In progress'}
+            </Badge>
           </CardBody>
         </Col>
         <Col sm="5">
@@ -102,35 +89,29 @@ const About = memo(({ courseInfo }) => {
             src={`${course.avatar}`}
             alt=""
           ></img>
-          <div>
-            {course.enrolled ? (
-              <div></div>
-            ) : (
-              <Row className="mx-5 justify-content-between">
-                <span className="my-auto">
-                  <h2 className="card-title d-inline-block my-auto">
-                    {course.discount !== 1
-                      ? (course.price * (1 - course.discount)).toFixed(2)
-                      : course.price}
-                    $&nbsp;
-                  </h2>
-                  <h4
-                    className="card-title d-inline-block my-auto text-muted"
-                    style={{
-                      textDecorationLine: 'line-through',
-                      textDecorationStyle: 'solid'
-                    }}
-                  >
-                    {course.discount ? course.price + '$' : ''}
-                  </h4>
-                </span>
-                <Button size="lg" className="d-block my-2" pill>
-                  <i className="fas">&#xf07a;&nbsp;</i>
-                  Purchase
-                </Button>
-              </Row>
-            )}
-          </div>
+          <Row className="mx-5 justify-content-between">
+            <span className="my-auto">
+              <h2 className="card-title d-inline-block my-auto">
+                {course.discount !== 1
+                  ? (course.price * (1 - course.discount)).toFixed(2)
+                  : course.price}
+                $&nbsp;
+              </h2>
+              <h4
+                className="card-title d-inline-block my-auto text-muted"
+                style={{
+                  textDecorationLine: 'line-through',
+                  textDecorationStyle: 'solid'
+                }}
+              >
+                {course.discount ? course.price + '$' : ''}
+              </h4>
+            </span>
+            <Button size="lg" className="d-block my-2" pill>
+            <i className='far'>&#xf044;&nbsp;</i>
+              Edit Course
+            </Button>
+          </Row>
         </Col>
       </Row>
     </Card>
@@ -154,8 +135,7 @@ About.defaultProps = {
     rating: 4.6,
     num_rating: '98,747',
     students: '334,851',
-    isLiked: false,
-    enrolled: true
+    isLiked: false
   }
 }
 
