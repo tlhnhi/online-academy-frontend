@@ -1,4 +1,5 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
   Collapse,
@@ -9,9 +10,18 @@ import {
   NavItem,
   NavLink
 } from 'shards-react'
+import { clearAuthToken } from 'store/app/auth'
 
 const UserActions = memo(() => {
   const [visible, setVisible] = useState(false)
+
+  const dispatch = useDispatch()
+
+  const handleSignOut = useCallback(() => {
+    dispatch(clearAuthToken())
+    localStorage.removeItem('token')
+  }, [dispatch])
+
   return (
     <NavItem tag={Dropdown} caret toggle={() => setVisible(!visible)}>
       <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
@@ -24,7 +34,7 @@ const UserActions = memo(() => {
         />
         <span className="d-none d-md-inline-block">Nhi Tran Le Hong</span>
       </DropdownToggle>
-     
+
       <Collapse tag={DropdownMenu} right open={visible}>
         <Link to="/profile" style={{ textDecoration: 'none' }}>
           <DropdownItem to="user-profile">
@@ -37,9 +47,9 @@ const UserActions = memo(() => {
           </DropdownItem>
         </Link>
         <Link to="/my-courses" style={{ textDecoration: 'none' }}>
-        <DropdownItem to="my-course">
-          <i className="material-icons">&#xE2C7;</i> My Courses
-        </DropdownItem>
+          <DropdownItem to="my-course">
+            <i className="material-icons">&#xE2C7;</i> My Courses
+          </DropdownItem>
         </Link>
         <Link to="/watchlist" style={{ textDecoration: 'none' }}>
           <DropdownItem to="watchlist">
@@ -47,7 +57,7 @@ const UserActions = memo(() => {
           </DropdownItem>
         </Link>
         <DropdownItem divider />
-        <DropdownItem to="/" className="text-danger">
+        <DropdownItem className="text-danger" onClick={handleSignOut}>
           <i className="material-icons text-danger">&#xE879;</i> Logout
         </DropdownItem>
       </Collapse>

@@ -2,7 +2,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import axiosClient from 'api/axiosClient'
 import React, { memo } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Redirect } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -14,10 +15,14 @@ import {
   FormGroup,
   Row
 } from 'shards-react'
+import { setAuthToken } from 'store/app/auth'
 import * as Yup from 'yup'
 
 const Register = memo(() => {
-  const { push } = useHistory()
+  const [authToken, dispatch] = [
+    useSelector(state => state.auth),
+    useDispatch()
+  ]
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
@@ -54,12 +59,16 @@ const Register = memo(() => {
       }
 
       localStorage.setItem('token', token)
-      push('/')
+      dispatch(setAuthToken({ token }))
     } catch (error) {
       localStorage.removeItem('token')
       alert('Cannot register')
       console.log(error.message)
     }
+  }
+
+  if (!!authToken) {
+    return <Redirect to="/" />
   }
 
   return (
