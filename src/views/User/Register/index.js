@@ -15,7 +15,7 @@ import {
   FormGroup,
   Row
 } from 'shards-react'
-import { setAuthToken } from 'store/app/auth'
+import { clearAuthToken, setAuthToken } from 'store/app/auth'
 import * as Yup from 'yup'
 
 const Register = memo(() => {
@@ -54,14 +54,13 @@ const Register = memo(() => {
       })
 
       if (!success) {
-        localStorage.removeItem('token')
+        dispatch(clearAuthToken())
         return alert(message)
       }
 
-      localStorage.setItem('token', token)
       dispatch(setAuthToken({ token }))
     } catch (error) {
-      localStorage.removeItem('token')
+      dispatch(clearAuthToken())
       alert('Cannot register')
       console.log(error.message)
     }

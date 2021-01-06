@@ -6,11 +6,16 @@ const authSlice = createSlice({
   reducers: {
     setAuthToken(_, { payload }) {
       const { token } = payload
-      if (!token) return ''
+      if (!token) {
+        localStorage.removeItem('token')
+        return ''
+      }
 
+      localStorage.setItem('token', token)
       return token
     },
     clearAuthToken(_) {
+      localStorage.removeItem('token')
       return ''
     }
   }
