@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import { Container, Row, Col } from 'shards-react'
-import PageTitle from './components/PageTitle'
+import PageTitle from '../../../components/PageTitle'
 import UsersOverview from './components/UsersOverview'
 import CategoriesChart from './components/CategoriesChart'
 import SmallStats from './components/SmallStats'
