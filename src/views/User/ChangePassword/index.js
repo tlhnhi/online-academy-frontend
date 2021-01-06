@@ -1,19 +1,23 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import axiosClient from 'api/axiosClient'
 import React, { memo } from 'react'
+import { useForm } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
 import {
-  Container,
+  Button,
   Card,
-  Row,
+  CardBody,
+  Col,
+  Container,
   Form,
   FormGroup,
-  Button,
-  CardBody,
-  Col
+  Row
 } from 'shards-react'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 
 const ChangePassword = memo(() => {
+  const { push } = useHistory()
+
   function equalTo(ref, msg) {
     return this.test({
       name: 'equalTo',
@@ -22,25 +26,25 @@ const ChangePassword = memo(() => {
       params: {
         reference: ref.path
       },
-      test: function(value) {
-        return value !== this.resolve(ref) 
+      test: function (value) {
+        return value !== this.resolve(ref)
       }
     })
-  };
-  
-  Yup.addMethod(Yup.string, 'equalTo', equalTo);
+  }
+
+  Yup.addMethod(Yup.string, 'equalTo', equalTo)
   const validationSchema = Yup.object().shape({
     password: Yup.string()
-      .min(8, 'Password must be at least 8 characters')
+      .min(6, 'Password must be at least 6 characters')
       .max(32, 'Password must be at most 32 characters')
       .required('Password is required'),
-    newpassword: Yup.string()
-      .min(8, 'Password must be at least 8 characters')
+    newPassword: Yup.string()
+      .min(6, 'Password must be at least 6 characters')
       .max(32, 'Password must be at most 32 characters')
       .equalTo(Yup.ref('password'), 'This is your old passsword')
       .required('New password is required'),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref('newpassword'), null], 'Passwords must match')
+      .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
       .required('Confirm Password is required')
   })
 
@@ -48,8 +52,24 @@ const ChangePassword = memo(() => {
     resolver: yupResolver(validationSchema)
   })
 
-  function onSubmit(data) {
-    alert(JSON.stringify(data, null, 4))
+  async function onSubmit(data) {
+    const { password, newPassword } = data
+
+    try {
+      const { success, message, data } = await axiosClient({
+        url: '/user/password',
+        method: 'post',
+        data: { password, newPassword }
+      })
+
+      if (!success) return alert(message)
+
+      alert(data)
+      push('/profile')
+    } catch (error) {
+      alert('Cannot change your password')
+      console.log(error.message)
+    }
   }
 
   return (
@@ -98,7 +118,7 @@ const ChangePassword = memo(() => {
               <FormGroup>
                 <label>New Password</label>
                 <input
-                  name="newpassword"
+                  name="newPassword"
                   type="password"
                   placeholder=" New Password"
                   ref={register}
@@ -129,7 +149,7 @@ const ChangePassword = memo(() => {
               <Button className="d-block mx-auto" pill type="submit">
                 Change Password
               </Button>
-              </Form>
+            </Form>
           </CardBody>
         </Card>
       </Col>

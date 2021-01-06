@@ -1,16 +1,16 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import React, { memo } from 'react'
+import { useForm } from 'react-hook-form'
 import {
-  Container,
+  Button,
   Card,
-  Row,
+  CardBody,
+  Col,
+  Container,
   Form,
   FormGroup,
-  Button,
-  CardBody,
-  Col
+  Row
 } from 'shards-react'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 
 const ForgotPassword = memo(() => {
@@ -55,7 +55,7 @@ const ForgotPassword = memo(() => {
             <Form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
               {/* Email */}
               <FormGroup>
-              <label>Email</label>
+                <label>Email</label>
                 <input
                   name="email"
                   type="email"
@@ -65,19 +65,18 @@ const ForgotPassword = memo(() => {
                 />
                 <div className="invalid-feedback">{errors.email?.message}</div>
               </FormGroup>
-            <Row form>
-              <label
-                className="mx-auto text-muted mb-3"
-                style={{ fontSize: `13px` }}
-              >
-                You will receive an email with your new password
-              </label>
-            </Row>
-            <Button className="d-block mx-auto" type="submit" pill>
+              <Row form>
+                <label
+                  className="mx-auto text-muted mb-3"
+                  style={{ fontSize: `13px` }}
+                >
+                  You will receive an email with your new password
+                </label>
+              </Row>
+              <Button className="d-block mx-auto" type="submit" pill>
                 Reset Password
               </Button>
             </Form>
-
           </CardBody>
         </Card>
         <div

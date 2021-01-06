@@ -1,27 +1,29 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import axiosClient from 'api/axiosClient'
 import React, { memo } from 'react'
+import { useForm } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
 import {
-  Container,
-  Card,
-  Row,
-  Form,
-  FormGroup,
-  FormCheckbox,
   Button,
+  Card,
   CardBody,
   CardFooter,
-  Col
+  Col,
+  Container,
+  Form,
+  FormCheckbox,
+  FormGroup,
+  Row
 } from 'shards-react'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 
 const Login = memo(() => {
+  const { push } = useHistory()
+
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .required('Email is required')
-      .email('Email is invalid'),
+    email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
-      .min(8, 'Password must be at least 8 characters')
+      .min(6, 'Password must be at least 6 characters')
       .max(32, 'Password must be at most 32 characters')
       .required('Password is required')
   })
@@ -30,8 +32,28 @@ const Login = memo(() => {
     resolver: yupResolver(validationSchema)
   })
 
-  function onSubmit(data) {
-    alert(JSON.stringify(data, null, 4))
+  async function onSubmit(data) {
+    const { email, password } = data
+
+    try {
+      const { success, message, data } = await axiosClient({
+        url: '/signin',
+        method: 'post',
+        data: { email, password }
+      })
+
+      if (!success) {
+        localStorage.removeItem('token')
+        return alert(message)
+      }
+
+      localStorage.setItem('token', data.token)
+      push('/')
+    } catch (error) {
+      localStorage.removeItem('token')
+      alert('Cannot login')
+      console.log(error.message)
+    }
   }
 
   return (
@@ -64,15 +86,15 @@ const Login = memo(() => {
             <Form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
               {/* Email */}
               <FormGroup>
-              <label>Email</label>
-              <input
-                name="email"
-                type="email"
-                placeholder="Email Address"
-                ref={register}
-                className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-              />
-              <div className="invalid-feedback">{errors.email?.message}</div>
+                <label>Email</label>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Email Address"
+                  ref={register}
+                  className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                />
+                <div className="invalid-feedback">{errors.email?.message}</div>
               </FormGroup>
               {/* Password */}
               <FormGroup>

@@ -1,5 +1,8 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import axiosClient from 'api/axiosClient'
 import React, { memo } from 'react'
-import { Link } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { Link, useHistory } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -11,31 +14,52 @@ import {
   FormGroup,
   Row
 } from 'shards-react'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 
 const Register = memo(() => {
+  const { push } = useHistory()
+
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .required('Email is required')
-      .email('Email is invalid'),
+    email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
-      .min(8, 'Password must be at least 8 characters')
+      .min(6, 'Password must be at least 6 characters')
       .max(32, 'Password must be at most 32 characters')
       .required('Password is required'),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Passwords must match')
       .required('Confirm Password is required'),
-    acceptTerms: Yup.bool().oneOf([true], 'Accept Terms & Conditions is required')
+    acceptTerms: Yup.bool().oneOf(
+      [true],
+      'Accept Terms & Conditions is required'
+    )
   })
 
   const { register, handleSubmit, reset, errors } = useForm({
     resolver: yupResolver(validationSchema)
   })
 
-  function onSubmit(data) {
-    alert(JSON.stringify(data, null, 4))
+  async function onSubmit(data) {
+    const { email, password } = data
+
+    try {
+      const { success, message, token } = await axiosClient({
+        url: '/signup',
+        method: 'post',
+        data: { email, password, name: 'New User' }
+      })
+
+      if (!success) {
+        localStorage.removeItem('token')
+        return alert(message)
+      }
+
+      localStorage.setItem('token', token)
+      push('/')
+    } catch (error) {
+      localStorage.removeItem('token')
+      alert('Cannot register')
+      console.log(error.message)
+    }
   }
 
   return (
@@ -120,7 +144,7 @@ const Register = memo(() => {
                     errors.acceptTerms ? 'is-invalid' : ''
                   }`}
                 />
-                <label for="acceptTerms" className="form-check-label">
+                <label htmlFor="acceptTerms" className="form-check-label">
                   I agree with the Terms & Conditions.
                 </label>
                 <div className="invalid-feedback">
