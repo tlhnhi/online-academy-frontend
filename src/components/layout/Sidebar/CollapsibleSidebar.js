@@ -23,27 +23,27 @@ function CollapsibleSidebar(props) {
 
         <Collapse tag={DropdownMenu} right open={visible}>
           <Link to="/" style={{ textDecoration: 'none' }}>
-            <DropdownItem to="">
+            <DropdownItem className="border-0">
               {category.child[0]}
             </DropdownItem>
           </Link>
           <Link to="/" style={{ textDecoration: 'none' }}>
-            <DropdownItem to="">
+            <DropdownItem className="border-0">
               {category.child[1]}
             </DropdownItem>
           </Link>
           <Link to="/" style={{ textDecoration: 'none' }}>
-            <DropdownItem to="">
+            <DropdownItem className="border-0">
               {category.child[2]}
             </DropdownItem>
           </Link>
           <Link to="/" style={{ textDecoration: 'none' }}>
-            <DropdownItem to="">
+            <DropdownItem className="border-0">
               {category.child[3]}
             </DropdownItem>
           </Link>
           <Link to="/" style={{ textDecoration: 'none' }}>
-            <DropdownItem to="create-course">
+            <DropdownItem className="border-0">
              {category.child[4]}
             </DropdownItem>
           </Link>

@@ -43,8 +43,8 @@ const SidebarNavItems = memo(() => {
     <div className="nav-wrapper">
       <h6 className="m-2 mb-0 font-weight-bold">Categories</h6>
       <Nav className="nav--no-borders flex-column">
-        {items.map(item=>(
-          <CollapsibleSidebar key={item.no} category={item} />
+        {items.map((item,idx)=>(
+          <CollapsibleSidebar key={idx} category={item} />
         ))}
       </Nav>
     </div>
