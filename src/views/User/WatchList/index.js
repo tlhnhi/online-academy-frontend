@@ -1,9 +1,21 @@
-import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Container, Row, Col, Card, CardBody, Badge, Button } from 'shards-react'
+import React, { memo, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Row
+} from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
 
 const WatchList = memo(() => {
+  const currentUser = useSelector(state => state.currentUser)
+
   const watchList = [
     {
       avatar: require('../../../images/top_courses/python.jpg').default,
@@ -33,7 +45,7 @@ const WatchList = memo(() => {
       num_rating: '98,747',
       price: 129.99,
       discount: 0.92,
-      favorite: true,
+      favorite: true
     },
     {
       avatar: require('../../../images/top_courses/postman.png').default,
@@ -66,8 +78,7 @@ const WatchList = memo(() => {
       favorite: true
     },
     {
-      avatar: require('../../../images/top_viewed/leadership.jpg')
-        .default,
+      avatar: require('../../../images/top_viewed/leadership.jpg').default,
       category: 'Management',
       categoryTheme: 'dark',
       lecturer: 'Lawrence M. Miller',
@@ -125,13 +136,17 @@ const WatchList = memo(() => {
       price: 149.99,
       discount: 0.92,
       favorite: true
-    },
+    }
   ]
   const [courses, setCourses] = useState(watchList)
 
   const handleRemoveItem = name => {
-    setCourses(courses.filter(item => item.name !== name));  
-   };
+    setCourses(courses.filter(item => item.name !== name))
+  }
+
+  if (!currentUser?._id || currentUser.isLecturer) {
+    return <Redirect to="/error" />
+  }
 
   return (
     <Container fluid className="main-content-container p-4">
@@ -145,124 +160,130 @@ const WatchList = memo(() => {
       </div>
       {[...Array(Math.ceil(courses.length / 4))].map((_, index) => (
         <Row key={index} className="py-2">
-          {courses.filter(item => item.favorite === true).length===0 && <Button size="lg" href="/home" className="mx-auto">Browse Courses Now</Button>}
-          {courses.filter(item => item.favorite === true).slice(index * 4, index * 4 + 4).map((course, idx) => (
-            <Col lg="3" md="6" sm="12" key={idx}>
-              <Card small className="card-post card-post--1">
-                <div
-                  className="card-post__image"
-                  style={{
-                    backgroundImage: `url(${course.avatar})`
-                  }}
-                >
-                  <Badge
-                    pill
-                    className={`card-post__category bg-${course.categoryTheme}`}
+          {courses.filter(item => item.favorite === true).length === 0 && (
+            <Button size="lg" href="/home" className="mx-auto">
+              Browse Courses Now
+            </Button>
+          )}
+          {courses
+            .filter(item => item.favorite === true)
+            .slice(index * 4, index * 4 + 4)
+            .map((course, idx) => (
+              <Col lg="3" md="6" sm="12" key={idx}>
+                <Card small className="card-post card-post--1">
+                  <div
+                    className="card-post__image"
+                    style={{
+                      backgroundImage: `url(${course.avatar})`
+                    }}
                   >
-                    {course.category}
-                  </Badge>
-                  <div className="card-post__author d-flex">
-                    <a
-                      href="/#"
-                      className="card-post__author-avatar card-post__author-avatar--small"
-                      style={{
-                        backgroundImage: `url('${course.lecturerAvatar}')`
-                      }}
+                    <Badge
+                      pill
+                      className={`card-post__category bg-${course.categoryTheme}`}
                     >
-                    </a>
+                      {course.category}
+                    </Badge>
+                    <div className="card-post__author d-flex">
+                      <span
+                        className="card-post__author-avatar card-post__author-avatar--small"
+                        style={{
+                          backgroundImage: `url('${course.lecturerAvatar}')`
+                        }}
+                      ></span>
+                    </div>
                   </div>
-                </div>
-                <CardBody>
-                  <h5 className="card-title mb-0">
-                    <a href="/#" className="text-fiord-blue">
-                      {course.name}
-                    </a>
-                  </h5>
-                  <span className="card-title d-inline-block">
-                    <a className="text-muted" href="/#">
-                      {course.lecturer}
-                    </a>
-                  </span>
-                  <br />
-                  <span className="card-title d-inline-block text-warning">
-                    {course.rating}&nbsp;
-                    {[
-                      ...Array(
-                        course.rating - Math.floor(course.rating) < 0.79
-                          ? Math.floor(course.rating)
-                          : Math.floor(course.rating) + 1
-                      )
-                    ].map((_, i) => (
-                      <i className="material-icons" key={i}>
-                        &#xe838;
-                      </i>
-                    ))}
-                    {[
-                      ...Array(
-                        ~~(
-                          course.rating - Math.floor(course.rating) < 0.79 &&
-                          course.rating - Math.floor(course.rating) > 0.21
-                        )
-                      )
-                    ].map((_, i) => (
-                      <i className="material-icons" key={i}>
-                        &#xe839;
-                      </i>
-                    ))}
-                    {[
-                      ...Array(
-                        5 -
-                          (course.rating - Math.floor(course.rating) < 0.79
+                  <CardBody>
+                    <h5 className="card-title mb-0">
+                      <a href="/#" className="text-fiord-blue">
+                        {course.name}
+                      </a>
+                    </h5>
+                    <span className="card-title d-inline-block">
+                      <a className="text-muted" href="/#">
+                        {course.lecturer}
+                      </a>
+                    </span>
+                    <br />
+                    <span className="card-title d-inline-block text-warning">
+                      {course.rating}&nbsp;
+                      {[
+                        ...Array(
+                          course.rating - Math.floor(course.rating) < 0.79
                             ? Math.floor(course.rating)
-                            : Math.floor(course.rating) + 1) -
+                            : Math.floor(course.rating) + 1
+                        )
+                      ].map((_, i) => (
+                        <i className="material-icons" key={i}>
+                          &#xe838;
+                        </i>
+                      ))}
+                      {[
+                        ...Array(
                           ~~(
                             course.rating - Math.floor(course.rating) < 0.79 &&
                             course.rating - Math.floor(course.rating) > 0.21
                           )
-                      )
-                    ].map((_, i) => (
-                      <i className="material-icons" key={i}>
-                        &#xe83a;
-                      </i>
-                    ))}
-                    &nbsp;
-                  </span>
-                  <span className="text-muted">
-                    ({course.num_rating} ratings)
-                  </span>
-                  <br />
-                  <div className="d-flex justify-content-center">
-                  <span className="my-auto">
-                    <h5 className="card-title d-inline-block my-auto">
-                      {course.discount !== 1
-                        ? (course.price * (1 - course.discount)).toFixed(2)
-                        : course.price}
-                      $&nbsp;
-                    </h5>
-                    <span
-                      className="card-title d-inline-block my-auto text-muted"
-                      style={{
-                        textDecorationLine: 'line-through',
-                        textDecorationStyle: 'solid'
-                      }}
-                    >
-                      {course.discount ? course.price + '$' : ''}
+                        )
+                      ].map((_, i) => (
+                        <i className="material-icons" key={i}>
+                          &#xe839;
+                        </i>
+                      ))}
+                      {[
+                        ...Array(
+                          5 -
+                            (course.rating - Math.floor(course.rating) < 0.79
+                              ? Math.floor(course.rating)
+                              : Math.floor(course.rating) + 1) -
+                            ~~(
+                              course.rating - Math.floor(course.rating) <
+                                0.79 &&
+                              course.rating - Math.floor(course.rating) > 0.21
+                            )
+                        )
+                      ].map((_, i) => (
+                        <i className="material-icons" key={i}>
+                          &#xe83a;
+                        </i>
+                      ))}
+                      &nbsp;
                     </span>
-                  </span>
-                  <span className="ml-auto text-right">
-                    <i
-                      className="fas fa-lg text-danger"
-                      onClick={() => handleRemoveItem(course.name)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      &#xf004;
-                    </i>
-                  </span>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          ))} 
+                    <span className="text-muted">
+                      ({course.num_rating} ratings)
+                    </span>
+                    <br />
+                    <div className="d-flex justify-content-center">
+                      <span className="my-auto">
+                        <h5 className="card-title d-inline-block my-auto">
+                          {course.discount !== 1
+                            ? (course.price * (1 - course.discount)).toFixed(2)
+                            : course.price}
+                          $&nbsp;
+                        </h5>
+                        <span
+                          className="card-title d-inline-block my-auto text-muted"
+                          style={{
+                            textDecorationLine: 'line-through',
+                            textDecorationStyle: 'solid'
+                          }}
+                        >
+                          {course.discount ? course.price + '$' : ''}
+                        </span>
+                      </span>
+                      <span className="ml-auto text-right">
+                        <i
+                          className="fas fa-lg text-danger"
+                          onClick={() => handleRemoveItem(course.name)}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          &#xf004;
+                        </i>
+                      </span>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            ))}
         </Row>
       ))}
     </Container>

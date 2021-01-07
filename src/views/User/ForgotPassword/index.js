@@ -1,6 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import React, { memo } from 'react'
 import { useForm } from 'react-hook-form'
+import { useSelector } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -14,6 +16,8 @@ import {
 import * as Yup from 'yup'
 
 const ForgotPassword = memo(() => {
+  const currentUser = useSelector(state => state.currentUser)
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid')
   })
@@ -25,6 +29,11 @@ const ForgotPassword = memo(() => {
   function onSubmit(data) {
     alert(JSON.stringify(data, null, 4))
   }
+
+  if (!currentUser?._id) {
+    return <Redirect to="/error" />
+  }
+
   return (
     <Container
       fluid

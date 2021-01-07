@@ -18,8 +18,6 @@ const LecturerCourse = lazy(() => import('./LecturerCourse'))
 
 const Error = lazy(() => import('./Error'))
 
-
-
 const Route = ({ component: Component, layout: Layout, ...rest }) => {
   return (
     <DefaultRoute
@@ -48,17 +46,35 @@ const User = memo(() => {
           layout={DefaultLayout}
         />
         <Route path="/watchlist" component={WatchList} layout={DefaultLayout} />
-        <Route path="/my-courses" component={UsersCourse} layout={DefaultLayout} />
+        <Route
+          path="/my-courses"
+          component={UsersCourse}
+          layout={DefaultLayout}
+        />
         <Route path="/profile" component={Profile} layout={DefaultLayout} />
         <Route path="/login" component={Login} layout={DefaultLayout} />
         <Route path="/register" component={Register} layout={DefaultLayout} />
-        <Route path="/forgot-password" component={ForgotPassword} layout={DefaultLayout} />
-        <Route path="/change-password" component={ChangePassword} layout={DefaultLayout} />
-
-        <Route path="/create-course" component={CreateCourse} layout={DefaultLayout} />
-        <Route path="/lecturer-course" component={LecturerCourse} layout={DefaultLayout} />
-        <DefaultRoute path="/error" component={Error}/>
-
+        <Route
+          path="/forgot-password"
+          component={ForgotPassword}
+          layout={DefaultLayout}
+        />
+        <Route
+          path="/change-password"
+          component={ChangePassword}
+          layout={DefaultLayout}
+        />
+        <Route
+          path="/create-course"
+          component={CreateCourse}
+          layout={DefaultLayout}
+        />
+        <Route
+          path="/lecturer-course"
+          component={LecturerCourse}
+          layout={DefaultLayout}
+        />
+        <DefaultRoute path="/error" component={Error} />
       </Switch>
     </Suspense>
   )

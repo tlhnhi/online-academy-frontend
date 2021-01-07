@@ -1,9 +1,10 @@
 import axiosClient from 'api/axiosClient'
 import { useFormik } from 'formik'
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { memo, useRef } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { useSelector } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -25,8 +26,8 @@ import DynamicField from './components/DynamicField'
 
 const CreateCourse = memo(() => {
   const currentUser = useSelector(state => state.currentUser)
+  const categories = useSelector(state => state.category)
 
-  const [categories, setCategories] = useState([])
   const quillRef = useRef()
 
   const toBase64 = file =>
@@ -75,18 +76,9 @@ const CreateCourse = memo(() => {
     }
   })
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      if (categories.length > 0) return
-
-      const res = await axiosClient({ url: '/category' })
-      const subCats = res.data.filter(cat => !!cat.parent)
-
-      setCategories(subCats)
-    }
-
-    fetchCategories()
-  }, [categories.length])
+  if (!currentUser || !currentUser.isLecturer) {
+    return <Redirect to="/error" />
+  }
 
   return (
     <Container fluid className="main-content-container px-4">
@@ -116,11 +108,13 @@ const CreateCourse = memo(() => {
               className="mb-3"
             >
               <option value="">Choose a category</option>
-              {categories.map(cat => (
-                <option key={cat._id} value={cat._id}>
-                  {cat.name}
-                </option>
-              ))}
+              {categories
+                .filter(x => !!x.parent)
+                .map(cat => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </option>
+                ))}
             </FormSelect>
             <FormInput
               name="describe"
@@ -150,7 +144,7 @@ const CreateCourse = memo(() => {
           </CardBody>
           <CardFooter>
             <ListGroupItem className="d-flex px-3 border-0">
-              <Button outline theme="danger" type="reset">
+              <Button outline theme="danger" onClick={formik.handleReset}>
                 <i className="fa">&#xf00d;</i> Discard
               </Button>
               <Button outline theme="success" type="submit" className="ml-auto">

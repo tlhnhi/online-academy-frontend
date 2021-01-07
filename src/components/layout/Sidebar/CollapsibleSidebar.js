@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Collapse,
   Dropdown,
@@ -18,35 +18,21 @@ function CollapsibleSidebar(props) {
     <React.Fragment>
       <NavItem tag={Dropdown} caret toggle={() => setVisible(!visible)}>
         <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
-          <span className="d-none d-md-inline-block font-weight-bold">{category.name}</span>
+          <span className="d-none d-md-inline-block font-weight-bold">
+            {category.name}
+          </span>
         </DropdownToggle>
 
         <Collapse tag={DropdownMenu} right open={visible}>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <DropdownItem className="border-0">
-              {category.child[0]}
-            </DropdownItem>
-          </Link>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <DropdownItem className="border-0">
-              {category.child[1]}
-            </DropdownItem>
-          </Link>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <DropdownItem className="border-0">
-              {category.child[2]}
-            </DropdownItem>
-          </Link>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <DropdownItem className="border-0">
-              {category.child[3]}
-            </DropdownItem>
-          </Link>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <DropdownItem className="border-0">
-             {category.child[4]}
-            </DropdownItem>
-          </Link>
+          {category.child.map(c => (
+            <Link
+              key={c._id}
+              to={`/categories/${c._id}`}
+              style={{ textDecoration: 'none' }}
+            >
+              <DropdownItem className="border-0">{c.name}</DropdownItem>
+            </Link>
+          ))}
         </Collapse>
       </NavItem>
     </React.Fragment>

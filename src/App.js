@@ -5,6 +5,7 @@ import React, { lazy, memo, Suspense, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import { clearAuthToken, setAuthToken } from 'store/app/auth'
+import { setCategories } from 'store/app/category'
 import { removeCurrentUser, setCurrentUser } from 'store/app/current-user'
 import './shards/styles/shards-dashboards.1.1.0.min.css'
 
@@ -14,6 +15,7 @@ const User = lazy(() => import('./views/User'))
 const App = memo(() => {
   const authToken = useSelector(state => state.auth)
   const currentUser = useSelector(state => state.currentUser)
+  const categories = useSelector(state => state.category)
 
   const dispatch = useDispatch()
 
@@ -27,9 +29,19 @@ const App = memo(() => {
       dispatch(clearAuthToken())
     }
 
+    const fetchCategories = async () => {
+      if (categories.length > 0) return
+
+      const { success, message, data } = await axiosClient({ url: '/category' })
+      if (!success) return alert(message)
+
+      dispatch(setCategories({ categories: data }))
+    }
+
     checkLoggedIn()
+    fetchCategories()
     return () => checkLoggedIn()
-  }, [authToken, dispatch])
+  }, [authToken, categories, dispatch])
 
   useEffect(() => {
     const fetchProfile = async () => {
