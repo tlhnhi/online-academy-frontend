@@ -1,7 +1,6 @@
 import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Nav, NavItem, NavLink } from 'shards-react'
-import { NavLink as RouteNavLink } from 'react-router-dom'
 
 const AdminSidebarItem = memo(() => {
   const itemList = [
@@ -18,9 +17,7 @@ const AdminSidebarItem = memo(() => {
       <Nav className="nav--no-borders flex-column">
         {items.map((item, idx) => (
           <NavItem key={idx}>
-            <NavLink tag={RouteNavLink} to={item.to}>
-              {item.name}
-            </NavLink>
+              <NavLink href={item.to}>{item.name}</NavLink>
           </NavItem>
         ))}
       </Nav>

@@ -111,10 +111,11 @@ function Row(props) {
 
 Row.propTypes = {
   row: PropTypes.shape({
-    category: PropTypes.number.isRequired,
+    category: PropTypes.string.isRequired,
     subCategory: PropTypes.number.isRequired,
     courses: PropTypes.number.isRequired,
-    students: PropTypes.number.isRequired
+    students: PropTypes.number.isRequired,
+    subCategoryInfo: PropTypes.array.isRequired,
   }).isRequired
 }
 
@@ -179,8 +180,8 @@ export default function CollapsibleTable() {
           </tr>
         </thead>
         <tbody>
-          {rows.map(row => (
-            <Row key={row.name} row={row} />
+          {rows.map((row,idx) => (
+            <Row key={idx} row={row} />
           ))}
         </tbody>
       </table>

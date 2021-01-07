@@ -102,6 +102,67 @@ const Lecturers = memo(() => {
           </tbody>
         </table>
       </Row>
+      <Row noGutters className="page-header py-4">
+        <PageTitle
+          sm="4"
+          title="Request to Become A Lecturer"
+          subtitle=""
+          className="text-sm-left"
+        />
+      </Row>
+
+      {/* Default Light Table */}
+      <Row>
+        <table className="table mb-0">
+          <thead className="bg-light">
+            <tr>
+              <th scope="col" className="border-0" style={{ width: `250px` }}>
+                ID
+              </th>
+              <th
+                scope="col"
+                className="border-0 text-center"
+                style={{ width: `100px` }}
+              >
+                Avatar
+              </th>
+              <th scope="col" className="border-0" style={{ width: `380px` }}>
+                Name
+              </th>
+              <th scope="col" className="border-0" style={{ width: `250px` }}>
+                Email
+              </th>
+              <th />
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user, idx) => (
+              <tr key={idx}>
+                <td>{user.id}</td>
+                <td className="text-center">
+                  <img
+                    className="rounded-circle"
+                    src={user.avatar}
+                    alt={user.name}
+                    width="30"
+                    height="30"
+                    object-fit="cover"
+                  />
+                </td>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td className="text-right text-success" style={{ width: `60px` }}>
+                <i className="fa">&#xf00c;</i>
+                </td>
+                <td className="text-left text-danger" style={{ width: `60px` }}>
+                <i className="fa">&#xf00d;</i>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Row>
     </Container>
   )
 })
