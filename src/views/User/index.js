@@ -16,6 +16,9 @@ const ChangePassword = lazy(() => import('./ChangePassword'))
 const CreateCourse = lazy(() => import('./CreateCourse'))
 const LecturerCourse = lazy(() => import('./LecturerCourse'))
 
+const Error = lazy(() => import('./Error'))
+
+
 
 const Route = ({ component: Component, layout: Layout, ...rest }) => {
   return (
@@ -54,6 +57,7 @@ const User = memo(() => {
 
         <Route path="/create-course" component={CreateCourse} layout={DefaultLayout} />
         <Route path="/lecturer-course" component={LecturerCourse} layout={DefaultLayout} />
+        <DefaultRoute path="/error" component={Error}/>
 
       </Switch>
     </Suspense>

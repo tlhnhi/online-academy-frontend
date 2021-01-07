@@ -2,13 +2,13 @@ import React from 'react'
 import { Container, Row, Col } from 'shards-react'
 
 import MainNavbar from '../components/layout/Navbar/MainNavbar'
-import Sidebar from '../components/layout/Sidebar/Sidebar'
+import AdminSidebar from '../components/layout/Sidebar/AdminSidebar'
 import Footer from '../components/layout/Footer'
 
-const DefaultLayout = ({ children }) => (
+const AdminLayout = ({ children }) => (
   <Container fluid>
     <Row>
-      <Sidebar />
+      <AdminSidebar />
       <Col
         className="main-content p-0"
         lg={{ size: 10, offset: 2 }}
@@ -24,4 +24,4 @@ const DefaultLayout = ({ children }) => (
   </Container>
 )
 
-export default DefaultLayout
+export { AdminLayout }

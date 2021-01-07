@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Col } from 'shards-react'
 
-// import SidebarNavbar from './SidebarNavbar'
-// import SidebarNavItem from './SidebarNavItem'
+import SidebarNavbar from './SidebarNavbar'
+import AdminSidebarItem from './AdminSidebarItem'
 
 const AdminSidebar = () => (
   <Col
@@ -12,8 +12,8 @@ const AdminSidebar = () => (
     lg={{ size: 2 }}
     md={{ size: 5 }}
   >
-    {/* <SidebarNavbar />
-    <SidebarNavItem /> */}
+    <SidebarNavbar />
+    <AdminSidebarItem />
   </Col>
 )
 

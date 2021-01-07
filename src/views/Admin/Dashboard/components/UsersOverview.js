@@ -1,18 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { createRef, useEffect } from 'react'
 import { Card, CardHeader, CardBody } from "shards-react";
-
-// import RangeDatePicker from "../common/RangeDatePicker";
 import Chart from "./chart";
 
-class UsersOverview extends React.Component {
-  constructor(props) {
-    super(props);
+const UsersOverview = props => {
+  let canvasRef = createRef()
 
-    this.canvasRef = React.createRef();
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     const chartOptions = {
       ...{
         responsive: true,
@@ -65,43 +60,38 @@ class UsersOverview extends React.Component {
           intersect: false
         }
       },
-      ...this.props.chartOptions
-    };
-
-    const BlogUsersOverview = new Chart(this.canvasRef.current, {
+      ...props.chartOptions
+    }
+    const UsersOverview = new Chart(canvasRef.current, {
       type: "LineWithLine",
-      data: this.props.chartData,
+      data: props.chartData,
       options: chartOptions
     });
-
+  
     // They can still be triggered on hover.
-    const buoMeta = BlogUsersOverview.getDatasetMeta(0);
+    const buoMeta = UsersOverview.getDatasetMeta(0);
     buoMeta.data[0]._model.radius = 0;
     buoMeta.data[
-      this.props.chartData.datasets[0].data.length - 1
+      props.chartData.datasets[0].data.length - 1
     ]._model.radius = 0;
-
+  
     // Render the chart.
-    BlogUsersOverview.render();
-  }
-
-  render() {
-    const { title } = this.props;
-    return (
-      <Card small className="h-100">
-        <CardHeader className="border-bottom">
-          <h6 className="m-0">{title}</h6>
-        </CardHeader>
-        <CardBody className="pt-0">
-          <canvas
-            height="120"
-            ref={this.canvasRef}
-            style={{ maxWidth: "100% !important" }}
-          />
-        </CardBody>
-      </Card>
-    );
-  }
+    UsersOverview.render();  
+  })
+  return (
+    <Card small className="h-100">
+      <CardHeader className="border-bottom">
+        <h6 className="m-0">Users Overview</h6>
+      </CardHeader>
+      <CardBody className="pt-0">
+        <canvas
+          height="120"
+          ref={canvasRef}
+          style={{ maxWidth: "100% !important" }}
+        />
+      </CardBody>
+    </Card>
+  )
 }
 
 UsersOverview.propTypes = {
@@ -120,7 +110,6 @@ UsersOverview.propTypes = {
 };
 
 UsersOverview.defaultProps = {
-  title: "Users Overview",
   chartData: {
     labels: Array.from(new Array(30), (_, i) => (i === 0 ? 1 : i)),
     datasets: [

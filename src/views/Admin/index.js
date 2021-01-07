@@ -1,9 +1,10 @@
 import Loading from 'components/Loading'
-import { DefaultLayout } from 'layouts'
+import { AdminLayout } from '../../layouts/Admin'
 import React, { lazy, memo, Suspense } from 'react'
 import { Route as DefaultRoute, Switch, useRouteMatch } from 'react-router-dom'
 
 const Dashboard = lazy(() => import('./Dashboard'))
+const Categories = lazy(() => import('./Categories'))
 
 const Route = ({ component: Component, layout: Layout, ...rest }) => {
   return (
@@ -24,7 +25,9 @@ const Admin = memo(() => {
   return (
     <Suspense fallback={<Loading />}>
     <Switch>
-      <Route path={path} component={Dashboard} layout={DefaultLayout}/>
+      <Route exact path={path} component={Dashboard} layout={AdminLayout}/>
+      <Route exact path='/admin/categories' component={Categories} layout={AdminLayout}/>
+
     </Switch>
   </Suspense>
   )
