@@ -30,8 +30,8 @@ const ForgotPassword = memo(() => {
     alert(JSON.stringify(data, null, 4))
   }
 
-  if (!currentUser?._id) {
-    return <Redirect to="/error" />
+  if (currentUser?._id) {
+    return <Redirect to="/" />
   }
 
   return (

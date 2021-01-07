@@ -1,11 +1,18 @@
-import React, { memo, useState } from 'react'
-import { Container } from 'shards-react'
-import PageTitle from '../../../components/PageTitle'
 // import Box from '@material-ui/core/Box'
 import Pagination from '@material-ui/lab/Pagination'
-import { Link } from 'react-router-dom'
+import React, { memo, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Link, useParams } from 'react-router-dom'
+import { Container } from 'shards-react'
+import PageTitle from '../../../components/PageTitle'
 
 const Category = memo(() => {
+  const { id } = useParams()
+  const category = useSelector(state => state.category).find(x => x._id === id)
+  // const courses = useSelector(state => state.course).filter(
+  //   x => x.category_id === id
+  // )
+
   const coursesInfo = [
     {
       avatar: require('../../../images/related/micro.jpg').default,
@@ -279,7 +286,7 @@ const Category = memo(() => {
       <div className="page-header py-4">
         <PageTitle
           sm="12"
-          title="Web Development Courses"
+          title={`${category?.name} Courses`}
           subtitle=""
           className="text-sm-left"
         />

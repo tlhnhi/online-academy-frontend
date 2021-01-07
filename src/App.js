@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import { clearAuthToken, setAuthToken } from 'store/app/auth'
 import { setCategories } from 'store/app/category'
+import { setCourses } from 'store/app/course'
 import { removeCurrentUser, setCurrentUser } from 'store/app/current-user'
 import './shards/styles/shards-dashboards.1.1.0.min.css'
 
@@ -16,6 +17,7 @@ const App = memo(() => {
   const authToken = useSelector(state => state.auth)
   const currentUser = useSelector(state => state.currentUser)
   const categories = useSelector(state => state.category)
+  const courses = useSelector(state => state.course)
 
   const dispatch = useDispatch()
 
@@ -29,19 +31,10 @@ const App = memo(() => {
       dispatch(clearAuthToken())
     }
 
-    const fetchCategories = async () => {
-      if (categories.length > 0) return
-
-      const { success, message, data } = await axiosClient({ url: '/category' })
-      if (!success) return alert(message)
-
-      dispatch(setCategories({ categories: data }))
-    }
-
     checkLoggedIn()
-    fetchCategories()
+
     return () => checkLoggedIn()
-  }, [authToken, categories, dispatch])
+  }, [authToken, dispatch])
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -56,6 +49,29 @@ const App = memo(() => {
     fetchProfile()
     return () => fetchProfile()
   }, [currentUser, dispatch])
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      if (categories.length > 0) return
+
+      const { success, message, data } = await axiosClient({ url: '/category' })
+      if (!success) return alert(message)
+
+      dispatch(setCategories({ categories: data }))
+    }
+
+    const fetchCourses = async () => {
+      if (courses.length > 0) return
+
+      const { success, message, data } = await axiosClient({ url: '/course' })
+      if (!success) return alert(message)
+
+      dispatch(setCourses({ courses: data }))
+    }
+
+    fetchCategories()
+    fetchCourses()
+  }, [categories.length, courses.length, dispatch])
 
   return (
     <Suspense fallback={<Loading />}>
