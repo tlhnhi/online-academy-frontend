@@ -11,7 +11,7 @@ import {
   ButtonGroup
 } from 'shards-react'
 
-const DynamicField = memo(() => {
+const DynamicField = memo(({ formik }) => {
   const [fields, setFields] = useState([{ value: null }])
 
   function handleChange(i, event) {
@@ -57,7 +57,11 @@ const DynamicField = memo(() => {
                   onChange={e => handleChange(idx, e)}
                 />
               </Col>
-              <Col md="1" className="d-flex flex-column justify-content-center" style={{height:`45px`}}>
+              <Col
+                md="1"
+                className="d-flex flex-column justify-content-center"
+                style={{ height: `45px` }}
+              >
                 <FormCheckbox className="">Preview</FormCheckbox>
               </Col>
               <Col md="1">
