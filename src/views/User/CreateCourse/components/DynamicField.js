@@ -38,7 +38,7 @@ const DynamicField = memo(({ formik }) => {
         return (
           <div key={`${field}-${idx}`}>
             <Row form>
-              <Col md="6" className="form-group">
+              <Col md="5" className="form-group">
                 <InputGroup>
                   <InputGroupAddon type="prepend">
                     <InputGroupText>#{idx + 1}</InputGroupText>
@@ -63,6 +63,13 @@ const DynamicField = memo(({ formik }) => {
                 style={{ height: `45px` }}
               >
                 <FormCheckbox className="">Preview</FormCheckbox>
+              </Col>
+              <Col md="1" className="form-group">
+                <FormInput
+                  type="text"
+                  placeholder="Duration"
+                  onChange={e => handleChange(idx, e)}
+                />
               </Col>
               <Col md="1">
                 <ButtonGroup className="mr-2">

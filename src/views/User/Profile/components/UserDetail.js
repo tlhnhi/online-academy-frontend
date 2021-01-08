@@ -39,7 +39,11 @@ const UserDetails = ({ userDetails }) => {
         </div>
 
         <h4 className="mb-0">{userDetails.name}</h4>
-        {/* <span className="text-muted d-block mb-2">{userDetails.jobTitle}</span> */}
+        {userDetails.isLecturer ? (
+          <span className="text-muted d-block mb-2">Lecturer</span>
+        ) : (
+          <span className="text-muted d-block mb-2">Student</span>
+        )}
       </CardHeader>
       <CardBody>
         <UserAccountDetails />
@@ -59,12 +63,7 @@ UserDetails.defaultProps = {
   userDetails: {
     name: 'Nhi Tran Le Hong',
     avatar: require('../../../../images/avatars/n.png').default,
-    jobTitle: 'Engineer',
-    performanceReportTitle: 'Workload',
-    performanceReportValue: 74,
-    metaTitle: 'Description',
-    metaValue:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio eaque, quidem, commodi soluta qui quae minima obcaecati quod dolorum sint alias, possimus illum assumenda eligendi cumque?'
+    isLecturer: true
   }
 }
 
