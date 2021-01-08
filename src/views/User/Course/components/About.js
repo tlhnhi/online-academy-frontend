@@ -1,15 +1,58 @@
-import React, { memo, useState } from 'react'
+import axiosClient from 'api/axiosClient'
 import PropTypes from 'prop-types'
-import { Row, Col, Card, CardBody, Button, Badge } from 'shards-react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { Badge, Button, Card, CardBody, Col, Row } from 'shards-react'
 
-const About = memo(({ courseInfo }) => {
-  const [course, setCourse] = useState(courseInfo)
+const About = memo(({ courseInfo: course }) => {
+  const { id } = useParams()
+
+  const currentUser = useSelector(state => state.currentUser)
+  const [isLike, setIsLike] = useState(false)
+
+  useEffect(() => {
+    setIsLike(currentUser?.favorite.includes(id))
+  }, [currentUser, id])
+
+  const handleAddToWatchList = useCallback(async () => {
+    if (!isLike) {
+      const { success, message } = await axiosClient({
+        url: '/course/favorite',
+        method: 'post',
+        data: { course: id }
+      })
+
+      if (!success) return alert(message)
+      setIsLike(true)
+    } else {
+      const { success, message } = await axiosClient({
+        url: `/course/favorite/${id}`,
+        method: 'delete'
+      })
+
+      if (!success) return alert(message)
+      setIsLike(false)
+    }
+  }, [isLike, id])
+
+  const handleEnrollCourse = useCallback(async () => {
+    const { success, message, data } = await axiosClient({
+      url: '/course/enroll',
+      method: 'post',
+      data: { course: id }
+    })
+
+    if (!success) return alert(message)
+    alert(data)
+  }, [id])
+
   return (
     <Card className="px-5">
       <Row>
         <Col sm="7">
           <CardBody>
-            <h3 className="card-title text-fiord-blue">{course.name}</h3>
+            <h3 className="card-title text-fiord-blue">{course.title}</h3>
             <h5 className="card-post d-inline-block mb-3">{course.describe}</h5>
             <span className="card-title d-flex mb-3">
               Created by:&nbsp;
@@ -69,7 +112,10 @@ const About = memo(({ courseInfo }) => {
                 {course.students} students
               </span>
             </p>
-            <p className="card-title mb-3">Last updated: {course.date}</p>
+            <p className="card-title mb-3">
+              Last updated:{' '}
+              {new Date(course.updatedAt).toLocaleDateString('vi-VN')}
+            </p>
             <div>
               {course.enrolled ? (
                 <div></div>
@@ -79,16 +125,9 @@ const About = memo(({ courseInfo }) => {
                   style={{ fontSize: `16px`, cursor: 'pointer' }}
                   outline
                   theme="danger"
-                  onClick={() => {
-                    course.isLiked
-                      ? (course.isLiked = false)
-                      : (course.isLiked = true)
-                    setCourse({ ...course })
-                  }}
+                  onClick={handleAddToWatchList}
                 >
-                  <i className={course.isLiked ? 'fas' : 'far'}>
-                    &#xf004;&nbsp;
-                  </i>
+                  <i className={isLike ? 'fas' : 'far'}>&#xf004;&nbsp;</i>
                   Watchlist
                 </Badge>
               )}
@@ -99,7 +138,7 @@ const About = memo(({ courseInfo }) => {
           <img
             className="img-thumbnail mx-auto mt-3 d-block"
             style={{ width: `500px`, height: `260px`, objectFit: `cover` }}
-            src={`${course.avatar}`}
+            src={course.avatar}
             alt=""
           ></img>
           <div>
@@ -124,7 +163,12 @@ const About = memo(({ courseInfo }) => {
                     {course.discount ? course.price + '$' : ''}
                   </h4>
                 </span>
-                <Button size="lg" className="d-block my-2" pill>
+                <Button
+                  size="lg"
+                  className="d-block my-2"
+                  pill
+                  onClick={handleEnrollCourse}
+                >
                   <i className="fas">&#xf07a;&nbsp;</i>
                   Purchase
                 </Button>
@@ -143,14 +187,14 @@ About.propTypes = {
 
 About.defaultProps = {
   courseInfo: {
-    name: 'React - The Complete Guide (Hooks, React Router, Redux)',
+    title: 'React - The Complete Guide (Hooks, React Router, Redux)',
     describe:
       'Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!',
     lecturer: 'Maximilian Schwarzmüller',
     avatar: require('../../../../images/top_courses/react.png').default,
     price: '129.99',
     discount: '0.92',
-    date: '12/2020',
+    updatedAt: '12/2020',
     rating: 4.6,
     num_rating: '98,747',
     students: '334,851',

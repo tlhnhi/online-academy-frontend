@@ -70,7 +70,7 @@ const User = memo(() => {
           layout={DefaultLayout}
         />
         <Route
-          path="/lecturer-course"
+          path="/lecturer-courses/:id"
           component={LecturerCourse}
           layout={DefaultLayout}
         />

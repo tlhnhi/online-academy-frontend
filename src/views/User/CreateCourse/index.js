@@ -1,5 +1,6 @@
 import axiosClient from 'api/axiosClient'
 import { useFormik } from 'formik'
+import queryString from 'query-string'
 import React, { memo, useRef } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -25,8 +26,14 @@ import CustomFileUpload from './components/CustomFileUpload'
 import DynamicField from './components/DynamicField'
 
 const CreateCourse = memo(() => {
+  const { id } = queryString.parse(window.location.search)
+
   const currentUser = useSelector(state => state.currentUser)
   const categories = useSelector(state => state.category)
+  const courses = useSelector(state => state.course)
+
+  let course = null
+  if (id) course = courses.find(x => x._id === id)
 
   const quillRef = useRef()
 
@@ -40,20 +47,20 @@ const CreateCourse = memo(() => {
 
   const formik = useFormik({
     initialValues: {
-      title: '',
-      avatar: '',
-      category: '',
-      describe: '',
-      price: '',
-      detail: ''
+      title: !!course ? course.title : '',
+      avatar: !!course ? course.avatar : '',
+      category: !!course ? course.category_id : '',
+      describe: !!course ? course.describe : '',
+      price: !!course ? course.price : '',
+      detail: !!course ? course.detail : ''
     },
     async onSubmit(values) {
       const { title, avatar, category, describe, price, detail } = values
 
       try {
         const { success, message } = await axiosClient({
-          url: '/course',
-          method: 'post',
+          url: `/course${!id ? '' : '/' + id}`,
+          method: !id ? 'post' : 'put',
           data: {
             avatar: await toBase64(avatar),
             title,
@@ -68,7 +75,7 @@ const CreateCourse = memo(() => {
 
         if (!success) return alert(message)
 
-        alert('Your course has been created')
+        alert(`Your course has been ${!id ? 'created' : 'updated'}`)
       } catch (error) {
         alert('Cannot create this course')
         console.log(error.message)

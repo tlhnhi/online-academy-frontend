@@ -27,7 +27,7 @@ const Profile = () => {
       </Row>
       <Row>
         <Col className="mx-auto" lg="4">
-          <UserDetails />
+          <UserDetails userDetails={currentUser} />
         </Col>
       </Row>
       <Row></Row>

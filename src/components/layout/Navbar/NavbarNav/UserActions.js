@@ -46,6 +46,11 @@ const UserActions = memo(() => {
   const lecturer = useMemo(
     () => (
       <>
+        <Link to="/my-courses" style={{ textDecoration: 'none' }}>
+          <DropdownItem to="my-courses">
+            <i className="material-icons">&#xE2C7;</i> My Course
+          </DropdownItem>
+        </Link>
         <Link to="/create-course" style={{ textDecoration: 'none' }}>
           <DropdownItem to="create-course">
             <i className="material-icons">&#xe145;</i> Create New Course
@@ -61,12 +66,12 @@ const UserActions = memo(() => {
       <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
         <img
           className="user-avatar rounded-circle mr-2"
-          src={require('../../../../images/avatars/n.png').default}
+          src={currentUser?.avatar}
           alt="User Avatar"
           height="38"
           object-fit="cover"
         />
-        <span className="d-none d-md-inline-block">Nhi Tran Le Hong</span>
+        <span className="d-none d-md-inline-block">{currentUser?.name}</span>
       </DropdownToggle>
 
       <Collapse tag={DropdownMenu} right open={visible}>

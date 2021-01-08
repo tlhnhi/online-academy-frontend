@@ -27,8 +27,8 @@ function StarsRating() {
       </Box>
       <FormTextarea placeholder="Your feedback" style={{ height: `100px` }} />
       <Button size="sm" className="d-block my-2" pill>
-        <i class="material-icons">&#xe163;&nbsp;</i>
-         Send
+        <i className="material-icons">&#xe163;&nbsp;</i>
+        Send
       </Button>
     </div>
   )

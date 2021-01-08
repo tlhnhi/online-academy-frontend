@@ -1,35 +1,44 @@
 import React, { memo } from 'react'
-import { Container } from 'shards-react'
-import { Breadcrumb, BreadcrumbItem } from 'shards-react'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Container } from 'shards-react'
 import About from './components/About'
+import Content from './components/Content'
+import Feedback from './components/Feedback'
 // import Description from './components/Description'
 import Learn from './components/Learn'
-import Content from './components/Content'
+import Lecturer from './components/Lecturer'
 import StarsRating from './components/Rating'
 import Related from './components/Related'
-import Feedback from './components/Feedback'
-import Lecturer from './components/Lecturer'
-
 
 const Course = memo(() => {
+  const { id } = useParams()
+
+  const courses = useSelector(state => state.course)
+  const course = courses.find(x => x._id === id)
+
   return (
     <Container fluid className="main-content-container p-3">
       <Breadcrumb>
         <BreadcrumbItem>
-          <a className="text-fiord-blue" href="/#">IT</a>
+          <a className="text-fiord-blue" href="/#">
+            IT
+          </a>
         </BreadcrumbItem>
         <BreadcrumbItem active>
-          <a className="text-fiord-blue" href="/#">Web Development</a>
+          <a className="text-fiord-blue" href="/#">
+            Web Development
+          </a>
         </BreadcrumbItem>
       </Breadcrumb>
-      <About />
-      <Learn />
+      <About courseInfo={course} />
+      <Learn detail={course?.detail.split('<br>')} />
       {/* <Description /> */}
       <Content />
       <StarsRating />
       <Related />
       <Lecturer />
-     <Feedback />
+      <Feedback />
     </Container>
   )
 })

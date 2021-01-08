@@ -1,6 +1,7 @@
-import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Row, Col, Card, CardBody, Button, Badge } from 'shards-react'
+import React, { memo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Badge, Button, Card, CardBody, Col, Row } from 'shards-react'
 
 const About = memo(({ courseInfo }) => {
   const [course, setCourse] = useState(courseInfo)
@@ -9,9 +10,9 @@ const About = memo(({ courseInfo }) => {
       <Row>
         <Col sm="7">
           <CardBody>
-            <h3 className="card-title text-fiord-blue">{course.name}</h3>
+            <h3 className="card-title text-fiord-blue">{course.title}</h3>
             <h5 className="card-post d-inline-block mb-3">{course.describe}</h5>
-          
+
             <p className="card-title mb-0">
               <span className="card-title d-inline-block text-warning">
                 {course.rating}&nbsp;
@@ -64,7 +65,10 @@ const About = memo(({ courseInfo }) => {
             <span className="card-title d-flex mb-3">
               You have {course.students} students in this course
             </span>
-            <p className="card-title mb-3">Your last updated: {course.date}</p>
+            <p className="card-title mb-3">
+              Your last updated:{' '}
+              {new Date(course.updatedAt).toLocaleDateString()}
+            </p>
             <Badge
               className="my-auto"
               style={{ fontSize: `16px`, cursor: 'pointer' }}
@@ -107,10 +111,12 @@ const About = memo(({ courseInfo }) => {
                 {course.discount ? course.price + '$' : ''}
               </h4>
             </span>
-            <Button size="lg" className="d-block my-2" pill>
-            <i className='far'>&#xf044;&nbsp;</i>
-              Edit Course
-            </Button>
+            <Link to={`/create-course?id=${course._id}`}>
+              <Button size="lg" className="d-block my-2" pill>
+                <i className="far">&#xf044;&nbsp;</i>
+                Edit Course
+              </Button>
+            </Link>
           </Row>
         </Col>
       </Row>
@@ -124,14 +130,14 @@ About.propTypes = {
 
 About.defaultProps = {
   courseInfo: {
-    name: 'React - The Complete Guide (Hooks, React Router, Redux)',
+    title: 'React - The Complete Guide (Hooks, React Router, Redux)',
     describe:
       'Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!',
     lecturer: 'Maximilian Schwarzmüller',
     avatar: require('../../../../images/top_courses/react.png').default,
     price: '129.99',
     discount: '0.92',
-    date: '12/2020',
+    updatedAt: '12/2020',
     rating: 4.6,
     num_rating: '98,747',
     students: '334,851',
