@@ -1,3 +1,4 @@
+import { updateProfile } from 'api/user'
 import { useFormik } from 'formik'
 import PropTypes from 'prop-types'
 import React, { memo } from 'react'
@@ -12,25 +13,13 @@ import {
   ListGroupItem,
   Row
 } from 'shards-react'
-import axiosClient from 'api/axiosClient'
 
 const UserAccountDetails = memo(({ user }) => {
-  const { email, name, isLecturer, description } = user
-  const rating = 3.5
-  const students = 6969
-
   const formik = useFormik({
-    initialValues: { email, name, description },
-    async onSubmit({ name }) {
-      const { success, message } = await axiosClient({
-        url: '/user/profile',
-        method: 'post',
-        data: { name, description }
-      })
-
-      if (!success) return alert(message)
-
-      alert('Profile updated')
+    initialValues: user,
+    async onSubmit({ name, description }) {
+      const message = await updateProfile({ name, description })
+      alert(message)
     }
   })
 
@@ -48,7 +37,6 @@ const UserAccountDetails = memo(({ user }) => {
                     <FormInput
                       id="name"
                       name="name"
-                      placeholder={name}
                       {...formik.getFieldProps('name')}
                     />
                   </Col>
@@ -67,19 +55,19 @@ const UserAccountDetails = memo(({ user }) => {
                     />
                   </Col>
                 </Row>
-                {isLecturer ? (
+                {user.isLecturer ? (
                   <div>
                     <Row form>
                       {/* Rating */}
                       <Col md="4" className="form-group">
                         <label htmlFor="feRating">Rating</label> <br />
                         <span className="card-title text-warning">
-                          {rating}&nbsp;
+                          {user.star}&nbsp;
                           {[
                             ...Array(
-                              rating - Math.floor(rating) < 0.79
-                                ? Math.floor(rating)
-                                : Math.floor(rating) + 1
+                              user.star - Math.floor(user.star) < 0.79
+                                ? Math.floor(user.star)
+                                : Math.floor(user.star) + 1
                             )
                           ].map((_, idx) => (
                             <i className="material-icons" key={idx}>
@@ -89,8 +77,8 @@ const UserAccountDetails = memo(({ user }) => {
                           {[
                             ...Array(
                               ~~(
-                                rating - Math.floor(rating) < 0.79 &&
-                                rating - Math.floor(rating) > 0.21
+                                user.star - Math.floor(user.star) < 0.79 &&
+                                user.star - Math.floor(user.star) > 0.21
                               )
                             )
                           ].map((_, idx) => (
@@ -101,12 +89,12 @@ const UserAccountDetails = memo(({ user }) => {
                           {[
                             ...Array(
                               5 -
-                                (rating - Math.floor(rating) < 0.79
-                                  ? Math.floor(rating)
-                                  : Math.floor(rating) + 1) -
+                                (user.star - Math.floor(user.star) < 0.79
+                                  ? Math.floor(user.star)
+                                  : Math.floor(user.star) + 1) -
                                 ~~(
-                                  rating - Math.floor(rating) < 0.79 &&
-                                  rating - Math.floor(rating) > 0.21
+                                  user.star - Math.floor(user.star) < 0.79 &&
+                                  user.star - Math.floor(user.star) > 0.21
                                 )
                             )
                           ].map((_, idx) => (
@@ -121,14 +109,16 @@ const UserAccountDetails = memo(({ user }) => {
                       <Col md="4" className="form-group">
                         <label htmlFor="feStudent">Courses</label>
                         <br />
-                        <span className="card-title">{students}</span>
+                        <span className="card-title">
+                          {user.courses.length}
+                        </span>
                       </Col>
 
                       {/* Enrolls */}
                       <Col md="4" className="form-group">
-                        <label htmlFor="feStudent">Students</label>
+                        <label htmlFor="feStudent">Enrollments</label>
                         <br />
-                        <span className="card-title">{students}</span>
+                        <span className="card-title">{user.enrollments}</span>
                       </Col>
                     </Row>
                     <Row>

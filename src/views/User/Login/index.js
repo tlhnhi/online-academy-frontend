@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import axiosClient from 'api/axiosClient'
 import React, { memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,7 +15,7 @@ import {
   FormGroup,
   Row
 } from 'shards-react'
-import { clearAuthToken, setAuthToken } from 'store/app/auth'
+import { authSignIn } from 'store/app/auth'
 import * as Yup from 'yup'
 
 const Login = memo(() => {
@@ -37,27 +36,9 @@ const Login = memo(() => {
     resolver: yupResolver(validationSchema)
   })
 
-  async function onSubmit(data) {
+  function onSubmit(data) {
     const { email, password } = data
-
-    try {
-      const { success, message, data } = await axiosClient({
-        url: '/signin',
-        method: 'post',
-        data: { email, password }
-      })
-
-      if (!success) {
-        dispatch(clearAuthToken())
-        return alert(message)
-      }
-
-      dispatch(setAuthToken({ token: data.token }))
-    } catch (error) {
-      dispatch(clearAuthToken())
-      alert('Cannot login')
-      console.log(error.message)
-    }
+    dispatch(authSignIn(email, password))
   }
 
   if (!!authToken) {

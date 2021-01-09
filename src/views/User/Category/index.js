@@ -5,40 +5,21 @@ import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { Container } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
-import arrToObj from 'utils/arr-to-obj'
 
 const Category = memo(() => {
   const { id } = useParams()
 
-  const category = useSelector(state => state.category).find(x => x._id === id)
-  const courses = useSelector(state => state.course).filter(
-    x => x.category_id === id
-  )
+  const categories = useSelector(x => x.category)
+  const courses = useSelector(x => x.course).filter(x => x.category._id === id)
 
-  let coursesInfo = []
-  if (category?._id) {
-    coursesInfo = courses.filter(x => x.category_id === id)
-  }
-
-  const users = useSelector(state => state.user)
-  const lecturers = arrToObj(users?.filter(x => x.isLecturer))
-
-  const countEnrolledByCourseId = id => {
-    let c = 0
-    if (users.length > 0) {
-      for (const user of users) {
-        if (user.enrolled.includes(id)) ++c
-      }
-    }
-    return c
-  }
+  const category = categories.find(x => x._id === id)
 
   const [currentIndex] = useState(-1)
   const [page, setPage] = useState(1)
   const [pageSize] = useState(5)
   const indexOfLast = page * pageSize
   const indexOfFirst = indexOfLast - pageSize
-  const current = coursesInfo.slice(indexOfFirst, indexOfLast)
+  const current = courses.slice(indexOfFirst, indexOfLast)
 
   const handlePageChange = (event, value) => setPage(value)
 
@@ -87,7 +68,7 @@ const Category = memo(() => {
                       className="text-fiord-blue"
                       href={`/profile?id=${item.lecturer_id}`}
                     >
-                      {lecturers[item.lecturer_id]?.name}
+                      {item.lecturer.name}
                     </a>
                   </span>
                   <br />
@@ -101,12 +82,12 @@ const Category = memo(() => {
                   style={{ width: `180px` }}
                 >
                   <span className="card-title text-warning">
-                    {item.rating}&nbsp;
+                    {item.star}&nbsp;
                     {[
                       ...Array(
-                        item.rating - Math.floor(item.rating) < 0.79
-                          ? Math.floor(item.rating)
-                          : Math.floor(item.rating) + 1
+                        item.star - Math.floor(item.star) < 0.79
+                          ? Math.floor(item.star)
+                          : Math.floor(item.star) + 1
                       )
                     ].map((_, idx) => (
                       <i className="material-icons" key={idx}>
@@ -116,8 +97,8 @@ const Category = memo(() => {
                     {[
                       ...Array(
                         ~~(
-                          item.rating - Math.floor(item.rating) < 0.79 &&
-                          item.rating - Math.floor(item.rating) > 0.21
+                          item.star - Math.floor(item.star) < 0.79 &&
+                          item.star - Math.floor(item.star) > 0.21
                         )
                       )
                     ].map((_, idx) => (
@@ -128,12 +109,12 @@ const Category = memo(() => {
                     {[
                       ...Array(
                         5 -
-                          (item.rating - Math.floor(item.rating) < 0.79
-                            ? Math.floor(item.rating)
-                            : Math.floor(item.rating) + 1) -
+                          (item.star - Math.floor(item.star) < 0.79
+                            ? Math.floor(item.star)
+                            : Math.floor(item.star) + 1) -
                           ~~(
-                            item.rating - Math.floor(item.rating) < 0.79 &&
-                            item.rating - Math.floor(item.rating) > 0.21
+                            item.star - Math.floor(item.star) < 0.79 &&
+                            item.star - Math.floor(item.star) > 0.21
                           )
                       )
                     ].map((_, idx) => (
@@ -142,10 +123,12 @@ const Category = memo(() => {
                       </i>
                     ))}
                   </span>
-                  <span className="text-muted">{item.num_rating} ratings</span>
+                  <span className="text-muted d-block">
+                    {item.rating.length} ratings
+                  </span>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>
-                  {countEnrolledByCourseId(item._id)}
+                  {item.enrollments}&nbsp;
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
                 <td
@@ -173,7 +156,7 @@ const Category = memo(() => {
       </table>
       {/* <Box mx = {85}> */}
       <Pagination
-        count={Math.ceil(coursesInfo.length / pageSize)}
+        count={Math.ceil(courses.length / pageSize)}
         page={page}
         showFirstButton
         showLastButton

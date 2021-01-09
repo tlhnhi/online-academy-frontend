@@ -1,12 +1,16 @@
 import React, { memo } from 'react'
-import { Container, Row, Col } from 'shards-react'
+import { useSelector } from 'react-redux'
+import { Col, Container, Row } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
 import FeaturedTopics from './components/FeaturedTopics'
 import NewestCourse from './components/Newest'
-import TopViewedCourse from './components/TopViewed'
 import Popular from './components/Popular'
+import TopViewedCourse from './components/TopViewed'
 
 const Home = memo(() => {
+  const courses = useSelector(x => x.course)
+  const categories = useSelector(x => x.category)
+
   return (
     <Container fluid className="main-content-container p-4">
       <Row>
@@ -19,7 +23,7 @@ const Home = memo(() => {
               className="text-sm-left"
             />
           </div>
-          <Popular />
+          <Popular courses={courses} />
         </Col>
         <Col sm="3">
           <div className="page-header pb-4">
@@ -30,7 +34,7 @@ const Home = memo(() => {
               className="text-sm-left"
             />
           </div>
-          <FeaturedTopics />
+          <FeaturedTopics categories={categories} />
         </Col>
       </Row>
 
@@ -42,8 +46,8 @@ const Home = memo(() => {
           className="text-sm-left"
         />
       </Row>
-      <NewestCourse />
-      
+      <NewestCourse courses={courses} />
+
       <Row noGutters className="page-header py-4">
         <PageTitle
           sm="4"
@@ -52,7 +56,7 @@ const Home = memo(() => {
           className="text-sm-left"
         />
       </Row>
-      <TopViewedCourse />
+      <TopViewedCourse courses={courses} />
     </Container>
   )
 })

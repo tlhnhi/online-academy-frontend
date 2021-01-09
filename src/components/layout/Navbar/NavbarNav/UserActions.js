@@ -14,7 +14,7 @@ import { clearAuthToken } from 'store/app/auth'
 import { removeCurrentUser } from 'store/app/current-user'
 
 const UserActions = memo(() => {
-  const currentUser = useSelector(state => state.currentUser)
+  const currentUser = useSelector(x => x.currentUser)
   const [visible, setVisible] = useState(false)
 
   const dispatch = useDispatch()
@@ -22,8 +22,6 @@ const UserActions = memo(() => {
   const handleSignOut = useCallback(() => {
     dispatch(clearAuthToken())
     dispatch(removeCurrentUser())
-    localStorage.removeItem('token')
-    window.location.reload()
   }, [dispatch])
 
   const student = useMemo(

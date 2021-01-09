@@ -5,7 +5,7 @@ import { Nav } from 'shards-react'
 import CollapsibleSidebar from './CollapsibleSidebar'
 
 const SidebarNavItems = memo(() => {
-  const categories = useSelector(state => state.category)
+  const categories = useSelector(x => x.category)
   const displayCats = []
 
   for (const cat of categories) {

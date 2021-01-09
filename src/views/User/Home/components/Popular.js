@@ -2,32 +2,13 @@ import catTheme from 'constants/category-theme'
 import PropTypes from 'prop-types'
 import React, { memo } from 'react'
 import { Carousel } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Badge, Card, CardBody } from 'shards-react'
-import arrToObj from 'utils/arr-to-obj'
 
-const Popular = memo(() => {
-  const courses = useSelector(state => state.course)
-  const categories = useSelector(state => state.category)
-  const topViewed = courses
-
-  const catDict = {}
-
-  if (categories.length > 0) {
-    for (const cat of categories) {
-      if (!cat.parent) continue
-      catDict[cat._id] = cat.name
-    }
-  }
-
-  const users = useSelector(x => x.user)
-  const lecturers = users.filter(x => x.isLecturer)
-  const lecsObj = arrToObj(lecturers)
-
+const Popular = memo(({ courses }) => {
   return (
     <Carousel indicators={false} interval={2000}>
-      {topViewed.map((course, idx) => (
+      {courses.map((course, idx) => (
         <Carousel.Item key={idx}>
           <Card small className="card-post card-post--1">
             <div
@@ -40,23 +21,18 @@ const Popular = memo(() => {
               <Badge
                 pill
                 className={`card-post__category bg-${
-                  catTheme[catDict[course.category_id]]
+                  catTheme[course.category.name]
                 }`}
               >
-                {catDict[course.category_id]}
+                {course.category.name}
               </Badge>
               <div className="card-post__author d-flex">
-                <a
-                  href={`/profile?id=${lecsObj[course.lecturer_id]?._id}`}
+                <span
                   className="card-post__author-avatar card-post__author-avatar--small"
                   style={{
-                    backgroundImage: `url('${
-                      lecsObj[course.lecturer_id]?.avatar
-                    }')`
+                    backgroundImage: `url('${course.lecturer.avatar}')`
                   }}
-                >
-                  {' '}
-                </a>
+                ></span>
               </div>
             </div>
             <CardBody>
@@ -65,24 +41,23 @@ const Popular = memo(() => {
                   {course.title}
                 </Link>
               </h4>
-              <p className="text-muted d-block mb-3">{course.lecturer}</p>
-              <p className="card-text d-inline-block mb-3">{course.describe}</p>
-              <span className="card-title d-inline-block">
+              <p className="text-muted d-block mb-3">
                 <Link
                   className="text-fiord-blue"
-                  to={`/profile?id=${lecsObj[course.lecturer_id]?._id}`}
+                  to={`/profile?id=${course.lecturer._id}`}
                 >
-                  {lecsObj[course.lecturer_id]?.name}
+                  {course.lecturer.name}
                 </Link>
-              </span>
+              </p>
+              <p className="card-text d-inline-block mb-3">{course.describe}</p>
               <br />
               <span className="card-title d-inline-block text-warning">
-                {course.rating}&nbsp;
+                {course.star}&nbsp;
                 {[
                   ...Array(
-                    course.rating - Math.floor(course.rating) < 0.79
-                      ? Math.floor(course.rating)
-                      : Math.floor(course.rating) + 1
+                    course.star - Math.floor(course.star) < 0.79
+                      ? Math.floor(course.star)
+                      : Math.floor(course.star) + 1
                   )
                 ].map((_, i) => (
                   <i className="material-icons" key={i}>
@@ -92,8 +67,8 @@ const Popular = memo(() => {
                 {[
                   ...Array(
                     ~~(
-                      course.rating - Math.floor(course.rating) < 0.79 &&
-                      course.rating - Math.floor(course.rating) > 0.21
+                      course.star - Math.floor(course.star) < 0.79 &&
+                      course.star - Math.floor(course.star) > 0.21
                     )
                   )
                 ].map((_, i) => (
@@ -104,12 +79,12 @@ const Popular = memo(() => {
                 {[
                   ...Array(
                     5 -
-                      (course.rating - Math.floor(course.rating) < 0.79
-                        ? Math.floor(course.rating)
-                        : Math.floor(course.rating) + 1) -
+                      (course.star - Math.floor(course.star) < 0.79
+                        ? Math.floor(course.star)
+                        : Math.floor(course.star) + 1) -
                       ~~(
-                        course.rating - Math.floor(course.rating) < 0.79 &&
-                        course.rating - Math.floor(course.rating) > 0.21
+                        course.star - Math.floor(course.star) < 0.79 &&
+                        course.star - Math.floor(course.star) > 0.21
                       )
                   )
                 ].map((_, i) => (
@@ -119,7 +94,9 @@ const Popular = memo(() => {
                 ))}
                 &nbsp;
               </span>
-              <span className="text-muted">({course.num_rating} ratings)</span>
+              <span className="text-muted">
+                ({course.rating.length} ratings)
+              </span>
               <br />
               <span className="my-auto">
                 <h3 className="card-title d-inline-block my-auto">
@@ -147,7 +124,7 @@ const Popular = memo(() => {
 })
 
 Popular.propTypes = {
-  listPopular: PropTypes.array
+  courses: PropTypes.array
 }
 
 export default Popular

@@ -7,8 +7,9 @@ import UserDetails from './components/UserDetail'
 
 const Profile = () => {
   const currentUser = useSelector(state => state.currentUser)
+  console.log('Profile', { currentUser })
 
-  if (!currentUser?._id) {
+  if (!localStorage.getItem('token')) {
     return <Redirect to="/error" />
   }
 
@@ -27,7 +28,7 @@ const Profile = () => {
       </Row>
       <Row>
         <Col className="mx-auto" lg="4">
-          <UserDetails userDetails={currentUser} />
+          {currentUser?._id && <UserDetails user={currentUser} />}
         </Col>
       </Row>
       <Row></Row>
