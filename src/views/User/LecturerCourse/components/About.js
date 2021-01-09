@@ -1,26 +1,71 @@
 import PropTypes from 'prop-types'
-import React, { memo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { memo, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Link, useParams } from 'react-router-dom'
 import { Badge, Button, Card, CardBody, Col, Row } from 'shards-react'
+import axiosClient from 'api/axiosClient'
 
 const About = memo(({ courseInfo }) => {
-  const [course, setCourse] = useState(courseInfo)
+  const { id } = useParams()
+  const users = useSelector(x => x.user)
+  const [course, setCourse] = useState('')
+  const [isDone, setIsDone] = useState(false)
+
+  const countEnrolledByCourseId = id => {
+    let c = 0
+    if (users.length > 0) {
+      for (const user of users) {
+        if (user.enrolled.includes(id)) ++c
+      }
+    }
+    return c
+  }
+
+  const handleSetCourseDone = async () => {
+    const { success, message } = await axiosClient({
+      url: `/course/lecturer/${id}`,
+      method: 'put',
+      data: { done: !isDone }
+    })
+
+    if (!success) return alert(message)
+    setIsDone(!isDone)
+  }
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      if (course?._id) return
+      const { success, message, data } = await axiosClient({
+        url: `/course/${id}`
+      })
+
+      if (!success) return alert(message)
+      setCourse(data)
+      console.log(data)
+      setIsDone(data.done)
+    }
+
+    fetchCourse()
+  }, [course, id])
+
   return (
     <Card className="px-5">
       <Row>
         <Col sm="7">
           <CardBody>
-            <h3 className="card-title text-fiord-blue">{course.title}</h3>
-            <h5 className="card-post d-inline-block mb-3">{course.describe}</h5>
+            <h3 className="card-title text-fiord-blue">{course?.title}</h3>
+            <h5 className="card-post d-inline-block mb-3">
+              {course?.describe}
+            </h5>
 
             <p className="card-title mb-0">
-              <span className="card-title d-inline-block text-warning">
-                {course.rating}&nbsp;
+              {/* <span className="card-title d-inline-block text-warning">
+                {course?.rating}&nbsp;
                 {[
                   ...Array(
-                    course.rating - Math.floor(course.rating) < 0.79
-                      ? Math.floor(course.rating)
-                      : Math.floor(course.rating) + 1
+                    course?.rating - Math.floor(course?.rating) < 0.79
+                      ? Math.floor(course?.rating)
+                      : Math.floor(course?.rating) + 1
                   )
                 ].map((_, idx) => (
                   <i className="material-icons" key={idx}>
@@ -30,8 +75,8 @@ const About = memo(({ courseInfo }) => {
                 {[
                   ...Array(
                     ~~(
-                      course.rating - Math.floor(course.rating) < 0.79 &&
-                      course.rating - Math.floor(course.rating) > 0.21
+                      course?.rating - Math.floor(course?.rating) < 0.79 &&
+                      course?.rating - Math.floor(course?.rating) > 0.21
                     )
                   )
                 ].map((_, idx) => (
@@ -42,12 +87,12 @@ const About = memo(({ courseInfo }) => {
                 {[
                   ...Array(
                     5 -
-                      (course.rating - Math.floor(course.rating) < 0.79
-                        ? Math.floor(course.rating)
-                        : Math.floor(course.rating) + 1) -
+                      (course?.rating - Math.floor(course?.rating) < 0.79
+                        ? Math.floor(course?.rating)
+                        : Math.floor(course?.rating) + 1) -
                       ~~(
-                        course.rating - Math.floor(course.rating) < 0.79 &&
-                        course.rating - Math.floor(course.rating) > 0.21
+                        course?.rating - Math.floor(course?.rating) < 0.79 &&
+                        course?.rating - Math.floor(course?.rating) > 0.21
                       )
                   )
                 ].map((_, idx) => (
@@ -56,33 +101,29 @@ const About = memo(({ courseInfo }) => {
                   </i>
                 ))}
                 &nbsp;
-              </span>
+              </span> */}
               <span className="card-title d-inline-block">
-                ({course.num_rating} ratings)
+                ({course?.num_rating} ratings)
               </span>
               &nbsp;&nbsp;
             </p>
             <span className="card-title d-flex mb-3">
-              You have {course.students} students in this course
+              You have {countEnrolledByCourseId(course?._id)} students in this
+              course
             </span>
             <p className="card-title mb-3">
               Your last updated:{' '}
-              {new Date(course.updatedAt).toLocaleDateString()}
+              {new Date(course?.updatedAt).toLocaleDateString()}
             </p>
             <Badge
               className="my-auto"
               style={{ fontSize: `16px`, cursor: 'pointer' }}
               outline
-              theme={course.isLiked ? 'success' : 'secondary'}
-              onClick={() => {
-                course.isLiked
-                  ? (course.isLiked = false)
-                  : (course.isLiked = true)
-                setCourse({ ...course })
-              }}
+              theme={isDone ? 'success' : 'secondary'}
+              onClick={handleSetCourseDone}
             >
-              <i className={course.isLiked ? 'fas' : 'far'}>&#xf058;&nbsp;</i>
-              {course.isLiked ? 'Completed' : 'In progress'}
+              <i className={isDone ? 'fas' : 'far'}>&#xf058;&nbsp;</i>
+              {isDone ? 'Completed' : 'In progress'}
             </Badge>
           </CardBody>
         </Col>
@@ -90,15 +131,15 @@ const About = memo(({ courseInfo }) => {
           <img
             className="img-thumbnail mx-auto mt-3 d-block"
             style={{ width: `500px`, height: `260px`, objectFit: `cover` }}
-            src={`${course.avatar}`}
+            src={`${course?.avatar}`}
             alt=""
           ></img>
           <Row className="mx-5 justify-content-between">
             <span className="my-auto">
               <h2 className="card-title d-inline-block my-auto">
-                {course.discount !== 1
-                  ? (course.price * (1 - course.discount)).toFixed(2)
-                  : course.price}
+                {course?.discount !== 1
+                  ? (course?.price * (1 - course?.discount)).toFixed(2)
+                  : course?.price}
                 $&nbsp;
               </h2>
               <h4
@@ -108,10 +149,10 @@ const About = memo(({ courseInfo }) => {
                   textDecorationStyle: 'solid'
                 }}
               >
-                {course.discount ? course.price + '$' : ''}
+                {course?.discount ? course?.price + '$' : ''}
               </h4>
             </span>
-            <Link to={`/create-course?id=${course._id}`}>
+            <Link to={`/create-course?id=${course?._id}`}>
               <Button size="lg" className="d-block my-2" pill>
                 <i className="far">&#xf044;&nbsp;</i>
                 Edit Course

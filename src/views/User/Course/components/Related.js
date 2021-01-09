@@ -1,15 +1,49 @@
-import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
+import React, { memo, useCallback, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import axiosClient from 'api/axiosClient'
 
-const Related = memo(({ relatedCourses }) => {
-  const [course, setCourse] = useState(relatedCourses)
+const Related = memo(() => {
+  const { id } = useParams()
+
+  const courses = useSelector(x => x.course)
+  const users = useSelector(x => x.user).filter(x => x.enrolled.includes(id))
+
+  const course = courses.find(x => x._id === id)
+  const related = courses.filter(
+    x => x.category_id === course.category_id && x._id !== id
+  )
+
+  const [isLike, setIsLike] = useState(false)
+
+  const handleAddToWatchList = useCallback(async () => {
+    if (!isLike) {
+      const { success, message } = await axiosClient({
+        url: '/course/favorite',
+        method: 'post',
+        data: { course: id }
+      })
+
+      if (!success) return alert(message)
+      setIsLike(true)
+    } else {
+      const { success, message } = await axiosClient({
+        url: `/course/favorite/${id}`,
+        method: 'delete'
+      })
+
+      if (!success) return alert(message)
+      setIsLike(false)
+    }
+  }, [isLike, id])
 
   return (
     <div className="mt-3 mx-auto" style={{ width: `800px` }}>
       <h4 className="card-title text-fiord-blue">Related Courses</h4>
       <table className="table">
         <tbody style={{ fontSize: `16px` }}>
-          {course.map((item, idx) => (
+          {related.map((item, idx) => (
             <tr key={idx}>
               <td>
                 <img
@@ -23,12 +57,15 @@ const Related = memo(({ relatedCourses }) => {
               <td>
                 <a
                   className="text-fiord-blue font-weight-bold"
-                  href="/courses/1"
+                  href={`/courses/${item._id}`}
                 >
-                  {item.name}
+                  {item.title}
                 </a>
                 <br />
-                <span className="text-muted">Last updated: {item.date}</span>
+                <span className="text-muted">
+                  Last updated:{' '}
+                  {new Date(item.updatedAt).toLocaleDateString('vi-VN')}
+                </span>
               </td>
               <td
                 className="text-center text-warning"
@@ -38,7 +75,7 @@ const Related = memo(({ relatedCourses }) => {
                 <i className="material-icons">&#xe838;</i>
               </td>
               <td className="text-center" style={{ width: `100px` }}>
-                {item.students}
+                {users?.length}
                 <i className="material-icons">&#xe7fb;</i>
               </td>
               <td className="text-center">
@@ -57,13 +94,8 @@ const Related = memo(({ relatedCourses }) => {
               <td className="text-center text-danger">
                 {/* <i className="far">&#xf004;</i> */}
                 <i
-                  className={item.favorite ? 'fas' : 'far'}
-                  onClick={() => {
-                    course[idx].favorite
-                      ? (course[idx].favorite = false)
-                      : (course[idx].favorite = true)
-                    setCourse([...course])
-                  }}
+                  className={isLike ? 'fas' : 'far'}
+                  onClick={handleAddToWatchList}
                   style={{ cursor: 'pointer' }}
                 >
                   &#xf004;

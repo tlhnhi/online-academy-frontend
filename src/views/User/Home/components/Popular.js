@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import React, { memo } from 'react'
 import { Carousel } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { Badge, Card, CardBody } from 'shards-react'
+import arrToObj from 'utils/arr-to-obj'
 
 const Popular = memo(() => {
   const courses = useSelector(state => state.course)
@@ -18,6 +20,10 @@ const Popular = memo(() => {
       catDict[cat._id] = cat.name
     }
   }
+
+  const users = useSelector(x => x.user)
+  const lecturers = users.filter(x => x.isLecturer)
+  const lecsObj = arrToObj(lecturers)
 
   return (
     <Carousel indicators={false} interval={2000}>
@@ -41,10 +47,12 @@ const Popular = memo(() => {
               </Badge>
               <div className="card-post__author d-flex">
                 <a
-                  href="/#"
+                  href={`/profile?id=${lecsObj[course.lecturer_id]?._id}`}
                   className="card-post__author-avatar card-post__author-avatar--small"
                   style={{
-                    backgroundImage: `url('${course.lecturerAvatar}')`
+                    backgroundImage: `url('${
+                      lecsObj[course.lecturer_id]?.avatar
+                    }')`
                   }}
                 >
                   {' '}
@@ -53,16 +61,19 @@ const Popular = memo(() => {
             </div>
             <CardBody>
               <h4 className="card-title mb-0">
-                <a href={`/courses/${course._id}`} className="text-fiord-blue">
+                <Link to={`/courses/${course._id}`} className="text-fiord-blue">
                   {course.title}
-                </a>
+                </Link>
               </h4>
               <p className="text-muted d-block mb-3">{course.lecturer}</p>
               <p className="card-text d-inline-block mb-3">{course.describe}</p>
               <span className="card-title d-inline-block">
-                <a className="text-fiord-blue" href="/#">
-                  {course.lecturer}
-                </a>
+                <Link
+                  className="text-fiord-blue"
+                  to={`/profile?id=${lecsObj[course.lecturer_id]?._id}`}
+                >
+                  {lecsObj[course.lecturer_id]?.name}
+                </Link>
               </span>
               <br />
               <span className="card-title d-inline-block text-warning">

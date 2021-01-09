@@ -45,13 +45,13 @@ const Register = memo(() => {
   })
 
   async function onSubmit(data) {
-    const { email, password } = data
+    const { email, password, name } = data
 
     try {
       const { success, message, token } = await axiosClient({
         url: '/signup',
         method: 'post',
-        data: { email, password, name: 'New User' }
+        data: { email, password, name }
       })
 
       if (!success) {

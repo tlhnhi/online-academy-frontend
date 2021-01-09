@@ -15,18 +15,17 @@ import {
 import axiosClient from 'api/axiosClient'
 
 const UserAccountDetails = memo(({ user }) => {
-  const { email, name, isLecturer } = user
+  const { email, name, isLecturer, description } = user
   const rating = 3.5
   const students = 6969
-  // const description = ''
 
   const formik = useFormik({
-    initialValues: { email, name },
+    initialValues: { email, name, description },
     async onSubmit({ name }) {
       const { success, message } = await axiosClient({
         url: '/user/profile',
         method: 'post',
-        data: { name }
+        data: { name, description }
       })
 
       if (!success) return alert(message)
@@ -135,12 +134,12 @@ const UserAccountDetails = memo(({ user }) => {
                     <Row>
                       {/* Description */}
                       <Col md="12" className="form-group">
-                        <label htmlFor="feDescription">Description</label>
+                        <label htmlFor="description">Description</label>
                         <FormTextarea
-                          id="feDescription"
+                          id="description"
                           style={{ height: `80px` }}
                           placeholder="Your description"
-                          onChange={() => {}}
+                          {...formik.getFieldProps('description')}
                         />
                       </Col>
                     </Row>

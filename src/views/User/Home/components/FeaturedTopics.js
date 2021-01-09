@@ -11,6 +11,8 @@ import {
 
 const FeaturedTopics = ({ col1, col2 }) => {
   const categories = useSelector(state => state.category)
+  const users = useSelector(state => state.user)
+  const courses = useSelector(x => x.course)
 
   const displayCats = categories
     .filter(x => !!x.parent)
@@ -19,6 +21,19 @@ const FeaturedTopics = ({ col1, col2 }) => {
       title: x.name,
       value: Math.floor(Math.random() * 20000)
     }))
+
+  const countEnrolledByCatId = id => {
+    let c = 0
+    const coursesThisCat = courses.filter(x => x.category_id === id)
+
+    for (const course of coursesThisCat) {
+      for (const user of users) {
+        if (user.enrolled.includes(course._id)) ++c
+      }
+    }
+
+    return c
+  }
 
   return (
     <Card className="border-bottom">
@@ -40,7 +55,8 @@ const FeaturedTopics = ({ col1, col2 }) => {
                 {item.title}
               </a>
               <span className="ml-auto text-right text-semibold text-reagent-gray">
-                {item.value} <i className="material-icons">&#xe7fb;</i>
+                {countEnrolledByCatId(item._id)}{' '}
+                <i className="material-icons">&#xe7fb;</i>
               </span>
             </ListGroupItem>
           ))}

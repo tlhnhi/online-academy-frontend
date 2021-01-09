@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import { Badge, Container } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
+import arrToObj from 'utils/arr-to-obj'
 
 const UsersCourse = memo(() => {
   const currentUser = useSelector(state => state.currentUser)
@@ -14,7 +15,7 @@ const UsersCourse = memo(() => {
 
   const coursesInfo = currentUser?.isLecturer
     ? courses.filter(x => x.lecturer_id === currentUser._id)
-    : courses.filter(x => currentUser?.enrolled.includes(x._id))
+    : courses.filter(x => currentUser.enrolled.includes(x._id))
 
   const catDict = {}
 
@@ -32,8 +33,22 @@ const UsersCourse = memo(() => {
   const indexOfFirst = indexOfLast - pageSize
   const current = coursesInfo.slice(indexOfFirst, indexOfLast)
 
+  const users = useSelector(x => x.user)
+  const lecturers = users.filter(x => x.isLecturer)
+  const lecsObj = arrToObj(lecturers)
+
   const handlePageChange = (event, value) => {
     setPage(value)
+  }
+
+  const countEnrolledByCourseId = id => {
+    let c = 0
+    if (users.length > 0) {
+      for (const user of users) {
+        if (user.enrolled.includes(id)) ++c
+      }
+    }
+    return c
   }
 
   if (!currentUser?._id) {
@@ -85,8 +100,11 @@ const UsersCourse = memo(() => {
                   <br />
                   <span className="">
                     Created by:&nbsp;
-                    <a className="text-fiord-blue" href="/#">
-                      {item.lecturer}
+                    <a
+                      className="text-fiord-blue"
+                      href={`/profile?id=${lecsObj[item.lecturer_id]?._id}`}
+                    >
+                      {lecsObj[item.lecturer_id]?.name}
                     </a>
                   </span>
                   <br />
@@ -144,7 +162,7 @@ const UsersCourse = memo(() => {
                   <span className="text-muted">{item.num_rating} ratings</span>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>
-                  {item.students}
+                  {countEnrolledByCourseId(item._id)}
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>

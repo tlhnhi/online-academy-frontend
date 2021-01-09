@@ -11,9 +11,11 @@ const LecturerCourse = memo(() => {
   const { id } = useParams()
 
   const currentUser = useSelector(state => state.currentUser)
-  const course = useSelector(state => state.course)
-
-  const courseInfo = course.find(x => x._id === id)
+  const categories = useSelector(state => state.category)
+  const courses = useSelector(state => state.course)
+  const courseInfo = courses.find(x => x._id === id)
+  const category = categories.find(x => x._id === courseInfo?.category_id)
+  const parent = categories.find(x => x._id === category?.parent)
 
   if (!currentUser?._id || !currentUser.isLecturer) {
     return <Redirect to="/error" />
@@ -23,13 +25,11 @@ const LecturerCourse = memo(() => {
     <Container fluid className="main-content-container p-3">
       <Breadcrumb>
         <BreadcrumbItem>
-          <a className="text-fiord-blue" href="/#">
-            IT
-          </a>
+          <span className="text-fiord-blue">{parent?.name}</span>
         </BreadcrumbItem>
         <BreadcrumbItem active>
-          <a className="text-fiord-blue" href="/#">
-            Web Development
+          <a className="text-fiord-blue" href={`/categories/${category?._id}`}>
+            {category?.name}
           </a>
         </BreadcrumbItem>
       </Breadcrumb>

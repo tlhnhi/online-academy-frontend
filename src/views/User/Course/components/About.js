@@ -5,11 +5,15 @@ import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Badge, Button, Card, CardBody, Col, Row } from 'shards-react'
 
-const About = memo(({ courseInfo: course }) => {
+const About = memo(({ courseInfo: course, lecturer }) => {
   const { id } = useParams()
 
   const currentUser = useSelector(state => state.currentUser)
-  const [isLike, setIsLike] = useState(false)
+  const users = useSelector(x => x.user)
+
+  const enrolled = users.filter(x => x.enrolled.includes(id))
+
+  const [isLike, setIsLike] = useState(currentUser?.favorite.includes(id))
 
   useEffect(() => {
     setIsLike(currentUser?.favorite.includes(id))
@@ -56,8 +60,11 @@ const About = memo(({ courseInfo: course }) => {
             <h5 className="card-post d-inline-block mb-3">{course.describe}</h5>
             <span className="card-title d-flex mb-3">
               Created by:&nbsp;
-              <a className="text-fiord-blue" href="/#">
-                {course.lecturer}
+              <a
+                className="text-fiord-blue"
+                href={`/profile?id=${lecturer?._id}`}
+              >
+                {lecturer?.name}
               </a>
             </span>
             <p className="card-title mb-0">
@@ -109,7 +116,7 @@ const About = memo(({ courseInfo: course }) => {
               </span>
               &nbsp;&nbsp;
               <span className="card-title d-inline-block">
-                {course.students} students
+                {enrolled?.length} students
               </span>
             </p>
             <p className="card-title mb-3">
@@ -117,7 +124,7 @@ const About = memo(({ courseInfo: course }) => {
               {new Date(course.updatedAt).toLocaleDateString('vi-VN')}
             </p>
             <div>
-              {course.enrolled ? (
+              {currentUser?.isLecturer ? (
                 <div></div>
               ) : (
                 <Badge
@@ -142,7 +149,7 @@ const About = memo(({ courseInfo: course }) => {
             alt=""
           ></img>
           <div>
-            {course.enrolled ? (
+            {currentUser?.enrolled.includes(id) ? (
               <div></div>
             ) : (
               <Row className="mx-5 justify-content-between">

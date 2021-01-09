@@ -23,6 +23,7 @@ const UserActions = memo(() => {
     dispatch(clearAuthToken())
     dispatch(removeCurrentUser())
     localStorage.removeItem('token')
+    window.location.reload()
   }, [dispatch])
 
   const student = useMemo(

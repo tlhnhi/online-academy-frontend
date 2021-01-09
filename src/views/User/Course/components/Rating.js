@@ -3,9 +3,14 @@ import React, { useState } from 'react'
 import Rating from '@material-ui/lab/Rating'
 import Box from '@material-ui/core/Box'
 import { FormTextarea, Button } from 'shards-react'
+import { useSelector } from 'react-redux'
 
 function StarsRating() {
   const [starValue, setStarValue] = useState(0)
+
+  const currentUser = useSelector(x => x.currentUser)
+
+  if (!currentUser?._id) return <></>
 
   return (
     <div className="mt-3 mx-auto" style={{ width: `800px` }}>

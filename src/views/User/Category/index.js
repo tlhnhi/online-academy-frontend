@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { Container } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
+import arrToObj from 'utils/arr-to-obj'
 
 const Category = memo(() => {
   const { id } = useParams()
@@ -19,6 +20,19 @@ const Category = memo(() => {
     coursesInfo = courses.filter(x => x.category_id === id)
   }
 
+  const users = useSelector(state => state.user)
+  const lecturers = arrToObj(users?.filter(x => x.isLecturer))
+
+  const countEnrolledByCourseId = id => {
+    let c = 0
+    if (users.length > 0) {
+      for (const user of users) {
+        if (user.enrolled.includes(id)) ++c
+      }
+    }
+    return c
+  }
+
   const [currentIndex] = useState(-1)
   const [page, setPage] = useState(1)
   const [pageSize] = useState(5)
@@ -26,16 +40,14 @@ const Category = memo(() => {
   const indexOfFirst = indexOfLast - pageSize
   const current = coursesInfo.slice(indexOfFirst, indexOfLast)
 
-  const handlePageChange = (event, value) => {
-    setPage(value)
-  }
+  const handlePageChange = (event, value) => setPage(value)
 
   return (
     <Container fluid className="main-content-container px-3">
       <div className="page-header py-4">
         <PageTitle
           sm="12"
-          title={`${category?.name} Courses`}
+          title={category?.name ? category?.name + ' Courses' : ''}
           subtitle=""
           className="text-sm-left"
         />
@@ -71,8 +83,11 @@ const Category = memo(() => {
                   <br />
                   <span className="">
                     Created by:&nbsp;
-                    <a className="text-fiord-blue" href="/#">
-                      {item.lerturer}
+                    <a
+                      className="text-fiord-blue"
+                      href={`/profile?id=${item.lecturer_id}`}
+                    >
+                      {lecturers[item.lecturer_id]?.name}
                     </a>
                   </span>
                   <br />
@@ -130,7 +145,7 @@ const Category = memo(() => {
                   <span className="text-muted">{item.num_rating} ratings</span>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>
-                  {item.students}
+                  {countEnrolledByCourseId(item._id)}
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
                 <td

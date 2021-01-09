@@ -4,6 +4,7 @@ import React, { memo } from 'react'
 import { Carousel } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { Badge, Card, CardBody, Col, Row } from 'shards-react'
+import arrToObj from 'utils/arr-to-obj'
 
 const TopViewed = memo(() => {
   const courses = useSelector(state => state.course)
@@ -18,6 +19,10 @@ const TopViewed = memo(() => {
       catDict[cat._id] = cat.name
     }
   }
+
+  const users = useSelector(x => x.user)
+  const lecturers = users.filter(x => x.isLecturer)
+  const lecsObj = arrToObj(lecturers)
 
   return (
     <Carousel indicators={false} interval={2000}>
@@ -46,7 +51,9 @@ const TopViewed = memo(() => {
                         href="/#"
                         className="card-post__author-avatar card-post__author-avatar--small"
                         style={{
-                          backgroundImage: `url('${course.lecturerAvatar}')`
+                          backgroundImage: `url('${
+                            lecsObj[course.lecturer_id]?.avatar
+                          }')`
                         }}
                       >
                         {' '}
@@ -63,8 +70,11 @@ const TopViewed = memo(() => {
                       </a>
                     </h5>
                     <span className="card-title d-inline-block">
-                      <a className="text-muted" href="/#">
-                        {course.lecturer}
+                      <a
+                        className="text-muted"
+                        href={`/profile?id=${lecsObj[course.lecturer_id]?._id}`}
+                      >
+                        {lecsObj[course.lecturer_id]?.name}
                       </a>
                     </span>
                     <br />

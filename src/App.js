@@ -1,23 +1,23 @@
 import axiosClient from 'api/axiosClient'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Loading from 'components/Loading'
-import React, { lazy, memo, Suspense, useEffect } from 'react'
+import React, { memo, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import { clearAuthToken, setAuthToken } from 'store/app/auth'
 import { setCategories } from 'store/app/category'
 import { setCourses } from 'store/app/course'
 import { removeCurrentUser, setCurrentUser } from 'store/app/current-user'
+import { setUsers } from 'store/app/user'
 import './shards/styles/shards-dashboards.1.1.0.min.css'
-
-const Admin = lazy(() => import('./views/Admin'))
-const User = lazy(() => import('./views/User'))
+import Admin from './views/Admin'
+import User from './views/User'
 
 const App = memo(() => {
   const authToken = useSelector(state => state.auth)
   const currentUser = useSelector(state => state.currentUser)
   const categories = useSelector(state => state.category)
   const courses = useSelector(state => state.course)
+  const users = useSelector(state => state.user)
 
   const dispatch = useDispatch()
 
@@ -32,13 +32,12 @@ const App = memo(() => {
     }
 
     checkLoggedIn()
-
     return () => checkLoggedIn()
   }, [authToken, dispatch])
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (!!currentUser) return
+      if (!authToken || !!currentUser) return
 
       const { success, data } = await axiosClient({ url: '/user/profile' })
       if (!success) return dispatch(removeCurrentUser())
@@ -48,7 +47,7 @@ const App = memo(() => {
 
     fetchProfile()
     return () => fetchProfile()
-  }, [currentUser, dispatch])
+  }, [authToken, currentUser, dispatch])
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -69,17 +68,25 @@ const App = memo(() => {
       dispatch(setCourses({ courses: data }))
     }
 
+    const fetchUsers = async () => {
+      if (users.length > 0) return
+
+      const { success, message, data } = await axiosClient({ url: '/users' })
+
+      if (!success) return alert(message)
+      dispatch(setUsers({ users: data }))
+    }
+
     fetchCategories()
     fetchCourses()
-  }, [categories.length, courses.length, dispatch])
+    fetchUsers()
+  }, [categories.length, courses.length, users.length, dispatch])
 
   return (
-    <Suspense fallback={<Loading />}>
-      <Switch>
-        <Route path="/admin" component={Admin} />
-        <Route path="/" component={User} />
-      </Switch>
-    </Suspense>
+    <Switch>
+      <Route path="/admin" component={Admin} />
+      <Route path="/" component={User} />
+    </Switch>
   )
 })
 
