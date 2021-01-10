@@ -27,7 +27,7 @@ const NavbarNav = memo(() => {
   )
 
   return (
-    <Nav navbar className="border-left flex-row">
+    <Nav navbar className="border-left flex-row" style={{ cursor: 'pointer' }}>
       {!!token ? loggedIn : anonymous}
     </Nav>
   )

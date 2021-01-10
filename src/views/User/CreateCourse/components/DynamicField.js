@@ -1,24 +1,18 @@
 import React, { memo, useState } from 'react'
 import {
-  InputGroupText,
-  InputGroupAddon,
-  InputGroup,
-  FormInput,
-  FormCheckbox,
-  Row,
-  Col,
   Button,
-  ButtonGroup
+  ButtonGroup,
+  Col,
+  FormCheckbox,
+  FormInput,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Row
 } from 'shards-react'
 
 const DynamicField = memo(({ formik }) => {
   const [fields, setFields] = useState([{ value: null }])
-
-  function handleChange(i, event) {
-    const values = [...fields]
-    values[i].value = event.target.value
-    setFields(values)
-  }
 
   function handleAdd() {
     const values = [...fields]
@@ -46,7 +40,8 @@ const DynamicField = memo(({ formik }) => {
                   <FormInput
                     type="text"
                     placeholder="Section"
-                    onChange={e => handleChange(idx, e)}
+                    name={`content[${idx}].title`}
+                    {...formik.getFieldProps(`content[${idx}].title`)}
                   />
                 </InputGroup>
               </Col>
@@ -54,7 +49,8 @@ const DynamicField = memo(({ formik }) => {
                 <FormInput
                   type="text"
                   placeholder="Lecture's URL"
-                  onChange={e => handleChange(idx, e)}
+                  name={`content[${idx}].video`}
+                  {...formik.getFieldProps(`content[${idx}].video`)}
                 />
               </Col>
               <Col
@@ -62,13 +58,19 @@ const DynamicField = memo(({ formik }) => {
                 className="d-flex flex-column justify-content-center"
                 style={{ height: `45px` }}
               >
-                <FormCheckbox className="">Preview</FormCheckbox>
+                <FormCheckbox
+                  name={`content[${idx}].preview`}
+                  {...formik.getFieldProps(`content[${idx}].preview`)}
+                >
+                  Preview
+                </FormCheckbox>
               </Col>
               <Col md="1" className="form-group">
                 <FormInput
                   type="text"
                   placeholder="Duration"
-                  onChange={e => handleChange(idx, e)}
+                  name={`content[${idx}].duration`}
+                  {...formik.getFieldProps(`content[${idx}].duration`)}
                 />
               </Col>
               <Col md="1">

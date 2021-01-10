@@ -1,4 +1,4 @@
-import axiosClient from 'api/axiosClient'
+import { createCourse, updateCourseContent } from 'api/course'
 import { useFormik } from 'formik'
 import queryString from 'query-string'
 import React, { memo, useRef } from 'react'
@@ -28,12 +28,11 @@ import DynamicField from './components/DynamicField'
 const CreateCourse = memo(() => {
   const { id } = queryString.parse(window.location.search)
 
-  const currentUser = useSelector(state => state.currentUser)
-  const categories = useSelector(state => state.category)
-  const courses = useSelector(state => state.course)
+  const currentUser = useSelector(x => x.currentUser)
+  const categories = useSelector(x => x.category)
+  const courses = useSelector(x => x.course)
 
-  let course = null
-  if (id) course = courses.find(x => x._id === id)
+  const course = courses.find(x => x._id === id)
 
   const quillRef = useRef()
 
@@ -52,38 +51,39 @@ const CreateCourse = memo(() => {
       category: !!course ? course.category_id : '',
       describe: !!course ? course.describe : '',
       price: !!course ? course.price : '',
-      detail: !!course ? course.detail : ''
+      detail: !!course ? course.detail : '',
+      content: []
     },
     async onSubmit(values) {
-      const { title, avatar, category, describe, price, detail } = values
+      const {
+        title,
+        avatar,
+        category,
+        describe,
+        price,
+        detail,
+        content
+      } = values
 
-      try {
-        const { success, message } = await axiosClient({
-          url: `/course${!id ? '' : '/' + id}`,
-          method: !id ? 'post' : 'put',
-          data: {
-            avatar: await toBase64(avatar),
-            title,
-            describe,
-            detail,
-            price: parseFloat(price),
-            discount: 0,
-            category_id: category,
-            lecturer_id: currentUser._id
-          }
-        })
+      const data = await createCourse({
+        avatar: await toBase64(avatar),
+        title,
+        describe,
+        detail,
+        price: parseFloat(price),
+        discount: 0,
+        category_id: category
+      })
 
-        if (!success) return alert(message)
+      const contents = await updateCourseContent(data._id, content)
 
+      if (data && contents) {
         alert(`Your course has been ${!id ? 'created' : 'updated'}`)
-      } catch (error) {
-        alert('Cannot create this course')
-        console.log(error.message)
       }
     }
   })
 
-  if (!currentUser || !currentUser.isLecturer) {
+  if (!localStorage.getItem('token') || !currentUser?.isLecturer) {
     return <Redirect to="/error" />
   }
 
@@ -115,13 +115,13 @@ const CreateCourse = memo(() => {
               className="mb-3"
             >
               <option value="">Choose a category</option>
-              {categories
-                .filter(x => !!x.parent)
-                .map(cat => (
-                  <option key={cat._id} value={cat._id}>
-                    {cat.name}
+              {categories.map(cat =>
+                cat.childs.map(c => (
+                  <option key={c._id} value={c._id}>
+                    {c.name}
                   </option>
-                ))}
+                ))
+              )}
             </FormSelect>
             <FormInput
               name="describe"

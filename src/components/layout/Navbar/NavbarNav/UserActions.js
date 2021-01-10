@@ -41,6 +41,13 @@ const UserActions = memo(() => {
   const lecturer = useMemo(
     () => (
       <>
+        {currentUser?.email === 'quack@domain.com' && (
+          <Link to="/admin" style={{ textDecoration: 'none' }}>
+            <DropdownItem to="my-courses">
+              <i className="material-icons">&#xE2C7;</i> Admin Dashboard
+            </DropdownItem>
+          </Link>
+        )}
         <Link to="/my-courses" style={{ textDecoration: 'none' }}>
           <DropdownItem to="my-courses">
             <i className="material-icons">&#xE2C7;</i> My Course
@@ -58,7 +65,7 @@ const UserActions = memo(() => {
         </Link>
       </>
     ),
-    []
+    [currentUser]
   )
 
   return (

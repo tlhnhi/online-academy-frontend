@@ -1,6 +1,11 @@
 import React, { memo, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Route as DefaultRoute, Switch, useRouteMatch } from 'react-router-dom'
+import {
+  Redirect,
+  Route as DefaultRoute,
+  Switch,
+  useRouteMatch
+} from 'react-router-dom'
 import { setUsers } from 'store/app/user'
 import { AdminLayout } from '../../layouts/Admin'
 import Categories from './Category'
@@ -26,13 +31,18 @@ const Admin = memo(() => {
   const { path } = useRouteMatch()
   const dispatch = useDispatch()
 
+  const currentUser = useSelector(x => x.currentUser)
   const users = useSelector(x => x.user)
 
   useEffect(() => {
     if (users.length === 0) dispatch(setUsers())
   }, [users, dispatch])
 
-  console.log('Admin', { users })
+  console.log('Admin', { users }, { currentUser })
+
+  if (currentUser?.email !== 'quack@domain.com') {
+    return <Redirect to="/error" />
+  }
 
   return (
     <Switch>
