@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
+import { signUp } from 'api/auth'
 import React, { memo } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import {
   Button,
@@ -14,15 +14,9 @@ import {
   FormGroup,
   Row
 } from 'shards-react'
-import { authSignUp } from 'store/app/auth'
 import * as Yup from 'yup'
 
 const Register = memo(() => {
-  const [authToken, dispatch] = [
-    useSelector(state => state.auth),
-    useDispatch()
-  ]
-
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     email: Yup.string().required('Email is required').email('Email is invalid'),
@@ -43,12 +37,14 @@ const Register = memo(() => {
     resolver: yupResolver(validationSchema)
   })
 
-  function onSubmit(data) {
-    const { email, password, name } = data
-    dispatch(authSignUp(name, email, password))
+  async function onSubmit(values) {
+    const { email, password, name } = values
+    const token = await signUp(name, email, password)
+    if (token) localStorage.setItem('token', token)
+    window.location.reload()
   }
 
-  if (!!authToken) {
+  if (!!localStorage.getItem('token')) {
     return <Redirect to="/" />
   }
 

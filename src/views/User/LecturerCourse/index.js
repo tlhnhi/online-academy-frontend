@@ -1,42 +1,59 @@
-import React, { memo } from 'react'
+import { fetchCourse } from 'api/course'
+import React, { memo, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Redirect, useParams } from 'react-router-dom'
+import { Link, Redirect, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'shards-react'
 import About from './components/About'
-// import Description from './components/Description'
 import Content from './components/Content'
 import Feedback from './components/Feedback'
 
 const LecturerCourse = memo(() => {
   const { id } = useParams()
 
-  const currentUser = useSelector(state => state.currentUser)
   const categories = useSelector(state => state.category)
-  const courses = useSelector(state => state.course)
-  const courseInfo = courses.find(x => x._id === id)
-  const category = categories.find(x => x._id === courseInfo?.category_id)
-  const parent = categories.find(x => x._id === category?.parent)
+  const currentUser = useSelector(state => state.currentUser)
 
-  if (!currentUser?._id || !currentUser.isLecturer) {
+  const [course, setCourse] = useState(null)
+  const parentCat = categories.find(x => x._id === course?.category.parent)
+
+  useEffect(() => {
+    const getCourse = async () => {
+      const data = await fetchCourse(id)
+      if (course?._id && id === data._id) return
+      setCourse(data)
+    }
+
+    getCourse()
+  }, [course, id])
+
+  console.log('LecturerCourse', { course })
+
+  if (!localStorage.getItem('token')) {
     return <Redirect to="/error" />
   }
 
   return (
     <Container fluid className="main-content-container p-3">
-      <Breadcrumb>
-        <BreadcrumbItem>
-          <span className="text-fiord-blue">{parent?.name}</span>
-        </BreadcrumbItem>
-        <BreadcrumbItem active>
-          <a className="text-fiord-blue" href={`/categories/${category?._id}`}>
-            {category?.name}
-          </a>
-        </BreadcrumbItem>
-      </Breadcrumb>
-      <About courseInfo={courseInfo} />
-      {/* <Description /> */}
-      <Content />
-      <Feedback />
+      {course?._id && (
+        <>
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <span className="text-fiord-blue">{parentCat?.name}</span>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>
+              <Link
+                className="text-fiord-blue"
+                to={`/categories/${course?.category._id}`}
+              >
+                {course?.category.name}
+              </Link>
+            </BreadcrumbItem>
+          </Breadcrumb>
+          <About course={course} />
+          {currentUser?._id && <Content course={course} user={currentUser} />}
+          <Feedback rating={course.rating} />
+        </>
+      )}
     </Container>
   )
 })

@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
   Collapse,
@@ -10,19 +10,15 @@ import {
   NavItem,
   NavLink
 } from 'shards-react'
-import { clearAuthToken } from 'store/app/auth'
-import { removeCurrentUser } from 'store/app/current-user'
 
 const UserActions = memo(() => {
   const currentUser = useSelector(x => x.currentUser)
   const [visible, setVisible] = useState(false)
 
-  const dispatch = useDispatch()
-
   const handleSignOut = useCallback(() => {
-    dispatch(clearAuthToken())
-    dispatch(removeCurrentUser())
-  }, [dispatch])
+    localStorage.removeItem('token')
+    window.location.reload()
+  }, [])
 
   const student = useMemo(
     () => (
@@ -53,6 +49,11 @@ const UserActions = memo(() => {
         <Link to="/create-course" style={{ textDecoration: 'none' }}>
           <DropdownItem to="create-course">
             <i className="material-icons">&#xe145;</i> Create New Course
+          </DropdownItem>
+        </Link>
+        <Link to="/watchlist" style={{ textDecoration: 'none' }}>
+          <DropdownItem to="watchlist">
+            <i className="material-icons">&#xE896;</i> Watchlist
           </DropdownItem>
         </Link>
       </>

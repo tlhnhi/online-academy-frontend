@@ -1,8 +1,8 @@
-import axiosClient from 'api/axiosClient'
+import { fetchFavoriteCourses, removeCourseFromFavorite } from 'api/course'
+import catTheme from 'constants/category-theme'
 import PropTypes from 'prop-types'
-import React, { memo, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Redirect, useHistory } from 'react-router-dom'
+import React, { memo, useCallback, useEffect, useState } from 'react'
+import { Link, Redirect } from 'react-router-dom'
 import {
   Badge,
   Button,
@@ -13,69 +13,36 @@ import {
   Row
 } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
-import catTheme from 'constants/category-theme'
-import arrToObj from 'utils/arr-to-obj'
 
 const WatchList = memo(() => {
-  const { push } = useHistory()
-
-  const courses = useSelector(x => x.course)
-  const currentUser = useSelector(x => x.currentUser)
-  const categories = useSelector(x => x.category)
-  const users = useSelector(x => x.user)
-
-  const userObj = arrToObj(users)
-
-  const catDict = {}
-
-  if (categories.length > 0) {
-    for (const cat of categories) {
-      if (!cat.parent) continue
-      catDict[cat._id] = cat.name
-    }
-  }
-
   const [watchList, setWatchList] = useState([])
 
-  useEffect(() => {
-    const fetchWatchList = async () => {
-      if (watchList.length > 0) return
+  const handleRemoveWatch = useCallback(
+    async id => {
+      const data = await removeCourseFromFavorite(id)
 
-      const me = await axiosClient({ url: '/user/profile' })
-      if (!me.success) return alert(me.message)
-
-      const profile = me.data
-      const list = []
-
-      if (profile && courses.length > 0) {
-        for (const wl of profile.favorite) {
-          for (const course of courses) {
-            if (wl === course._id) {
-              list.push(course)
-            }
-          }
-        }
+      if (data) {
+        setWatchList(watchList.filter(x => x._id !== id))
+        alert(data)
       }
+    },
+    [watchList]
+  )
 
-      if (list.length > 0) setWatchList(list)
+  useEffect(() => {
+    if (watchList.length > 0) return
+
+    const getWatchList = async () => {
+      const favorite = await fetchFavoriteCourses()
+      if (favorite.length > 0) setWatchList(favorite)
     }
 
-    fetchWatchList()
-  }, [watchList, courses])
+    getWatchList()
+  }, [watchList])
 
-  const handleRemoveWatch = async _id => {
-    const { success, message, data } = await axiosClient({
-      url: `/course/favorite/${_id}`,
-      method: 'delete'
-    })
+  console.log('WatchList', { watchList })
 
-    if (!success) return alert(message)
-    alert(data)
-
-    setWatchList(watchList.filter(x => x._id !== _id))
-  }
-
-  if (!currentUser?._id || currentUser.isLecturer) {
+  if (!localStorage.getItem('token')) {
     return <Redirect to="/error" />
   }
 
@@ -107,49 +74,46 @@ const WatchList = memo(() => {
                 >
                   <Badge
                     pill
-                    onClick={() => push(`/categories/${course.category_id}`)}
                     className={`card-post__category bg-${
-                      catTheme[catDict[course.category_id]]
+                      catTheme[course.category.name]
                     }`}
                   >
-                    {catDict[course.category_id]}
+                    {course.category.name}
                   </Badge>
                   <div className="card-post__author d-flex">
                     <span
                       className="card-post__author-avatar card-post__author-avatar--small"
                       style={{
-                        backgroundImage: `url('${
-                          userObj[course.lecturer_id]?.avatar
-                        }')`
+                        backgroundImage: `url('${course.lecturer.avatar}')`
                       }}
                     ></span>
                   </div>
                 </div>
                 <CardBody>
                   <h5 className="card-title mb-0">
-                    <a
-                      href={`/courses/${course._id}`}
+                    <Link
+                      to={`/courses/${course._id}`}
                       className="text-fiord-blue"
                     >
                       {course.title}
-                    </a>
+                    </Link>
                   </h5>
                   <span className="card-title d-inline-block">
                     <a
                       className="text-muted"
-                      href={`/profile?id=${userObj[course.lecturer_id]?._id}`}
+                      href={`/profile?id=${course.lecturer._id}`}
                     >
-                      {userObj[course.lecturer_id]?.name}
+                      {course.lecturer.name}
                     </a>
                   </span>
                   <br />
                   <span className="card-title d-inline-block text-warning">
-                    {course.rating}&nbsp;
+                    {course.star}&nbsp;
                     {[
                       ...Array(
-                        course.rating - Math.floor(course.rating) < 0.79
-                          ? Math.floor(course.rating)
-                          : Math.floor(course.rating) + 1
+                        course.star - Math.floor(course.star) < 0.79
+                          ? Math.floor(course.star)
+                          : Math.floor(course.star) + 1
                       )
                     ].map((_, i) => (
                       <i className="material-icons" key={i}>
@@ -159,8 +123,8 @@ const WatchList = memo(() => {
                     {[
                       ...Array(
                         ~~(
-                          course.rating - Math.floor(course.rating) < 0.79 &&
-                          course.rating - Math.floor(course.rating) > 0.21
+                          course.star - Math.floor(course.star) < 0.79 &&
+                          course.star - Math.floor(course.star) > 0.21
                         )
                       )
                     ].map((_, i) => (
@@ -171,12 +135,12 @@ const WatchList = memo(() => {
                     {[
                       ...Array(
                         5 -
-                          (course.rating - Math.floor(course.rating) < 0.79
-                            ? Math.floor(course.rating)
-                            : Math.floor(course.rating) + 1) -
+                          (course.star - Math.floor(course.star) < 0.79
+                            ? Math.floor(course.star)
+                            : Math.floor(course.star) + 1) -
                           ~~(
-                            course.rating - Math.floor(course.rating) < 0.79 &&
-                            course.rating - Math.floor(course.rating) > 0.21
+                            course.star - Math.floor(course.star) < 0.79 &&
+                            course.star - Math.floor(course.star) > 0.21
                           )
                       )
                     ].map((_, i) => (
@@ -187,7 +151,7 @@ const WatchList = memo(() => {
                     &nbsp;
                   </span>
                   <span className="text-muted">
-                    ({course.num_rating} ratings)
+                    ({course.rating.length} ratings)
                   </span>
                   <br />
                   <div className="d-flex justify-content-center">

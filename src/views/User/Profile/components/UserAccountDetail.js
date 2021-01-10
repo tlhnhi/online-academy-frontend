@@ -14,9 +14,11 @@ import {
   Row
 } from 'shards-react'
 
-const UserAccountDetails = memo(({ user }) => {
+const UserAccountDetails = memo(({ user, other }) => {
+  const display = other || user
+
   const formik = useFormik({
-    initialValues: user,
+    initialValues: display,
     async onSubmit({ name, description }) {
       const message = await updateProfile({ name, description })
       alert(message)
@@ -38,6 +40,7 @@ const UserAccountDetails = memo(({ user }) => {
                       id="name"
                       name="name"
                       {...formik.getFieldProps('name')}
+                      disabled={other}
                     />
                   </Col>
                 </Row>
@@ -55,19 +58,19 @@ const UserAccountDetails = memo(({ user }) => {
                     />
                   </Col>
                 </Row>
-                {user.isLecturer ? (
+                {display.isLecturer ? (
                   <div>
                     <Row form>
                       {/* Rating */}
                       <Col md="4" className="form-group">
                         <label htmlFor="feRating">Rating</label> <br />
                         <span className="card-title text-warning">
-                          {user.star}&nbsp;
+                          {display.star}&nbsp;
                           {[
                             ...Array(
-                              user.star - Math.floor(user.star) < 0.79
-                                ? Math.floor(user.star)
-                                : Math.floor(user.star) + 1
+                              display.star - Math.floor(display.star) < 0.79
+                                ? Math.floor(display.star)
+                                : Math.floor(display.star) + 1
                             )
                           ].map((_, idx) => (
                             <i className="material-icons" key={idx}>
@@ -77,8 +80,9 @@ const UserAccountDetails = memo(({ user }) => {
                           {[
                             ...Array(
                               ~~(
-                                user.star - Math.floor(user.star) < 0.79 &&
-                                user.star - Math.floor(user.star) > 0.21
+                                display.star - Math.floor(display.star) <
+                                  0.79 &&
+                                display.star - Math.floor(display.star) > 0.21
                               )
                             )
                           ].map((_, idx) => (
@@ -89,12 +93,13 @@ const UserAccountDetails = memo(({ user }) => {
                           {[
                             ...Array(
                               5 -
-                                (user.star - Math.floor(user.star) < 0.79
-                                  ? Math.floor(user.star)
-                                  : Math.floor(user.star) + 1) -
+                                (display.star - Math.floor(display.star) < 0.79
+                                  ? Math.floor(display.star)
+                                  : Math.floor(display.star) + 1) -
                                 ~~(
-                                  user.star - Math.floor(user.star) < 0.79 &&
-                                  user.star - Math.floor(user.star) > 0.21
+                                  display.star - Math.floor(display.star) <
+                                    0.79 &&
+                                  display.star - Math.floor(display.star) > 0.21
                                 )
                             )
                           ].map((_, idx) => (
@@ -110,7 +115,7 @@ const UserAccountDetails = memo(({ user }) => {
                         <label htmlFor="feStudent">Courses</label>
                         <br />
                         <span className="card-title">
-                          {user.courses.length}
+                          {display.courses.length}
                         </span>
                       </Col>
 
@@ -118,7 +123,9 @@ const UserAccountDetails = memo(({ user }) => {
                       <Col md="4" className="form-group">
                         <label htmlFor="feStudent">Enrollments</label>
                         <br />
-                        <span className="card-title">{user.enrollments}</span>
+                        <span className="card-title">
+                          {display.enrollments}
+                        </span>
                       </Col>
                     </Row>
                     <Row>
@@ -130,6 +137,7 @@ const UserAccountDetails = memo(({ user }) => {
                           style={{ height: `80px` }}
                           placeholder="Your description"
                           {...formik.getFieldProps('description')}
+                          disabled={other}
                         />
                       </Col>
                     </Row>
@@ -137,13 +145,15 @@ const UserAccountDetails = memo(({ user }) => {
                 ) : (
                   <div></div>
                 )}
-                <Button
-                  className="d-block mx-auto"
-                  type="submit"
-                  theme="accent"
-                >
-                  Update Account
-                </Button>
+                {!other && (
+                  <Button
+                    className="d-block mx-auto"
+                    type="submit"
+                    theme="accent"
+                  >
+                    Update Account
+                  </Button>
+                )}
               </Form>
             </Col>
           </Row>
@@ -157,7 +167,8 @@ UserAccountDetails.propTypes = {
   /**
    * The component's title.
    */
-  user: PropTypes.object
+  user: PropTypes.object,
+  other: PropTypes.object
 }
 
 export default UserAccountDetails

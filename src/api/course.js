@@ -26,6 +26,14 @@ export const fetchUploadedCourses = async () => {
   return success ? data : alert(message)
 }
 
+export const fetchFavoriteCourses = async () => {
+  const { success, message, data } = await axiosClient({
+    url: '/course-favorite'
+  })
+
+  return success ? data : alert(message)
+}
+
 export const fetchRatedCourses = async () => {
   const { success, message, data } = await axiosClient({
     url: '/course-rating'
@@ -45,6 +53,14 @@ export const fetchRatedInfo = async id => {
 export const checkIsEnrolledCourse = async id => {
   const { success, message, data } = await axiosClient({
     url: `/course-enroll/${id}`
+  })
+
+  return success ? data : alert(message)
+}
+
+export const checkIsFavoritedCourse = async id => {
+  const { success, message, data } = await axiosClient({
+    url: `/course-favorite/${id}`
   })
 
   return success ? data : alert(message)
@@ -121,7 +137,7 @@ export const createCourseByAdmin = async course => {
 
 export const updateCourse = async course => {
   const { success, message, data } = await axiosClient({
-    url: '/course-lecturer',
+    url: `/course-lecturer/${course._id}`,
     method: 'put',
     data: course
   })
@@ -141,7 +157,7 @@ export const updateCourseContent = async (id, content) => {
 
 export const updateCourseByAdmin = async course => {
   const { success, message, data } = await axiosClient({
-    url: '/course',
+    url: `/course/${course._id}`,
     method: 'put',
     data: course
   })

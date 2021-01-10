@@ -1,61 +1,60 @@
-import PropTypes from 'prop-types'
-import React, { memo } from 'react'
-import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { fetchUser } from 'api/user'
+import React, { memo, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Col, Row } from 'shards-react'
 
-const Lecturer = memo(props => {
-  const { lecturer } = props
-  const { id } = useParams()
+const Lecturer = memo(({ lecturerId }) => {
+  const [lecturer, setLecturer] = useState(null)
 
-  const courses = useSelector(state => state.course)
-  const users = useSelector(state => state.user)
+  useEffect(() => {
+    if (lecturer) return
+
+    const getLecturerInfo = async () => {
+      const me = await fetchUser(lecturerId)
+      if (me) setLecturer(me)
+    }
+
+    getLecturerInfo()
+  }, [lecturer, lecturerId])
 
   return (
-    <div>
-      <div className="mt-3 mx-auto" style={{ width: `800px` }}>
-        <h4 className="card-title text-fiord-blue">Lecturer</h4>
-        <h5>
-          <a
-            className="text-fiord-blue font-weight-bold"
-            href={`/profile?id=${lecturer?._id}`}
-          >
-            {lecturer?.name}
-          </a>
-        </h5>
-        <Row className="mb-3 mx-auto">
-          <img
-            className="rounded-circle"
-            src={lecturer?.avatar}
-            alt=""
-            width="100"
-            height="100"
-            object-fit="cover"
-          />
-          <Col className="m-auto">
-            <p className="text-warning my-1">
-              <i className="material-icons">&#xe838;&nbsp;</i>
-              {lecturer?.rating} Rating
-            </p>
-            <p className="my-1">
-              <i className="fas">&#xf144;&nbsp;</i>
-              {courses?.filter(x => x.lecturer_id === lecturer._id).length}{' '}
-              Courses
-            </p>
-            <p className="my-1">
-              <i className="material-icons">&#xe7fb;&nbsp;</i>
-              {users.filter(x => x.enrolled.includes(id)).length} Students
-            </p>
-          </Col>
-        </Row>
-        <p>{lecturer?.description}</p>
-      </div>
+    <div className="mt-3 mx-auto" style={{ width: `800px` }}>
+      <h4 className="card-title text-fiord-blue">Lecturer</h4>
+      <h5>
+        <Link
+          className="text-fiord-blue font-weight-bold"
+          to={`/profile?id=${lecturer?._id}`}
+        >
+          {lecturer?.name}
+        </Link>
+      </h5>
+      <Row className="mb-3 mx-auto">
+        <img
+          className="rounded-circle"
+          src={lecturer?.avatar}
+          alt=""
+          width="100"
+          height="100"
+          object-fit="cover"
+        />
+        <Col className="m-auto">
+          <p className="text-warning my-1">
+            <i className="material-icons">&#xe838;&nbsp;</i>
+            {lecturer?.star} Rating
+          </p>
+          <p className="my-1">
+            <i className="fas">&#xf144;&nbsp;</i>
+            {lecturer?.courses.length} Courses
+          </p>
+          <p className="my-1">
+            <i className="material-icons">&#xe7fb;&nbsp;</i>
+            {lecturer?.enrollments} Enrollments
+          </p>
+        </Col>
+      </Row>
+      <p>{lecturer?.description}</p>
     </div>
   )
 })
-
-Lecturer.propTypes = {
-  lecturersInfo: PropTypes.array
-}
 
 export default Lecturer

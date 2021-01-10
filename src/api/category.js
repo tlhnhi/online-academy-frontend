@@ -23,9 +23,9 @@ export const createCategory = async (name, parent) => {
   return success ? data : alert(message)
 }
 
-export const updateCategory = async (name, parent) => {
+export const updateCategory = async (id, name, parent) => {
   const { success, message, data } = await axiosClient({
-    url: '/category',
+    url: `/category/${id}`,
     method: 'put',
     data: { name, parent }
   })

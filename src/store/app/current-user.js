@@ -10,6 +10,7 @@ const currentUserSlice = createSlice({
       return payload
     },
     _removeCurrentUser(_) {
+      localStorage.removeItem('token')
       return null
     }
   }
