@@ -1,5 +1,7 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Route as DefaultRoute, Switch, useRouteMatch } from 'react-router-dom'
+import { setUsers } from 'store/app/user'
 import { AdminLayout } from '../../layouts/Admin'
 import Categories from './Category'
 import Courses from './Course'
@@ -22,31 +24,40 @@ const Route = ({ component: Component, layout: Layout, ...rest }) => {
 
 const Admin = memo(() => {
   const { path } = useRouteMatch()
+  const dispatch = useDispatch()
+
+  const users = useSelector(x => x.user)
+
+  useEffect(() => {
+    if (users.length === 0) dispatch(setUsers())
+  }, [users, dispatch])
+
+  console.log('Admin', { users })
 
   return (
     <Switch>
       <Route exact path={path} component={Dashboard} layout={AdminLayout} />
       <Route
         exact
-        path="/admin/categories"
+        path={`${path}/categories`}
         component={Categories}
         layout={AdminLayout}
       />
       <Route
         exact
-        path="/admin/courses"
+        path={`${path}/courses`}
         component={Courses}
         layout={AdminLayout}
       />
       <Route
         exact
-        path="/admin/students"
+        path={`${path}/students`}
         component={Students}
         layout={AdminLayout}
       />
       <Route
         exact
-        path="/admin/lecturers"
+        path={`${path}/lecturers`}
         component={Lecturers}
         layout={AdminLayout}
       />

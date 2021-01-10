@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { signIn } from 'api/auth'
 import React, { memo } from 'react'
 import { useForm } from 'react-hook-form'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -122,14 +122,14 @@ const Login = memo(() => {
           style={{ width: `350px` }}
         >
           <label>
-            <a href="/forgot-password" className="text-muted">
+            <Link to="/forgot-password" className="text-muted">
               Forgot Password
-            </a>
+            </Link>
           </label>
           <label>
-            <a href="/register" className="text-muted">
+            <Link to="/register" className="text-muted">
               Create Your Account
-            </a>
+            </Link>
           </label>
         </div>
       </Col>

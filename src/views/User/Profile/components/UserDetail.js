@@ -22,7 +22,11 @@ const UserDetails = ({ user, other }) => {
 
         <h4 className="mb-0">{display.name}</h4>
         <span className="text-muted d-block mb-2">
-          {display.isLecturer ? 'Lecturer' : 'Student'}
+          {display.email === 'quack@domain.com'
+            ? 'Admin'
+            : display.isLecturer
+            ? 'Lecturer'
+            : 'Student'}
         </span>
       </CardHeader>
       <CardBody>

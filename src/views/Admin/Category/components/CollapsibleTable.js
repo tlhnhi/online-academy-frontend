@@ -1,9 +1,11 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
+import { makeStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { removeCategory } from 'store/app/category'
 
 const useRowStyles = makeStyles({
   root: {
@@ -13,8 +15,16 @@ const useRowStyles = makeStyles({
   }
 })
 
-function createData(category, subCategory, courses, students, subCategoryInfo) {
+function createData(
+  id,
+  category,
+  subCategory,
+  courses,
+  students,
+  subCategoryInfo
+) {
   return {
+    id,
     category,
     subCategory,
     courses,
@@ -25,8 +35,14 @@ function createData(category, subCategory, courses, students, subCategoryInfo) {
 
 function Row(props) {
   const { row } = props
+
+  const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false)
   const classes = useRowStyles()
+
+  const handleRemoveCategory = useCallback(id => dispatch(removeCategory(id)), [
+    dispatch
+  ])
 
   return (
     <React.Fragment>
@@ -57,7 +73,13 @@ function Row(props) {
           <i className="fas">&#xf044;</i>
         </td>
         <td className="text-center text-danger">
-          <i className="fas">&#xf2ed;</i>
+          <i
+            className="fas"
+            onClick={() => handleRemoveCategory(row.id)}
+            style={{ cursor: 'pointer' }}
+          >
+            &#xf2ed;
+          </i>
         </td>
       </tr>
       <tr>
@@ -73,7 +95,7 @@ function Row(props) {
                       Courses
                     </td>
                     <td style={{ width: `200px` }} align="right">
-                      Students
+                      Enrollments
                     </td>
                     <td style={{ width: `30px` }} />
                     <td style={{ width: `30px` }} />
@@ -95,7 +117,13 @@ function Row(props) {
                         <i className="fas">&#xf044;</i>
                       </td>
                       <td className="text-center text-danger">
-                        <i className="fas">&#xf2ed;</i>
+                        <i
+                          className="fas"
+                          onClick={() => handleRemoveCategory(subCatRow[3])}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          &#xf2ed;
+                        </i>
                       </td>
                     </tr>
                   ))}
@@ -111,80 +139,76 @@ function Row(props) {
 
 Row.propTypes = {
   row: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
     subCategory: PropTypes.number.isRequired,
     courses: PropTypes.number.isRequired,
     students: PropTypes.number.isRequired,
-    subCategoryInfo: PropTypes.array.isRequired,
+    subCategoryInfo: PropTypes.array.isRequired
   }).isRequired
 }
 
-const rows = [
-  createData('IT', 5, 3456, 34567, [
-    ['Web Development', 9, 98],
-    ['Mobile App Development', 7, 76],
-    ['Software Engineering', 6, 65],
-    ['Data Science', 5, 54],
-    ['Machine Learning', 4, 43]
-  ]),
-  createData('Business', 5, 2345, 23456, [
-    ['Communications', 5, 54],
-    ['Management', 9, 98],
-    ['Sales', 7, 76],
-    ['E-Commerce', 6, 65],
-    ['Human Resources', 4, 43]
-  ]),
-  createData('Design', 5, 1234, 12345, [
-    ['Graphic Design', 9, 98],
-    ['Design Tools', 7, 76],
-    ['Design Thinking', 6, 65],
-    ['3D & Animation', 5, 54],
-    ['Web Design', 4, 43]
-  ])
-]
-
 export default function CollapsibleTable() {
+  const categories = useSelector(x => x.category)
+
+  const displayCats = categories.map(cat => {
+    let countCourses = 0
+    let countEnroll = 0
+
+    for (const c of cat.childs) {
+      countCourses += c.courses
+      countEnroll += c.enrollments
+    }
+
+    return createData(
+      cat._id,
+      cat.name,
+      cat.childs.length,
+      countCourses,
+      countEnroll,
+      cat.childs.map(x => [x.name, x.courses, x.enrollments, x._id])
+    )
+  })
+
   return (
-    <div>
-      <table className="table mb-0">
-        <thead className="bg-light">
-          <tr>
-            <th scope="col" className="border-0" style={{ width: `20px` }} />
-            <th scope="col" className="border-0">
-              Category
-            </th>
-            <th
-              scope="col"
-              className="border-0 text-right"
-              style={{ width: `300px` }}
-            >
-              Sub-categories
-            </th>
-            <th
-              scope="col"
-              className="border-0 text-right"
-              style={{ width: `300px` }}
-            >
-              Courses
-            </th>
-            <th
-              scope="col"
-              className="border-0 text-right"
-              style={{ width: `300px` }}
-            >
-              Students
-            </th>
-            <th scope="col" className="border-0" style={{ width: `50px` }} />
-            <th scope="col" className="border-0" style={{ width: `50px` }} />
-            <th scope="col" className="border-0" style={{ width: `50px` }} />
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row,idx) => (
-            <Row key={idx} row={row} />
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <table className="table mb-0">
+      <thead className="bg-light">
+        <tr>
+          <th scope="col" className="border-0" style={{ width: `20px` }} />
+          <th scope="col" className="border-0">
+            Category
+          </th>
+          <th
+            scope="col"
+            className="border-0 text-right"
+            style={{ width: `300px` }}
+          >
+            Sub-categories
+          </th>
+          <th
+            scope="col"
+            className="border-0 text-right"
+            style={{ width: `300px` }}
+          >
+            Courses
+          </th>
+          <th
+            scope="col"
+            className="border-0 text-right"
+            style={{ width: `300px` }}
+          >
+            Enrollments
+          </th>
+          <th scope="col" className="border-0" style={{ width: `50px` }} />
+          <th scope="col" className="border-0" style={{ width: `50px` }} />
+          <th scope="col" className="border-0" style={{ width: `50px` }} />
+        </tr>
+      </thead>
+      <tbody>
+        {displayCats.map((row, idx) => (
+          <Row key={idx} row={row} />
+        ))}
+      </tbody>
+    </table>
   )
 }
