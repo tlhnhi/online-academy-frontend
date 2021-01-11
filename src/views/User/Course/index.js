@@ -1,7 +1,7 @@
 import { fetchCourse } from 'api/course'
 import React, { memo, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, Redirect, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'shards-react'
 import About from './components/About'
 import Content from './components/Content'
@@ -32,6 +32,13 @@ const Course = memo(() => {
 
   console.log('Course', { course })
 
+  if (
+    currentUser?.isLecturer &&
+    currentUser.courses.findIndex(x => x._id === id) !== -1
+  ) {
+    return <Redirect to={`/lecturer-courses/${id}`} />
+  }
+
   return (
     <Container fluid className="main-content-container p-3">
       <Breadcrumb>
@@ -51,7 +58,7 @@ const Course = memo(() => {
         <>
           <About course={course} currentUser={currentUser} />
           <Learn detail={course.detail.split('<br>')} />
-          {currentUser?._id && <Content course={course} user={currentUser} />}
+          <Content course={course} user={currentUser} />
           <StarsRating courseId={course._id} />
           <Related />
           <Lecturer lecturerId={course.lecturer._id} />

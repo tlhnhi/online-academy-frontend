@@ -22,7 +22,7 @@ import {
   Row
 } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
-import CustomFileUpload from './components/CustomFileUpload'
+// import CustomFileUpload from './components/CustomFileUpload'
 import DynamicField from './components/DynamicField'
 
 const CreateCourse = memo(() => {
@@ -36,13 +36,13 @@ const CreateCourse = memo(() => {
 
   const quillRef = useRef()
 
-  const toBase64 = file =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = () => resolve(reader.result)
-      reader.onerror = error => reject(error)
-    })
+  // const toBase64 = file =>
+  //   new Promise((resolve, reject) => {
+  //     const reader = new FileReader()
+  //     reader.readAsDataURL(file)
+  //     reader.onload = () => resolve(reader.result)
+  //     reader.onerror = error => reject(error)
+  //   })
 
   const formik = useFormik({
     initialValues: {
@@ -66,18 +66,18 @@ const CreateCourse = memo(() => {
       } = values
 
       const data = await createCourse({
-        avatar: await toBase64(avatar),
+        // avatar: await toBase64(avatar),
+        avatar,
         title,
         describe,
         detail,
         price: parseFloat(price),
         discount: 0,
-        category_id: category
+        category_id: category,
+        content
       })
 
-      const contents = await updateCourseContent(data._id, content)
-
-      if (data && contents) {
+      if (data) {
         alert(`Your course has been ${!id ? 'created' : 'updated'}`)
       }
     }
@@ -108,7 +108,14 @@ const CreateCourse = memo(() => {
               placeholder="Your Course Title"
               {...formik.getFieldProps('title')}
             />
-            <CustomFileUpload formik={formik} />
+            <FormInput
+              name="avatar"
+              maxLength="60"
+              className="mb-3"
+              placeholder="Your Course Avatar"
+              {...formik.getFieldProps('avatar')}
+            />
+            {/* <CustomFileUpload formik={formik} /> */}
             <FormSelect
               name="category"
               {...formik.getFieldProps('category')}

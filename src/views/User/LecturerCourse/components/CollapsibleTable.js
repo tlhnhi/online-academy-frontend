@@ -2,9 +2,8 @@ import Box from '@material-ui/core/Box'
 import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
-import { checkIsEnrolledCourse } from 'api/course'
 import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import ReactPlayer from 'react-player'
 
 const useRowStyles = makeStyles({
@@ -26,7 +25,7 @@ function createData(no, section, preview, length, url) {
 }
 
 function Row(props) {
-  const { row, enroll } = props
+  const { row } = props
   const [open, setOpen] = React.useState(false)
   const classes = useRowStyles()
 
@@ -39,18 +38,17 @@ function Row(props) {
             size="small"
             onClick={() => setOpen(!open)}
           >
-            <i className="material-icons">{open ? '&#xe316;' : '&#xe313;'}</i>
-            {/* {open ? (
+            {open ? (
               <i className="material-icons">&#xe316;</i>
             ) : (
               <i className="material-icons">&#xe313;</i>
-            )} */}
+            )}
           </IconButton>
         </td>
         <td>{row.no}</td>
-        <td>{row.title}</td>
+        <td>{row.section}</td>
         <td align="right">{row.preview ? 'Preview' : ''}</td>
-        <td align="right">{row.duration}</td>
+        <td align="right">{row.length}</td>
       </tr>
       <tr>
         <td style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -60,13 +58,7 @@ function Row(props) {
                 <tbody>
                   <tr>
                     <Box mx={7.5}>
-                      {row.preview || enroll ? (
-                        <ReactPlayer url={row.video} />
-                      ) : (
-                        <span className="text-muted">
-                          Please purchase this course to view this content.
-                        </span>
-                      )}
+                      <ReactPlayer url={row.url} />
                     </Box>
                   </tr>
                 </tbody>
@@ -82,31 +74,18 @@ function Row(props) {
 Row.propTypes = {
   row: PropTypes.shape({
     no: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
+    section: PropTypes.string.isRequired,
     preview: PropTypes.bool.isRequired,
-    duration: PropTypes.string.isRequired,
-    video: PropTypes.string.isRequired
+    length: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired
   }).isRequired,
   enroll: PropTypes.bool
 }
 
-export default function CollapsibleTable({ course, currentUser }) {
-  const [isEnroll, setIsEnroll] = useState(false)
-
+export default function CollapsibleTable({ course }) {
   const rows = course.content.map((x, i) =>
     createData(i + 1, x.title, x.preview, x.duration, x.video)
   )
-
-  useEffect(() => {
-    const getIsEnroll = async () => {
-      if (!currentUser?._id) return setIsEnroll(false)
-
-      const data = await checkIsEnrolledCourse(course._id)
-      if (data) setIsEnroll(true)
-    }
-
-    getIsEnroll()
-  }, [currentUser, course])
 
   return (
     <table className="table">
@@ -121,7 +100,7 @@ export default function CollapsibleTable({ course, currentUser }) {
       </thead>
       <tbody style={{ fontSize: `16px` }}>
         {rows.map(row => (
-          <Row key={row.no} row={row} enroll={isEnroll} />
+          <Row key={row.no} row={row} />
         ))}
       </tbody>
     </table>

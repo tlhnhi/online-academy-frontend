@@ -75,7 +75,7 @@ const About = memo(({ course }) => {
             </span>
             <p className="card-title mb-3">
               Your last updated:{' '}
-              {new Date(course?.updatedAt).toLocaleDateString()}
+              {new Date(course?.updatedAt).toLocaleDateString('vi-VN')}
             </p>
             <Badge
               className="my-auto"

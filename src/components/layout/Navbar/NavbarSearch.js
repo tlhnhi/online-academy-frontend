@@ -1,5 +1,6 @@
 import { useFormik } from 'formik'
 import React, { memo } from 'react'
+import { useHistory } from 'react-router-dom'
 import {
   Form,
   FormInput,
@@ -9,10 +10,12 @@ import {
 } from 'shards-react'
 
 const NavbarSearch = memo(() => {
+  const { push } = useHistory()
+
   const formik = useFormik({
     initialValues: { q: '' },
     onSubmit({ q }) {
-      console.log(`You searched "${q}"`)
+      push(`/search?q=${q}`)
     }
   })
 

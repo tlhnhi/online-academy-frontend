@@ -39,18 +39,17 @@ function Row(props) {
             size="small"
             onClick={() => setOpen(!open)}
           >
-            <i className="material-icons">{open ? '&#xe316;' : '&#xe313;'}</i>
-            {/* {open ? (
+            {open ? (
               <i className="material-icons">&#xe316;</i>
             ) : (
               <i className="material-icons">&#xe313;</i>
-            )} */}
+            )}
           </IconButton>
         </td>
         <td>{row.no}</td>
-        <td>{row.title}</td>
+        <td>{row.section}</td>
         <td align="right">{row.preview ? 'Preview' : ''}</td>
-        <td align="right">{row.duration}</td>
+        <td align="right">{row.length}</td>
       </tr>
       <tr>
         <td style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -59,15 +58,17 @@ function Row(props) {
               <table size="small">
                 <tbody>
                   <tr>
-                    <Box mx={7.5}>
-                      {row.preview || enroll ? (
-                        <ReactPlayer url={row.video} />
-                      ) : (
-                        <span className="text-muted">
-                          Please purchase this course to view this content.
-                        </span>
-                      )}
-                    </Box>
+                    <td>
+                      <Box mx={7.5}>
+                        {row.preview || enroll ? (
+                          <ReactPlayer url={row.url} />
+                        ) : (
+                          <span className="text-muted">
+                            Please purchase this course to view this content.
+                          </span>
+                        )}
+                      </Box>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -82,10 +83,10 @@ function Row(props) {
 Row.propTypes = {
   row: PropTypes.shape({
     no: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
+    section: PropTypes.string.isRequired,
     preview: PropTypes.bool.isRequired,
-    duration: PropTypes.string.isRequired,
-    video: PropTypes.string.isRequired
+    length: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired
   }).isRequired,
   enroll: PropTypes.bool
 }

@@ -1,46 +1,38 @@
-// import Box from '@material-ui/core/Box'
 import Pagination from '@material-ui/lab/Pagination'
-import { fetchEnrolledCourses, fetchUploadedCourses } from 'api/course'
+import { searchCourses } from 'api/course'
 import catTheme from 'constants/category-theme'
+import queryString from 'query-string'
 import React, { memo, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import { Badge, Container } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
 
-const UsersCourse = memo(() => {
-  const currentUser = useSelector(x => x.currentUser)
+const Search = memo(() => {
+  const { q } = queryString.parse(window.location.search)
 
-  const [myCourses, setMyCourses] = useState([])
+  const [courses, setCourses] = useState([])
 
   const [currentIndex] = useState(-1)
   const [page, setPage] = useState(1)
   const [pageSize] = useState(5)
   const indexOfLast = page * pageSize
   const indexOfFirst = indexOfLast - pageSize
-  const current = myCourses.slice(indexOfFirst, indexOfLast)
+  const current = courses.slice(indexOfFirst, indexOfLast)
 
   const handlePageChange = (event, value) => {
     setPage(value)
   }
 
   useEffect(() => {
-    if (myCourses.length > 0) return
-
-    const getMyCourses = async () => {
-      if (!currentUser?._id) return
-
-      const data = currentUser.isLecturer
-        ? await fetchUploadedCourses()
-        : await fetchEnrolledCourses()
-
-      if (data.length > 0) setMyCourses(data)
+    const getCoursesByKeyword = async () => {
+      const kwCourses = await searchCourses(q)
+      if (kwCourses?.length > 0) setCourses(kwCourses)
     }
 
-    getMyCourses()
-  }, [myCourses, currentUser])
+    getCoursesByKeyword()
+  }, [courses, q])
 
-  console.log('MyCourse', { myCourses })
+  console.log('Search', { q }, { courses })
 
   if (!localStorage.getItem('token')) {
     return <Redirect to="/error" />
@@ -51,7 +43,7 @@ const UsersCourse = memo(() => {
       <div className="page-header py-4">
         <PageTitle
           sm="12"
-          title="My Courses"
+          title={`Found ${courses.length} courses by keyword: ${q}`}
           subtitle=""
           className="text-sm-left"
         />
@@ -77,11 +69,7 @@ const UsersCourse = memo(() => {
                 <td style={{ width: `1200px` }}>
                   <Link
                     className="text-fiord-blue font-weight-bold"
-                    to={
-                      currentUser?.isLecturer
-                        ? `/lecturer-courses/${item._id}`
-                        : `/courses/${item._id}`
-                    }
+                    to={`/courses/${item._id}`}
                     style={{ fontSize: `18px` }}
                   >
                     {item.title}
@@ -175,7 +163,7 @@ const UsersCourse = memo(() => {
       </table>
       {/* <Box mx = {85}> */}
       <Pagination
-        count={Math.ceil(myCourses.length / pageSize)}
+        count={Math.ceil(courses.length / pageSize)}
         page={page}
         showFirstButton
         showLastButton
@@ -187,4 +175,4 @@ const UsersCourse = memo(() => {
   )
 })
 
-export default UsersCourse
+export default Search

@@ -1,5 +1,15 @@
 import axiosClient from './axiosClient'
 
+export const searchCourses = async keyword => {
+  const { success, message, data } = await axiosClient({
+    url: '/search',
+    method: 'post',
+    data: { keyword }
+  })
+
+  return success ? data : alert(message)
+}
+
 export const fetchCourses = async () => {
   const { success, message, data } = await axiosClient({ url: '/course' })
   return success ? data : alert(message)

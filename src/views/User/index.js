@@ -14,6 +14,7 @@ import Profile from './Profile'
 import Register from './Register'
 import UsersCourse from './UsersCourse'
 import WatchList from './WatchList'
+import Search from './Search'
 
 const Route = ({ component: Component, layout: Layout, ...rest }) => {
   return (
@@ -70,6 +71,7 @@ const User = memo(() => {
         component={LecturerCourse}
         layout={DefaultLayout}
       />
+      <Route path="/search" component={Search} layout={DefaultLayout} />
       <DefaultRoute path="/error" component={Error} />
     </Switch>
   )
