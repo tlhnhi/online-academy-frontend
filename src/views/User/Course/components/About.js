@@ -118,7 +118,7 @@ const About = memo(({ course, currentUser }) => {
               </span>
               &nbsp;&nbsp;
               <span className="card-title d-inline-block">
-                {course.enrollments} enrollments
+                {course.enrolled} enrolled
               </span>
             </p>
             <p className="card-title mb-3">

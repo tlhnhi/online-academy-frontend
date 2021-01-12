@@ -6,7 +6,8 @@ import PropTypes from 'prop-types'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeCategory } from 'store/app/category'
-
+import Edit from './Edit'
+ 
 const useRowStyles = makeStyles({
   root: {
     '& > *': {
@@ -70,7 +71,7 @@ function Row(props) {
           <i className="fas">&#xf067;</i>
         </td>
         <td className="text-center">
-          <i className="fas">&#xf044;</i>
+          <Edit />
         </td>
         <td className="text-center text-danger">
           <i
@@ -95,7 +96,7 @@ function Row(props) {
                       Courses
                     </td>
                     <td style={{ width: `200px` }} align="right">
-                      Enrollments
+                      Enrolled
                     </td>
                     <td style={{ width: `30px` }} />
                     <td style={{ width: `30px` }} />
@@ -114,7 +115,7 @@ function Row(props) {
                         <i className="fas">&#xf067;</i>
                       </td>
                       <td className="text-center">
-                        <i className="fas">&#xf044;</i>
+                        <Edit />
                       </td>
                       <td className="text-center text-danger">
                         <i
@@ -157,7 +158,7 @@ export default function CollapsibleTable() {
 
     for (const c of cat.childs) {
       countCourses += c.courses
-      countEnroll += c.enrollments
+      countEnroll += c.enrolled
     }
 
     return createData(
@@ -166,7 +167,7 @@ export default function CollapsibleTable() {
       cat.childs.length,
       countCourses,
       countEnroll,
-      cat.childs.map(x => [x.name, x.courses, x.enrollments, x._id])
+      cat.childs.map(x => [x.name, x.courses, x.enrolled, x._id])
     )
   })
 
@@ -197,7 +198,7 @@ export default function CollapsibleTable() {
             className="border-0 text-right"
             style={{ width: `300px` }}
           >
-            Enrollments
+            Enrolled
           </th>
           <th scope="col" className="border-0" style={{ width: `50px` }} />
           <th scope="col" className="border-0" style={{ width: `50px` }} />

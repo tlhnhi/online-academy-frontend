@@ -70,7 +70,7 @@ const UserActions = memo(() => {
 
   return (
     <NavItem tag={Dropdown} caret toggle={() => setVisible(!visible)}>
-      <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
+      <DropdownToggle caret tag={NavLink} className="text-nowrap px-3" style={{minWidth:`200px`}}>
         <img
           className="user-avatar rounded-circle mr-2"
           src={currentUser?.avatar}

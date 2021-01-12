@@ -13,6 +13,8 @@ import Courses from './Course'
 import Dashboard from './Dashboard'
 import Lecturers from './Lecturer'
 import Students from './Student'
+import CreateLecturer from './CreateLecturer'
+
 
 const Route = ({ component: Component, layout: Layout, ...rest }) => {
   return (
@@ -69,6 +71,12 @@ const Admin = memo(() => {
         exact
         path={`${path}/lecturers`}
         component={Lecturers}
+        layout={AdminLayout}
+      />
+      <Route
+        exact
+        path={`${path}/create-lecturer`}
+        component={CreateLecturer}
         layout={AdminLayout}
       />
     </Switch>

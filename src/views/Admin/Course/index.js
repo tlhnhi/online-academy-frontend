@@ -131,7 +131,7 @@ const UsersCourse = memo(() => {
                   </span>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>
-                  {item.enrollments}
+                  {item.enrolled}
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>

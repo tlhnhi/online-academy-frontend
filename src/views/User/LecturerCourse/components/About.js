@@ -71,10 +71,10 @@ const About = memo(({ course }) => {
               &nbsp;&nbsp;
             </p>
             <span className="card-title d-flex mb-3">
-              You have {course.enrollments} students enroll
+              You have {course.enrolled} enrolled students
             </span>
             <p className="card-title mb-3">
-              Your last updated:{' '}
+              Your last updated:
               {new Date(course?.updatedAt).toLocaleDateString('vi-VN')}
             </p>
             <Badge
@@ -97,22 +97,22 @@ const About = memo(({ course }) => {
             alt=""
           ></img>
           <Row className="mx-5 justify-content-between">
-            <span className="my-auto">
+            <span className="my-3">
               <h2 className="card-title d-inline-block my-auto">
-                {course.discount !== 1
-                  ? (course.price * (1 - course.discount)).toFixed(2)
+                {course.discount !== 0
+                  ? (course.price * course.discount).toFixed(2)
                   : course.price}
                 $&nbsp;
               </h2>
-              <h4
+              {course.discount ? <h4
                 className="card-title d-inline-block my-auto text-muted"
                 style={{
                   textDecorationLine: 'line-through',
                   textDecorationStyle: 'solid'
                 }}
               >
-                {course.discount ? course.price + '$' : ''}
-              </h4>
+                {course.price + '$'}
+              </h4> : <Button size="sm" theme="secondary" className="mb-3">Discount</Button>}
             </span>
             <Link to={`/create-course?id=${course._id}`}>
               <Button size="lg" className="d-block my-2" pill>

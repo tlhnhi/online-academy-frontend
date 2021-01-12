@@ -121,10 +121,10 @@ const UserAccountDetails = memo(({ user, other }) => {
 
                       {/* Enrolls */}
                       <Col md="4" className="form-group">
-                        <label htmlFor="feStudent">Enrollments</label>
+                        <label htmlFor="feStudent">enrolled</label>
                         <br />
                         <span className="card-title">
-                          {display.enrollments}
+                          {display.enrolled}
                         </span>
                       </Col>
                     </Row>

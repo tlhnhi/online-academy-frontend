@@ -58,7 +58,7 @@ function Row(props) {
               <table size="small">
                 <tbody>
                   <tr>
-                    <td>
+                    <td className="border-0">
                       <Box mx={7.5}>
                         {row.preview || enroll ? (
                           <ReactPlayer url={row.url} />

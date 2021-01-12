@@ -41,7 +41,7 @@ const Related = memo(() => {
                 <i className="material-icons">&#xe838;</i>
               </td>
               <td className="text-center" style={{ width: `100px` }}>
-                {item.enrollments}
+                {item.enrolled}
                 <i className="material-icons">&#xe7fb;</i>
               </td>
               <td className="text-center">

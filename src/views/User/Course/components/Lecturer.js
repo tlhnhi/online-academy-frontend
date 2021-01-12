@@ -48,7 +48,7 @@ const Lecturer = memo(({ lecturerId }) => {
           </p>
           <p className="my-1">
             <i className="material-icons">&#xe7fb;&nbsp;</i>
-            {lecturer?.enrollments} Enrollments
+            {lecturer?.enrolled} enrolled
           </p>
         </Col>
       </Row>
