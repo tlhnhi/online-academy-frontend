@@ -126,7 +126,7 @@ const TopViewed = memo(() => {
   const [topViewed] = useState(listTopViewed)
 
   return (
-    <Carousel indicators={false} interval={2000}>
+    <Carousel indicators={false} interval={2000} control={false}>
         {[...Array(2)].map((_, index) => (
           <Carousel.Item key={index}>
             <Row>

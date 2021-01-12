@@ -95,7 +95,7 @@ const Newest = memo(() => {
   const [newCourses] = useState(listNewCourses)
 
   return (
-    <Carousel indicators={false} interval={2000}>
+    <Carousel indicators={false} interval={2000} control={false}>
       {[...Array(3)].map((_, index) => (
         <Carousel.Item key={index}>
           <Row>
