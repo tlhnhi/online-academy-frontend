@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import React, { memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -93,9 +93,9 @@ const ForgotPassword = memo(() => {
           style={{ width: `350px` }}
         >
           <label className="mx-auto">
-            <a href="/login" className="text-muted">
+            <Link to="/login" className="text-muted">
               Log In
-            </a>
+            </Link>
           </label>
         </div>
       </Col>

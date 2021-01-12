@@ -1,9 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import axiosClient from 'api/axiosClient'
+import { updatePassword } from 'api/auth'
 import React, { memo } from 'react'
 import { useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux'
-import { Redirect, useHistory } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -17,9 +16,6 @@ import {
 import * as Yup from 'yup'
 
 const ChangePassword = memo(() => {
-  const currentUser = useSelector(state => state.currentUser)
-  const { push } = useHistory()
-
   function equalTo(ref, msg) {
     return this.test({
       name: 'equalTo',
@@ -56,25 +52,11 @@ const ChangePassword = memo(() => {
 
   async function onSubmit(data) {
     const { password, newPassword } = data
-
-    try {
-      const { success, message, data } = await axiosClient({
-        url: '/user/password',
-        method: 'post',
-        data: { password, newPassword }
-      })
-
-      if (!success) return alert(message)
-
-      alert(data)
-      push('/profile')
-    } catch (error) {
-      alert('Cannot change your password')
-      console.log(error.message)
-    }
+    const message = await updatePassword(password, newPassword)
+    if (!!message) alert(message)
   }
 
-  if (!currentUser?._id) {
+  if (!localStorage.getItem('token')) {
     return <Redirect to="/error" />
   }
 

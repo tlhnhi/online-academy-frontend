@@ -1,8 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import axiosClient from 'api/axiosClient'
+import { signUp } from 'api/auth'
 import React, { memo } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import {
   Button,
@@ -15,15 +14,9 @@ import {
   FormGroup,
   Row
 } from 'shards-react'
-import { clearAuthToken, setAuthToken } from 'store/app/auth'
 import * as Yup from 'yup'
 
 const Register = memo(() => {
-  const [authToken, dispatch] = [
-    useSelector(state => state.auth),
-    useDispatch()
-  ]
-
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     email: Yup.string().required('Email is required').email('Email is invalid'),
@@ -44,30 +37,14 @@ const Register = memo(() => {
     resolver: yupResolver(validationSchema)
   })
 
-  async function onSubmit(data) {
-    const { email, password } = data
-
-    try {
-      const { success, message, token } = await axiosClient({
-        url: '/signup',
-        method: 'post',
-        data: { email, password, name: 'New User' }
-      })
-
-      if (!success) {
-        dispatch(clearAuthToken())
-        return alert(message)
-      }
-
-      dispatch(setAuthToken({ token }))
-    } catch (error) {
-      dispatch(clearAuthToken())
-      alert('Cannot register')
-      console.log(error.message)
-    }
+  async function onSubmit(values) {
+    const { email, password, name } = values
+    const token = await signUp(name, email, password)
+    if (token) localStorage.setItem('token', token)
+    window.location.reload()
   }
 
-  if (!!authToken) {
+  if (!!localStorage.getItem('token')) {
     return <Redirect to="/" />
   }
 

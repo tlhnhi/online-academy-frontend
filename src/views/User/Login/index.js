@@ -1,9 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import axiosClient from 'api/axiosClient'
+import { signIn } from 'api/auth'
 import React, { memo } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -16,15 +15,9 @@ import {
   FormGroup,
   Row
 } from 'shards-react'
-import { clearAuthToken, setAuthToken } from 'store/app/auth'
 import * as Yup from 'yup'
 
 const Login = memo(() => {
-  const [authToken, dispatch] = [
-    useSelector(state => state.auth),
-    useDispatch()
-  ]
-
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
@@ -37,30 +30,14 @@ const Login = memo(() => {
     resolver: yupResolver(validationSchema)
   })
 
-  async function onSubmit(data) {
-    const { email, password } = data
-
-    try {
-      const { success, message, data } = await axiosClient({
-        url: '/signin',
-        method: 'post',
-        data: { email, password }
-      })
-
-      if (!success) {
-        dispatch(clearAuthToken())
-        return alert(message)
-      }
-
-      dispatch(setAuthToken({ token: data.token }))
-    } catch (error) {
-      dispatch(clearAuthToken())
-      alert('Cannot login')
-      console.log(error.message)
-    }
+  async function onSubmit(values) {
+    const { email, password } = values
+    const { token } = await signIn(email, password)
+    if (token) localStorage.setItem('token', token)
+    window.location.reload()
   }
 
-  if (!!authToken) {
+  if (!!localStorage.getItem('token')) {
     return <Redirect to="/" />
   }
 
@@ -145,14 +122,14 @@ const Login = memo(() => {
           style={{ width: `350px` }}
         >
           <label>
-            <a href="/forgot-password" className="text-muted">
+            <Link to="/forgot-password" className="text-muted">
               Forgot Password
-            </a>
+            </Link>
           </label>
           <label>
-            <a href="/register" className="text-muted">
+            <Link to="/register" className="text-muted">
               Create Your Account
-            </a>
+            </Link>
           </label>
         </div>
       </Col>

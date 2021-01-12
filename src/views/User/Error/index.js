@@ -7,7 +7,7 @@ const Error = () => (
     <div className="error">
       <div className="error__content">
         <h2>
-          <i class="material-icons">&#xe626;</i>
+          <i className="material-icons">&#xe626;</i>
         </h2>
         <h3>Something went wrong!</h3>
         <p>You cannot access this page.</p>

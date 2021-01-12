@@ -1,18 +1,16 @@
-// import Box from '@material-ui/core/Box'
 import Pagination from '@material-ui/lab/Pagination'
-import React, { memo, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
-import { Container } from 'shards-react'
+import { searchCourses } from 'api/course'
+import catTheme from 'constants/category-theme'
+import queryString from 'query-string'
+import React, { memo, useEffect, useState } from 'react'
+import { Link, Redirect } from 'react-router-dom'
+import { Badge, Container } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
 
-const Category = memo(() => {
-  const { id } = useParams()
+const Search = memo(() => {
+  const { q } = queryString.parse(window.location.search)
 
-  const categories = useSelector(x => x.category)
-  const courses = useSelector(x => x.course).filter(x => x.category._id === id)
-
-  const category = categories.find(x => x._id === id)
+  const [courses, setCourses] = useState([])
 
   const [currentIndex] = useState(-1)
   const [page, setPage] = useState(1)
@@ -21,14 +19,31 @@ const Category = memo(() => {
   const indexOfFirst = indexOfLast - pageSize
   const current = courses.slice(indexOfFirst, indexOfLast)
 
-  const handlePageChange = (event, value) => setPage(value)
+  const handlePageChange = (event, value) => {
+    setPage(value)
+  }
+
+  useEffect(() => {
+    const getCoursesByKeyword = async () => {
+      const kwCourses = await searchCourses(q)
+      if (kwCourses?.length > 0) setCourses(kwCourses)
+    }
+
+    getCoursesByKeyword()
+  }, [courses, q])
+
+  console.log('Search', { q }, { courses })
+
+  if (!localStorage.getItem('token')) {
+    return <Redirect to="/error" />
+  }
 
   return (
     <Container fluid className="main-content-container px-3">
       <div className="page-header py-4">
         <PageTitle
           sm="12"
-          title={category?.name ? category?.name + ' Courses' : ''}
+          title={`Found ${courses.length} courses by keyword: ${q}`}
           subtitle=""
           className="text-sm-left"
         />
@@ -66,7 +81,7 @@ const Category = memo(() => {
                     Created by:&nbsp;
                     <a
                       className="text-fiord-blue"
-                      href={`/profile?id=${item.lecturer_id}`}
+                      href={`/profile?id=${item.lecturer._id}`}
                     >
                       {item.lecturer.name}
                     </a>
@@ -128,27 +143,19 @@ const Category = memo(() => {
                   </span>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>
-                  {item.enrollments}&nbsp;
+                  {item.enrollments}
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
-                <td
-                  className="text-center"
-                  style={{ width: `150px`, fontSize: `18px` }}
-                >
-                  {item.discount !== 1
-                    ? (item.price * (1 - item.discount)).toFixed(2)
-                    : item.price}
-                  $
-                  <p
-                    className="text-muted"
-                    style={{
-                      fontSize: `14px`,
-                      textDecorationLine: 'line-through',
-                      textDecorationStyle: 'solid'
-                    }}
+                <td className="text-center" style={{ width: `150px` }}>
+                  <Badge
+                    pill
+                    className={`card-post__category bg-${
+                      catTheme[item.category.name]
+                    }`}
+                    href={`/categories/${item.category._id}`}
                   >
-                    {item.discount ? item.price + '$' : ''}
-                  </p>
+                    {item.category.name}
+                  </Badge>
                 </td>
               </tr>
             ))}
@@ -168,4 +175,4 @@ const Category = memo(() => {
   )
 })
 
-export default Category
+export default Search

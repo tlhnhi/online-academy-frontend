@@ -1,8 +1,11 @@
-import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
+import React, { memo, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Nav, NavItem, NavLink } from 'shards-react'
 
 const AdminSidebarItem = memo(() => {
+  const { push } = useHistory()
+
   const itemList = [
     { name: 'Dashboard', to: '/admin' },
     { name: 'Categories', to: '/admin/categories' },
@@ -17,7 +20,12 @@ const AdminSidebarItem = memo(() => {
       <Nav className="nav--no-borders flex-column">
         {items.map((item, idx) => (
           <NavItem key={idx}>
-              <NavLink href={item.to}>{item.name}</NavLink>
+            <NavLink
+              onClick={() => push(item.to)}
+              style={{ cursor: 'pointer' }}
+            >
+              {item.name}
+            </NavLink>
           </NavItem>
         ))}
       </Nav>

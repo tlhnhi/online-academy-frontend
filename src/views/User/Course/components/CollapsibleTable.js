@@ -1,9 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
+import { makeStyles } from '@material-ui/core/styles'
+import { checkIsEnrolledCourse } from 'api/course'
+import PropTypes from 'prop-types'
+import React, { useEffect, useState } from 'react'
 import ReactPlayer from 'react-player'
 
 const useRowStyles = makeStyles({
@@ -25,7 +26,7 @@ function createData(no, section, preview, length, url) {
 }
 
 function Row(props) {
-  const { row } = props
+  const { row, enroll } = props
   const [open, setOpen] = React.useState(false)
   const classes = useRowStyles()
 
@@ -47,7 +48,7 @@ function Row(props) {
         </td>
         <td>{row.no}</td>
         <td>{row.section}</td>
-        <td align="right">{row.preview}</td>
+        <td align="right">{row.preview ? 'Preview' : ''}</td>
         <td align="right">{row.length}</td>
       </tr>
       <tr>
@@ -57,15 +58,17 @@ function Row(props) {
               <table size="small">
                 <tbody>
                   <tr>
-                    <Box mx={7.5}>
-                      {row.url ? (
-                        <ReactPlayer url={row.url} />
-                      ) : (
-                        <span className="text-muted">
-                          Please purchase this course to view this content.
-                        </span>
-                      )}
-                    </Box>
+                    <td>
+                      <Box mx={7.5}>
+                        {row.preview || enroll ? (
+                          <ReactPlayer url={row.url} />
+                        ) : (
+                          <span className="text-muted">
+                            Please purchase this course to view this content.
+                          </span>
+                        )}
+                      </Box>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -81,54 +84,31 @@ Row.propTypes = {
   row: PropTypes.shape({
     no: PropTypes.number.isRequired,
     section: PropTypes.string.isRequired,
-    preview: PropTypes.string.isRequired,
+    preview: PropTypes.bool.isRequired,
     length: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired
-  }).isRequired
+  }).isRequired,
+  enroll: PropTypes.bool
 }
 
-const rows = [
-  createData(
-    1,
-    'Getting Started',
-    'Preview',
-    '40min',
-    'https://www.youtube.com/watch?v=NA-LeuIvH5s'
-  ),
-  createData(
-    2,
-    'Refreshing Next Generation JavaScript (Optional)',
-    'Preview',
-    '44min',
-    'https://www.youtube.com/watch?v=UtIOMUQ7nWM'
-  ),
-  createData(
-    3,
-    'Understanding the Base Features and Syntax',
-    '',
-    '2hr 21min',
-    ''
-  ),
-  createData(4, 'Working with Lists and Conditionals', '', '1hr 1min', ''),
-  createData(5, 'Styling React Components and Elements', '', '1hr 5min', ''),
-  createData(6, 'Debugging React Apps', '', '20min', ''),
-  createData(
-    7,
-    'Diving Deeper into Components and React Internals',
-    '',
-    '2hr 54min',
-    ''
-  ),
-  createData(
-    8,
-    'A Real React App: The Burger Builder (Basic Version)',
-    '',
-    '4hr',
-    ''
-  )
-]
+export default function CollapsibleTable({ course, currentUser }) {
+  const [isEnroll, setIsEnroll] = useState(false)
 
-export default function CollapsibleTable() {
+  const rows = course.content.map((x, i) =>
+    createData(i + 1, x.title, x.preview, x.duration, x.video)
+  )
+
+  useEffect(() => {
+    const getIsEnroll = async () => {
+      if (!currentUser?._id) return setIsEnroll(false)
+
+      const data = await checkIsEnrolledCourse(course._id)
+      if (data) setIsEnroll(true)
+    }
+
+    getIsEnroll()
+  }, [currentUser, course])
+
   return (
     <table className="table">
       <thead className="bg-light">
@@ -142,7 +122,7 @@ export default function CollapsibleTable() {
       </thead>
       <tbody style={{ fontSize: `16px` }}>
         {rows.map(row => (
-          <Row key={row.no} row={row} />
+          <Row key={row.no} row={row} enroll={isEnroll} />
         ))}
       </tbody>
     </table>

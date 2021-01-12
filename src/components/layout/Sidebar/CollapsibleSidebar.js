@@ -24,7 +24,7 @@ function CollapsibleSidebar(props) {
         </DropdownToggle>
 
         <Collapse tag={DropdownMenu} right open={visible}>
-          {category.child.map(c => (
+          {category.childs.map(c => (
             <Link
               key={c._id}
               to={`/categories/${c._id}`}

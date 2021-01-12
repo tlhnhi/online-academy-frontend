@@ -1,5 +1,6 @@
-import axiosClient from 'api/axiosClient'
+import { createCourse, updateCourseContent } from 'api/course'
 import { useFormik } from 'formik'
+import queryString from 'query-string'
 import React, { memo, useRef } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -21,62 +22,68 @@ import {
   Row
 } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
-import CustomFileUpload from './components/CustomFileUpload'
+// import CustomFileUpload from './components/CustomFileUpload'
 import DynamicField from './components/DynamicField'
 
 const CreateCourse = memo(() => {
-  const currentUser = useSelector(state => state.currentUser)
-  const categories = useSelector(state => state.category)
+  const { id } = queryString.parse(window.location.search)
+
+  const currentUser = useSelector(x => x.currentUser)
+  const categories = useSelector(x => x.category)
+  const courses = useSelector(x => x.course)
+
+  const course = courses.find(x => x._id === id)
 
   const quillRef = useRef()
 
-  const toBase64 = file =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = () => resolve(reader.result)
-      reader.onerror = error => reject(error)
-    })
+  // const toBase64 = file =>
+  //   new Promise((resolve, reject) => {
+  //     const reader = new FileReader()
+  //     reader.readAsDataURL(file)
+  //     reader.onload = () => resolve(reader.result)
+  //     reader.onerror = error => reject(error)
+  //   })
 
   const formik = useFormik({
     initialValues: {
-      title: '',
-      avatar: '',
-      category: '',
-      describe: '',
-      price: '',
-      detail: ''
+      title: !!course ? course.title : '',
+      avatar: !!course ? course.avatar : '',
+      category: !!course ? course.category_id : '',
+      describe: !!course ? course.describe : '',
+      price: !!course ? course.price : '',
+      detail: !!course ? course.detail : '',
+      content: []
     },
     async onSubmit(values) {
-      const { title, avatar, category, describe, price, detail } = values
+      const {
+        title,
+        avatar,
+        category,
+        describe,
+        price,
+        detail,
+        content
+      } = values
 
-      try {
-        const { success, message } = await axiosClient({
-          url: '/course',
-          method: 'post',
-          data: {
-            avatar: await toBase64(avatar),
-            title,
-            describe,
-            detail,
-            price: parseFloat(price),
-            discount: 0,
-            category_id: category,
-            lecturer_id: currentUser._id
-          }
-        })
+      const data = await createCourse({
+        // avatar: await toBase64(avatar),
+        avatar,
+        title,
+        describe,
+        detail,
+        price: parseFloat(price),
+        discount: 0,
+        category_id: category,
+        content
+      })
 
-        if (!success) return alert(message)
-
-        alert('Your course has been created')
-      } catch (error) {
-        alert('Cannot create this course')
-        console.log(error.message)
+      if (data) {
+        alert(`Your course has been ${!id ? 'created' : 'updated'}`)
       }
     }
   })
 
-  if (!currentUser || !currentUser.isLecturer) {
+  if (!localStorage.getItem('token') || !currentUser?.isLecturer) {
     return <Redirect to="/error" />
   }
 
@@ -101,20 +108,27 @@ const CreateCourse = memo(() => {
               placeholder="Your Course Title"
               {...formik.getFieldProps('title')}
             />
-            <CustomFileUpload formik={formik} />
+            <FormInput
+              name="avatar"
+              maxLength="60"
+              className="mb-3"
+              placeholder="Your Course Avatar"
+              {...formik.getFieldProps('avatar')}
+            />
+            {/* <CustomFileUpload formik={formik} /> */}
             <FormSelect
               name="category"
               {...formik.getFieldProps('category')}
               className="mb-3"
             >
               <option value="">Choose a category</option>
-              {categories
-                .filter(x => !!x.parent)
-                .map(cat => (
-                  <option key={cat._id} value={cat._id}>
-                    {cat.name}
+              {categories.map(cat =>
+                cat.childs.map(c => (
+                  <option key={c._id} value={c._id}>
+                    {c.name}
                   </option>
-                ))}
+                ))
+              )}
             </FormSelect>
             <FormInput
               name="describe"

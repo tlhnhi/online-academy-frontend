@@ -1,15 +1,15 @@
-import React, { memo, useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { memo } from 'react'
+import { useSelector } from 'react-redux'
 
-const Related = memo(({ relatedCourses }) => {
-  const [course, setCourse] = useState(relatedCourses)
+const Related = memo(() => {
+  const courses = useSelector(x => x.course)
 
   return (
     <div className="mt-3 mx-auto" style={{ width: `800px` }}>
       <h4 className="card-title text-fiord-blue">Related Courses</h4>
       <table className="table">
         <tbody style={{ fontSize: `16px` }}>
-          {course.map((item, idx) => (
+          {courses.map((item, idx) => (
             <tr key={idx}>
               <td>
                 <img
@@ -23,22 +23,25 @@ const Related = memo(({ relatedCourses }) => {
               <td>
                 <a
                   className="text-fiord-blue font-weight-bold"
-                  href="/courses/1"
+                  href={`/courses/${item._id}`}
                 >
-                  {item.name}
+                  {item.title}
                 </a>
                 <br />
-                <span className="text-muted">Last updated: {item.date}</span>
+                <span className="text-muted">
+                  Last updated:{' '}
+                  {new Date(item.updatedAt).toLocaleDateString('vi-VN')}
+                </span>
               </td>
               <td
                 className="text-center text-warning"
                 style={{ width: `70px` }}
               >
-                {item.rating}
+                {item.star}
                 <i className="material-icons">&#xe838;</i>
               </td>
               <td className="text-center" style={{ width: `100px` }}>
-                {item.students}
+                {item.enrollments}
                 <i className="material-icons">&#xe7fb;</i>
               </td>
               <td className="text-center">
@@ -54,21 +57,6 @@ const Related = memo(({ relatedCourses }) => {
                   {item.discount ? item.price + '$' : ''}
                 </p>
               </td>
-              <td className="text-center text-danger">
-                {/* <i className="far">&#xf004;</i> */}
-                <i
-                  className={item.favorite ? 'fas' : 'far'}
-                  onClick={() => {
-                    course[idx].favorite
-                      ? (course[idx].favorite = false)
-                      : (course[idx].favorite = true)
-                    setCourse([...course])
-                  }}
-                  style={{ cursor: 'pointer' }}
-                >
-                  &#xf004;
-                </i>
-              </td>
             </tr>
           ))}
         </tbody>
@@ -76,64 +64,5 @@ const Related = memo(({ relatedCourses }) => {
     </div>
   )
 })
-
-Related.propTypes = {
-  relatedCourses: PropTypes.array
-}
-
-Related.defaultProps = {
-  relatedCourses: [
-    {
-      avatar: require('../../../../images/related/micro.jpg').default,
-      name: "Microfrontends with React: A Complete Developer's Guide",
-      date: '11/2020',
-      rating: '4.8',
-      students: '6,297',
-      price: '129.99',
-      discount: '9.99',
-      favorite: false
-    },
-    {
-      avatar: require('../../../../images/related/complete.jpg').default,
-      name: 'Complete React Developer in 2021 (Redux, Hooks, GraphQL)',
-      date: '12/2020',
-      rating: '4.7',
-      students: '56,788',
-      price: '129.99',
-      discount: '',
-      favorite: false
-    },
-    {
-      avatar: require('../../../../images/related/modern.jpg').default,
-      name: 'Modern React with Redux [2020 Update]',
-      date: '12/2020',
-      rating: '4.7',
-      students: '217,223',
-      price: '129.99',
-      discount: '9.99',
-      favorite: false
-    },
-    {
-      avatar: require('../../../../images/related/advanced.jpg').default,
-      name: 'Advanced React and Redux',
-      date: '12/2020',
-      rating: '4.6',
-      students: '68,713',
-      price: '129.99',
-      discount: '9.99',
-      favorite: false
-    },
-    {
-      avatar: require('../../../../images/related/graphql.jpg').default,
-      name: 'GraphQL with React: The Complete Developers Guide',
-      date: '12/2020',
-      rating: '4.6',
-      students: '42,228',
-      price: '129.99',
-      discount: '9.99',
-      favorite: false
-    }
-  ]
-}
 
 export default Related

@@ -1,31 +1,20 @@
-import React, { useState, memo } from 'react'
+import React, { memo, useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Container, Row } from 'shards-react'
-
+import { removeUser } from 'store/app/user'
 import PageTitle from '../../../components/PageTitle'
 
 const Lecturers = memo(() => {
-  const usersInfo = [
-    {
-      id: '1a2b3c567dgbdfg864cvb',
-      avatar: require('../../../images/avatars/n.png').default,
-      name: 'Cô Giáo Nhi',
-      email: 'tlhnhitn@gmail.com',
-      courses: 123456789,
-      rating: 5,
-      students: 987654321,
-    },
-    {
-      id: '5feb7708f32ste456gdfh2',
-      avatar: require('../../../images/avatars/4.jpg').default,
-      name: 'Maximilian Schwarzmüller',
-      email: 'maxsch@domain.com',
-      courses: 35,
-      rating: 4.6,
-      students: 1279172
-    }
-  ]
+  const dispatch = useDispatch()
 
-  const [users] = useState(usersInfo)
+  const users = useSelector(x => x.user)
+  const lecturers = users.filter(
+    x => x.email !== 'quack@domain.com' && x.isLecturer
+  )
+
+  const handleRemoveStudent = useCallback(id => dispatch(removeUser(id)), [
+    dispatch
+  ])
 
   return (
     <Container fluid className="main-content-container px-4">
@@ -60,22 +49,13 @@ const Lecturers = memo(() => {
               <th scope="col" className="border-0" style={{ width: `250px` }}>
                 Email
               </th>
-              <th scope="col" className="border-0 text-center">
-                Rating
-              </th>
-              <th scope="col" className="border-0 text-right">
-                Courses
-              </th>
-              <th scope="col" className="border-0 text-right">
-                Students
-              </th>
               <th />
             </tr>
           </thead>
           <tbody>
-            {users.map((user, idx) => (
+            {lecturers.map((user, idx) => (
               <tr key={idx}>
-                <td>{user.id}</td>
+                <td>{user._id}</td>
                 <td className="text-center">
                   <img
                     className="rounded-circle"
@@ -88,75 +68,17 @@ const Lecturers = memo(() => {
                 </td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td className="text-center text-warning">{user.rating}<i className="material-icons" key={idx}>
-                    &#xe838;
-                  </i></td>
-                <td className="text-right">{user.courses}</td>
-                <td className="text-right">{user.students}</td>
-
-                <td className="text-center text-danger" style={{ width: `80px` }}>
-                  <i className="fas">&#xf2ed;</i>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Row>
-      <Row noGutters className="page-header py-4">
-        <PageTitle
-          sm="4"
-          title="Request to Become A Lecturer"
-          subtitle=""
-          className="text-sm-left"
-        />
-      </Row>
-
-      {/* Default Light Table */}
-      <Row>
-        <table className="table mb-0">
-          <thead className="bg-light">
-            <tr>
-              <th scope="col" className="border-0" style={{ width: `250px` }}>
-                ID
-              </th>
-              <th
-                scope="col"
-                className="border-0 text-center"
-                style={{ width: `100px` }}
-              >
-                Avatar
-              </th>
-              <th scope="col" className="border-0" style={{ width: `380px` }}>
-                Name
-              </th>
-              <th scope="col" className="border-0" style={{ width: `250px` }}>
-                Email
-              </th>
-              <th />
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user, idx) => (
-              <tr key={idx}>
-                <td>{user.id}</td>
-                <td className="text-center">
-                  <img
-                    className="rounded-circle"
-                    src={user.avatar}
-                    alt={user.name}
-                    width="30"
-                    height="30"
-                    object-fit="cover"
-                  />
-                </td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td className="text-right text-success" style={{ width: `60px` }}>
-                <i className="fa">&#xf00c;</i>
-                </td>
-                <td className="text-left text-danger" style={{ width: `60px` }}>
-                <i className="fa">&#xf00d;</i>
+                <td
+                  className="text-center text-danger"
+                  style={{ width: `80px` }}
+                >
+                  <i
+                    className="fas"
+                    onClick={() => handleRemoveStudent(user._id)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    &#xf2ed;
+                  </i>
                 </td>
               </tr>
             ))}

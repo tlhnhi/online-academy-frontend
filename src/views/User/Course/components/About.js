@@ -1,30 +1,82 @@
-import React, { memo, useState } from 'react'
+import {
+  addCourseToFavorite,
+  checkIsEnrolledCourse,
+  checkIsFavoritedCourse,
+  enrollNewCourse,
+  removeCourseFromFavorite
+} from 'api/course'
 import PropTypes from 'prop-types'
-import { Row, Col, Card, CardBody, Button, Badge } from 'shards-react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Badge, Button, Card, CardBody, Col, Row } from 'shards-react'
 
-const About = memo(({ courseInfo }) => {
-  const [course, setCourse] = useState(courseInfo)
+const About = memo(({ course, currentUser }) => {
+  const [isFavorite, setIsFavorite] = useState(false)
+  const [isEnroll, setIsEnroll] = useState(false)
+
+  const handleAddToWatchList = useCallback(async () => {
+    const data = isFavorite
+      ? await removeCourseFromFavorite(course._id)
+      : await addCourseToFavorite(course._id)
+
+    if (data) {
+      setIsFavorite(!isFavorite)
+      alert(data)
+    }
+  }, [isFavorite, course])
+
+  const handleEnrollCourse = useCallback(async () => {
+    const data = await enrollNewCourse(course._id)
+
+    if (data) {
+      setIsEnroll(!isEnroll)
+      alert(data)
+    }
+  }, [isEnroll, course])
+
+  useEffect(() => {
+    const getIsFavorite = async () => {
+      if (!currentUser?._id) return setIsFavorite(false)
+
+      const data = await checkIsFavoritedCourse(course._id)
+      if (data) setIsFavorite(true)
+    }
+
+    const getIsEnroll = async () => {
+      if (!currentUser?._id) return setIsEnroll(false)
+
+      const data = await checkIsEnrolledCourse(course._id)
+      if (data) setIsEnroll(true)
+    }
+
+    getIsFavorite()
+    getIsEnroll()
+  }, [currentUser, course])
+
   return (
     <Card className="px-5">
       <Row>
         <Col sm="7">
           <CardBody>
-            <h3 className="card-title text-fiord-blue">{course.name}</h3>
+            <h3 className="card-title text-fiord-blue">{course.title}</h3>
             <h5 className="card-post d-inline-block mb-3">{course.describe}</h5>
             <span className="card-title d-flex mb-3">
               Created by:&nbsp;
-              <a className="text-fiord-blue" href="/#">
-                {course.lecturer}
-              </a>
+              <Link
+                className="text-fiord-blue"
+                to={`/profile?id=${course.lecturer._id}`}
+              >
+                {course.lecturer.name}
+              </Link>
             </span>
             <p className="card-title mb-0">
               <span className="card-title d-inline-block text-warning">
-                {course.rating}&nbsp;
+                {course.star}&nbsp;
                 {[
                   ...Array(
-                    course.rating - Math.floor(course.rating) < 0.79
-                      ? Math.floor(course.rating)
-                      : Math.floor(course.rating) + 1
+                    course.star - Math.floor(course.star) < 0.79
+                      ? Math.floor(course.star)
+                      : Math.floor(course.star) + 1
                   )
                 ].map((_, idx) => (
                   <i className="material-icons" key={idx}>
@@ -34,8 +86,8 @@ const About = memo(({ courseInfo }) => {
                 {[
                   ...Array(
                     ~~(
-                      course.rating - Math.floor(course.rating) < 0.79 &&
-                      course.rating - Math.floor(course.rating) > 0.21
+                      course.star - Math.floor(course.star) < 0.79 &&
+                      course.star - Math.floor(course.star) > 0.21
                     )
                   )
                 ].map((_, idx) => (
@@ -46,12 +98,12 @@ const About = memo(({ courseInfo }) => {
                 {[
                   ...Array(
                     5 -
-                      (course.rating - Math.floor(course.rating) < 0.79
-                        ? Math.floor(course.rating)
-                        : Math.floor(course.rating) + 1) -
+                      (course.star - Math.floor(course.star) < 0.79
+                        ? Math.floor(course.star)
+                        : Math.floor(course.star) + 1) -
                       ~~(
-                        course.rating - Math.floor(course.rating) < 0.79 &&
-                        course.rating - Math.floor(course.rating) > 0.21
+                        course.star - Math.floor(course.star) < 0.79 &&
+                        course.star - Math.floor(course.star) > 0.21
                       )
                   )
                 ].map((_, idx) => (
@@ -62,16 +114,19 @@ const About = memo(({ courseInfo }) => {
                 &nbsp;
               </span>
               <span className="card-title d-inline-block">
-                ({course.rating} ratings)
+                ({course.rating.length} ratings)
               </span>
               &nbsp;&nbsp;
               <span className="card-title d-inline-block">
-                {course.students} students
+                {course.enrollments} enrollments
               </span>
             </p>
-            <p className="card-title mb-3">Last updated: {course.date}</p>
+            <p className="card-title mb-3">
+              Last updated:{' '}
+              {new Date(course.updatedAt).toLocaleDateString('vi-VN')}
+            </p>
             <div>
-              {course.enrolled ? (
+              {currentUser?.isLecturer ? (
                 <div></div>
               ) : (
                 <Badge
@@ -79,16 +134,9 @@ const About = memo(({ courseInfo }) => {
                   style={{ fontSize: `16px`, cursor: 'pointer' }}
                   outline
                   theme="danger"
-                  onClick={() => {
-                    course.isLiked
-                      ? (course.isLiked = false)
-                      : (course.isLiked = true)
-                    setCourse({ ...course })
-                  }}
+                  onClick={handleAddToWatchList}
                 >
-                  <i className={course.isLiked ? 'fas' : 'far'}>
-                    &#xf004;&nbsp;
-                  </i>
+                  <i className={isFavorite ? 'fas' : 'far'}>&#xf004;&nbsp;</i>
                   Watchlist
                 </Badge>
               )}
@@ -99,11 +147,11 @@ const About = memo(({ courseInfo }) => {
           <img
             className="img-thumbnail mx-auto mt-3 d-block"
             style={{ width: `500px`, height: `260px`, objectFit: `cover` }}
-            src={`${course.avatar}`}
+            src={course.avatar}
             alt=""
           ></img>
           <div>
-            {course.enrolled ? (
+            {isEnroll ? (
               <div></div>
             ) : (
               <Row className="mx-5 justify-content-between">
@@ -124,7 +172,12 @@ const About = memo(({ courseInfo }) => {
                     {course.discount ? course.price + '$' : ''}
                   </h4>
                 </span>
-                <Button size="lg" className="d-block my-2" pill>
+                <Button
+                  size="lg"
+                  className="d-block my-2"
+                  pill
+                  onClick={handleEnrollCourse}
+                >
                   <i className="fas">&#xf07a;&nbsp;</i>
                   Purchase
                 </Button>
@@ -138,25 +191,7 @@ const About = memo(({ courseInfo }) => {
 })
 
 About.propTypes = {
-  courseInfo: PropTypes.object
-}
-
-About.defaultProps = {
-  courseInfo: {
-    name: 'React - The Complete Guide (Hooks, React Router, Redux)',
-    describe:
-      'Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!',
-    lecturer: 'Maximilian Schwarzmüller',
-    avatar: require('../../../../images/top_courses/react.png').default,
-    price: '129.99',
-    discount: '0.92',
-    date: '12/2020',
-    rating: 4.6,
-    num_rating: '98,747',
-    students: '334,851',
-    isLiked: false,
-    enrolled: true
-  }
+  course: PropTypes.object
 }
 
 export default About

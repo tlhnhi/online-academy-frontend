@@ -1,27 +1,18 @@
-import React, { useState, memo } from 'react'
+import React, { memo, useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Container, Row } from 'shards-react'
-
+import { removeUser } from 'store/app/user'
 import PageTitle from '../../../components/PageTitle'
 
 const Students = memo(() => {
-  const usersInfo = [
-    {
-      id: '1a2b3c567dgbdfg864cvb',
-      avatar: require('../../../images/avatars/n.png').default,
-      name: 'Nhi Tran Le Hong',
-      email: 'tlhnhitn@gmail.com',
-      courses: 123456789
-    },
-    {
-      id: '5feb7708f32ste456gdfh2',
-      avatar: require('../../../images/avatars/quack.jpg').default,
-      name: 'Duckie',
-      email: 'quack@domain.com',
-      courses: 98765
-    }
-  ]
+  const dispatch = useDispatch()
 
-  const [users] = useState(usersInfo)
+  const users = useSelector(x => x.user)
+  const students = users.filter(x => !x.isLecturer)
+
+  const handleRemoveStudent = useCallback(id => dispatch(removeUser(id)), [
+    dispatch
+  ])
 
   return (
     <Container fluid className="main-content-container px-4">
@@ -63,9 +54,9 @@ const Students = memo(() => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user, idx) => (
+            {students.map((user, idx) => (
               <tr key={idx}>
-                <td>{user.id}</td>
+                <td>{user._id}</td>
                 <td className="text-center">
                   <img
                     className="rounded-circle"
@@ -78,9 +69,18 @@ const Students = memo(() => {
                 </td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td className="text-right">{user.courses}</td>
-                <td className="text-center text-danger" style={{ width: `80px` }}>
-                  <i className="fas">&#xf2ed;</i>
+                <td className="text-right">{user.enrolled.length}</td>
+                <td
+                  className="text-center text-danger"
+                  style={{ width: `80px` }}
+                >
+                  <i
+                    className="fas"
+                    onClick={() => handleRemoveStudent(user._id)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    &#xf2ed;
+                  </i>
                 </td>
               </tr>
             ))}

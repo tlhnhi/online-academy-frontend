@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
   Card,
   CardBody,
@@ -9,41 +9,33 @@ import {
   ListGroupItem
 } from 'shards-react'
 
-const FeaturedTopics = ({ col1, col2 }) => {
-  const categories = useSelector(state => state.category)
-
-  const displayCats = categories
-    .filter(x => !!x.parent)
-    .map(x => ({
-      _id: x._id,
-      title: x.name,
-      value: Math.floor(Math.random() * 20000)
-    }))
-
+const FeaturedTopics = ({ categories }) => {
   return (
     <Card className="border-bottom">
       <CardHeader className="border-bottom d-flex">
-        <span className="text-semibold text-fiord-blue">{col1}</span>
+        <span className="text-semibold text-fiord-blue">Topic</span>
         <span className="ml-auto text-right text-semibold text-fiord-blue">
-          {col2}
+          Courses
         </span>
       </CardHeader>
 
       <CardBody className="p-0 pb-2">
         <ListGroup flush className="list-group-small">
-          {displayCats.map((item, idx) => (
-            <ListGroupItem key={idx} className="d-flex px-3">
-              <a
-                href={`/categories/${item._id}`}
-                className="text-semibold text-fiord-blue"
-              >
-                {item.title}
-              </a>
-              <span className="ml-auto text-right text-semibold text-reagent-gray">
-                {item.value} <i className="material-icons">&#xe7fb;</i>
-              </span>
-            </ListGroupItem>
-          ))}
+          {categories.map(cat =>
+            cat.childs.map((child, idx) => (
+              <ListGroupItem key={idx} className="d-flex px-3">
+                <Link
+                  to={`/categories/${child._id}`}
+                  className="text-semibold text-fiord-blue"
+                >
+                  {child.name}
+                </Link>
+                <span className="ml-auto text-right text-semibold text-reagent-gray">
+                  {child.courses} <i className="material-icons">&#xe7fb;</i>
+                </span>
+              </ListGroupItem>
+            ))
+          )}
         </ListGroup>
       </CardBody>
     </Card>
@@ -51,19 +43,7 @@ const FeaturedTopics = ({ col1, col2 }) => {
 }
 
 FeaturedTopics.propTypes = {
-  /**
-   * The component's title.
-   */
-  title: PropTypes.string,
-  /**
-   * The referral data.
-   */
-  referralData: PropTypes.array
-}
-
-FeaturedTopics.defaultProps = {
-  col1: 'Topic',
-  col2: 'Students'
+  categories: PropTypes.array
 }
 
 export default FeaturedTopics
