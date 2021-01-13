@@ -1,34 +1,47 @@
-import React from 'react'
-import { Button, Modal, ModalBody, ModalHeader, FormInput } from 'shards-react'
+import { useFormik } from 'formik'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import {
+  Button,
+  Form,
+  FormInput,
+  Modal,
+  ModalBody,
+  ModalHeader
+} from 'shards-react'
+import { editCategory } from 'store/app/category'
 
-export default class Edit extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { open: false }
-    this.toggle = this.toggle.bind(this)
-  }
+const Edit = ({ id }) => {
+  const dispatch = useDispatch()
+  const [open, setOpen] = useState(false)
 
-  toggle() {
-    this.setState({
-      open: !this.state.open
-    })
-  }
+  const formik = useFormik({
+    initialValues: { name: '' },
+    onSubmit({ name }) {
+      dispatch(editCategory(id, name))
+    }
+  })
 
-  render() {
-    const { open } = this.state
-    return (
-      <div>
-        <i className="fas" onClick={this.toggle} style={{ cursor: 'pointer' }}>
-          &#xf044;
-        </i>
-        <Modal open={open} toggle={this.toggle} center={false}>
-          <ModalHeader>Edit Category</ModalHeader>
-          <ModalBody>
-            <FormInput />
-            <Button className="mt-2">OK</Button>
-          </ModalBody>
-        </Modal>
-      </div>
-    )
-  }
+  return (
+    <Form onSubmit={formik.handleSubmit}>
+      <i
+        className="fas"
+        onClick={() => setOpen(!open)}
+        style={{ cursor: 'pointer' }}
+      >
+        &#xf044;
+      </i>
+      <Modal open={open} toggle={() => setOpen(!open)} center={false}>
+        <ModalHeader>Edit Category</ModalHeader>
+        <ModalBody>
+          <FormInput id="name" name="name" {...formik.getFieldProps('name')} />
+          <Button className="mt-2" type="submit">
+            OK
+          </Button>
+        </ModalBody>
+      </Modal>
+    </Form>
+  )
 }
+
+export default Edit

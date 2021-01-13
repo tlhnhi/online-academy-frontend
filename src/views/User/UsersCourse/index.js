@@ -2,13 +2,15 @@
 import Pagination from '@material-ui/lab/Pagination'
 import { fetchEnrolledCourses, fetchUploadedCourses } from 'api/course'
 import catTheme from 'constants/category-theme'
-import React, { memo, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { memo, useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import { Badge, Container } from 'shards-react'
+import { removeCourseLecturer } from 'store/app/course'
 import PageTitle from '../../../components/PageTitle'
 
 const UsersCourse = memo(() => {
+  const dispatch = useDispatch()
   const currentUser = useSelector(x => x.currentUser)
 
   const [myCourses, setMyCourses] = useState([])
@@ -23,6 +25,11 @@ const UsersCourse = memo(() => {
   const handlePageChange = (event, value) => {
     setPage(value)
   }
+
+  const handleRemoveCourse = useCallback(
+    id => dispatch(removeCourseLecturer(id)),
+    [dispatch]
+  )
 
   useEffect(() => {
     if (myCourses.length > 0) return
@@ -155,7 +162,7 @@ const UsersCourse = memo(() => {
                   </span>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>
-                  {item.enrolled}
+                  {item.enrollments}
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>
@@ -169,6 +176,20 @@ const UsersCourse = memo(() => {
                     {item.category.name}
                   </Badge>
                 </td>
+                {currentUser?.isLecturer && (
+                  <td
+                    className="text-center text-danger"
+                    style={{ width: `50px` }}
+                  >
+                    <i
+                      className="fas"
+                      onClick={() => handleRemoveCourse(item._id)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      &#xf2ed;
+                    </i>
+                  </td>
+                )}
               </tr>
             ))}
         </tbody>

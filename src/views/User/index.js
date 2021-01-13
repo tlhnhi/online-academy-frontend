@@ -10,11 +10,12 @@ import ForgotPassword from './ForgotPassword'
 import Home from './Home'
 import LecturerCourse from './LecturerCourse'
 import Login from './Login'
+import MyProfile from './MyProfile'
 import Profile from './Profile'
 import Register from './Register'
+import Search from './Search'
 import UsersCourse from './UsersCourse'
 import WatchList from './WatchList'
-import Search from './Search'
 
 const Route = ({ component: Component, layout: Layout, ...rest }) => {
   return (
@@ -48,6 +49,7 @@ const User = memo(() => {
         component={UsersCourse}
         layout={DefaultLayout}
       />
+      <Route path="/me" component={MyProfile} layout={DefaultLayout} />
       <Route path="/profile" component={Profile} layout={DefaultLayout} />
       <Route path="/login" component={Login} layout={DefaultLayout} />
       <Route path="/register" component={Register} layout={DefaultLayout} />

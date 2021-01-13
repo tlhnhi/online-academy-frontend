@@ -60,7 +60,7 @@ const Course = memo(() => {
           <Learn detail={course.detail.split('<br>')} />
           <Content course={course} user={currentUser} />
           <StarsRating courseId={course._id} />
-          <Related />
+          <Related category={course.category} />
           <Lecturer lecturerId={course.lecturer._id} />
           <Feedback rating={course.rating} />
         </>

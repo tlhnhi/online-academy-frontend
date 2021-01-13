@@ -143,7 +143,7 @@ const Search = memo(() => {
                   </span>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>
-                  {item.enrolled}
+                  {item.enrollments}
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>

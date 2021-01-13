@@ -31,6 +31,7 @@ const About = memo(({ course, currentUser }) => {
     if (data) {
       setIsEnroll(!isEnroll)
       alert(data)
+      window.location.reload()
     }
   }, [isEnroll, course])
 
@@ -118,7 +119,7 @@ const About = memo(({ course, currentUser }) => {
               </span>
               &nbsp;&nbsp;
               <span className="card-title d-inline-block">
-                {course.enrolled} enrolled
+                {course.enrollments} enrolled
               </span>
             </p>
             <p className="card-title mb-3">
@@ -179,7 +180,7 @@ const About = memo(({ course, currentUser }) => {
                   onClick={handleEnrollCourse}
                 >
                   <i className="fas">&#xf07a;&nbsp;</i>
-                  Purchase
+                  Enroll
                 </Button>
               </Row>
             )}

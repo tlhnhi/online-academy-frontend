@@ -12,7 +12,11 @@ function StarsRating({ courseId }) {
     initialValues: { comment: '' },
     async onSubmit({ comment }) {
       const data = await createCourseRating(courseId, comment, starValue)
-      if (data) alert(data)
+
+      if (data) {
+        alert(data)
+        window.location.reload()
+      }
     }
   })
 

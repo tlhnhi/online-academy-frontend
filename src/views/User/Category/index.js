@@ -128,7 +128,7 @@ const Category = memo(() => {
                   </span>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>
-                  {item.enrolled}&nbsp;
+                  {item.enrollments}&nbsp;
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
                 <td

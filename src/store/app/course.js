@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
   createCourse,
+  deleteCourse,
   deleteCourseByAdmin,
   fetchCourses,
   updateCourse
@@ -53,6 +54,11 @@ export const editCourse = course => async dispatch => {
 
 export const removeCourse = id => async dispatch => {
   await deleteCourseByAdmin(id)
+  dispatch(_removeCourse(id))
+}
+
+export const removeCourseLecturer = id => async dispatch => {
+  await deleteCourse(id)
   dispatch(_removeCourse(id))
 }
 

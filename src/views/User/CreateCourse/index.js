@@ -1,4 +1,4 @@
-import { createCourse, updateCourseContent } from 'api/course'
+import { createCourse } from 'api/course'
 import { useFormik } from 'formik'
 import queryString from 'query-string'
 import React, { memo, useRef } from 'react'
@@ -48,11 +48,11 @@ const CreateCourse = memo(() => {
     initialValues: {
       title: !!course ? course.title : '',
       avatar: !!course ? course.avatar : '',
-      category: !!course ? course.category_id : '',
+      category: !!course ? course.category._id : '',
       describe: !!course ? course.describe : '',
       price: !!course ? course.price : '',
       detail: !!course ? course.detail : '',
-      content: []
+      content: !!course ? course.content : []
     },
     async onSubmit(values) {
       const {

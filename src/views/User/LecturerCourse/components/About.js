@@ -71,7 +71,7 @@ const About = memo(({ course }) => {
               &nbsp;&nbsp;
             </p>
             <span className="card-title d-flex mb-3">
-              You have {course.enrolled} enrolled students
+              You have {course.enrollments} enrolled students
             </span>
             <p className="card-title mb-3">
               Your last updated:
@@ -104,15 +104,21 @@ const About = memo(({ course }) => {
                   : course.price}
                 $&nbsp;
               </h2>
-              {course.discount ? <h4
-                className="card-title d-inline-block my-auto text-muted"
-                style={{
-                  textDecorationLine: 'line-through',
-                  textDecorationStyle: 'solid'
-                }}
-              >
-                {course.price + '$'}
-              </h4> : <Button size="sm" theme="secondary" className="mb-3">Discount</Button>}
+              {course.discount ? (
+                <h4
+                  className="card-title d-inline-block my-auto text-muted"
+                  style={{
+                    textDecorationLine: 'line-through',
+                    textDecorationStyle: 'solid'
+                  }}
+                >
+                  {course.price + '$'}
+                </h4>
+              ) : (
+                <Button size="sm" theme="secondary" className="mb-3">
+                  Discount
+                </Button>
+              )}
             </span>
             <Link to={`/create-course?id=${course._id}`}>
               <Button size="lg" className="d-block my-2" pill>

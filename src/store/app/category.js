@@ -21,7 +21,7 @@ const categorySlice = createSlice({
       const categories = [...state]
 
       const index = categories.findIndex(x => x._id === payload._id)
-      if (~index) categories[index] = payload
+      if (~index) categories[index] = { ...categories[index], payload }
     },
     _removeCategory(state, { payload }) {
       return state.filter(x => x._id !== payload)
@@ -41,14 +41,15 @@ export const setCategories = () => async dispatch => {
   if (categories.length > 0) dispatch(_setCategories(categories))
 }
 
-export const addCategory = (name, parent) => async dispatch => {
-  const category = await createCategory(name, parent)
+export const addCategory = name => async dispatch => {
+  const category = await createCategory(name)
   dispatch(_addCategory(category))
 }
 
-export const editCategory = (name, parent) => async dispatch => {
-  const category = await updateCategory(name, parent)
-  dispatch(_editCategory(category))
+export const editCategory = (id, name) => async dispatch => {
+  await updateCategory(id, name)
+  alert('Category updated')
+  dispatch(_editCategory({ _id: id, name }))
 }
 
 export const removeCategory = id => async dispatch => {

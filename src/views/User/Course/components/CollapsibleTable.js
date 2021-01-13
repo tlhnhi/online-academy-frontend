@@ -64,7 +64,7 @@ function Row(props) {
                           <ReactPlayer url={row.url} />
                         ) : (
                           <span className="text-muted">
-                            Please purchase this course to view this content.
+                            Please enroll this course to view this content.
                           </span>
                         )}
                       </Box>
