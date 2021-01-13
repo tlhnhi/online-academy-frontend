@@ -103,14 +103,14 @@ const CreateCourse = memo(() => {
             <FormInput
               name="title"
               size="lg"
-              maxLength="60"
+              maxLength="200"
               className="mb-3"
               placeholder="Your Course Title"
               {...formik.getFieldProps('title')}
             />
             <FormInput
               name="avatar"
-              maxLength="60"
+              maxLength="200"
               className="mb-3"
               placeholder="Your Course Avatar"
               {...formik.getFieldProps('avatar')}
