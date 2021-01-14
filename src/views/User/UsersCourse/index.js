@@ -1,7 +1,6 @@
 // import Box from '@material-ui/core/Box'
 import Pagination from '@material-ui/lab/Pagination'
 import { fetchEnrolledCourses, fetchUploadedCourses } from 'api/course'
-import catTheme from 'constants/category-theme'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
@@ -116,7 +115,7 @@ const UsersCourse = memo(() => {
                   style={{ width: `180px` }}
                 >
                   <span className="card-title text-warning">
-                    {item.star}&nbsp;
+                    {item.star.toFixed(1)}&nbsp;
                     {[
                       ...Array(
                         item.star - Math.floor(item.star) < 0.79
@@ -162,19 +161,20 @@ const UsersCourse = memo(() => {
                   </span>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>
-                  {item.enrollments}
+                  {item.enrollments}&nbsp;
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>
-                  <Badge
-                    pill
-                    className={`card-post__category bg-${
-                      catTheme[item.category.name]
-                    }`}
-                    href={`/categories/${item.category._id}`}
-                  >
-                    {item.category.name}
-                  </Badge>
+                <Badge
+              className="my-auto"
+              style={{ fontSize: `16px` }}
+              outline
+              theme={item.isDone ? 'success' : 'secondary'}
+              // onClick={handleSetCourseDone}
+            >
+              <i className={item.isDone ? 'fas' : 'far'}>&#xf058;&nbsp;</i>
+              {item.isDone ? 'Completed' : 'In progress'}
+            </Badge>
                 </td>
                 {currentUser?.isLecturer && (
                   <td

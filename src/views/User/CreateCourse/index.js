@@ -19,7 +19,8 @@ import {
   InputGroupAddon,
   InputGroupText,
   ListGroupItem,
-  Row
+  Row,
+  Col
 } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
 // import CustomFileUpload from './components/CustomFileUpload'
@@ -137,16 +138,38 @@ const CreateCourse = memo(() => {
               placeholder="Your brief description about this course"
               {...formik.getFieldProps('describe')}
             />
-            <InputGroup className="mb-2">
-              <InputGroupAddon type="prepend">
-                <InputGroupText>$</InputGroupText>
-              </InputGroupAddon>
-              <FormInput
-                name="price"
-                placeholder="Price"
-                {...formik.getFieldProps('price')}
-              />
-            </InputGroup>
+            <Row form>
+              <Col md="9" className="form-group">
+                <InputGroup className="mb-2">
+                  <InputGroupAddon type="prepend">
+                    <InputGroupText>$</InputGroupText>
+                  </InputGroupAddon>
+                  <FormInput
+                    name="price"
+                    placeholder="Price"
+                    {...formik.getFieldProps('price')}
+                  />
+                </InputGroup>
+              </Col>
+              <Col md="1" className="mt-2">
+                <label>Discount (%)</label>
+              </Col>
+              <Col md="2" className="form-group">
+                <InputGroup className="mb-2">
+                  <InputGroupAddon type="prepend" style={{cursor: 'pointer'}}>
+                    <InputGroupText>-</InputGroupText>
+                  </InputGroupAddon>
+                  <FormInput
+                    name="discount"
+                    value='0'
+                    // {...formik.getFieldProps('price')}
+                  />
+                  <InputGroupAddon type="append" style={{cursor: 'pointer'}}> 
+                    <InputGroupText>+</InputGroupText>
+                  </InputGroupAddon>
+                </InputGroup>
+              </Col>
+            </Row>
             <label>Content</label>
             <DynamicField formik={formik} />
             <label>Description</label>

@@ -72,7 +72,7 @@ const About = memo(({ course, currentUser }) => {
             </span>
             <p className="card-title mb-0">
               <span className="card-title d-inline-block text-warning">
-                {course.star}&nbsp;
+                {course.star.toFixed(1)}&nbsp;
                 {[
                   ...Array(
                     course.star - Math.floor(course.star) < 0.79

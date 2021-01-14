@@ -40,7 +40,7 @@ const Lecturer = memo(({ lecturerId }) => {
         <Col className="m-auto">
           <p className="text-warning my-1">
             <i className="material-icons">&#xe838;&nbsp;</i>
-            {lecturer?.star} Rating
+            {lecturer?.star.toFixed(1)} Rating
           </p>
           <p className="my-1">
             <i className="fas">&#xf144;&nbsp;</i>

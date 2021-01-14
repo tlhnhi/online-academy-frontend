@@ -47,11 +47,11 @@ const Related = memo(({ category }) => {
                   className="text-center text-warning"
                   style={{ width: `70px` }}
                 >
-                  {item.star}
+                  {item.star.toFixed(1)}
                   <i className="material-icons">&#xe838;</i>
                 </td>
                 <td className="text-center" style={{ width: `100px` }}>
-                  {item.enrollments}
+                  {item.enrollments}&nbsp;
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
                 <td className="text-center">
