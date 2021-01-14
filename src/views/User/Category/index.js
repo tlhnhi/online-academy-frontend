@@ -12,7 +12,17 @@ const Category = memo(() => {
   const categories = useSelector(x => x.category)
   const courses = useSelector(x => x.course).filter(x => x.category._id === id)
 
-  const category = categories.find(x => x._id === id)
+  let category = null
+
+  if (categories.length > 0) {
+    for (const cat of categories) {
+      for (const child of cat.childs) {
+        if (child._id === id) {
+          category = child
+        }
+      }
+    }
+  }
 
   const [currentIndex] = useState(-1)
   const [page, setPage] = useState(1)
@@ -22,6 +32,8 @@ const Category = memo(() => {
   const current = courses.slice(indexOfFirst, indexOfLast)
 
   const handlePageChange = (event, value) => setPage(value)
+
+  console.log('Category', { categories }, { category })
 
   return (
     <Container fluid className="main-content-container px-3">

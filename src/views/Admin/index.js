@@ -10,11 +10,10 @@ import { setUsers } from 'store/app/user'
 import { AdminLayout } from '../../layouts/Admin'
 import Categories from './Category'
 import Courses from './Course'
+import CreateLecturer from './CreateLecturer'
 import Dashboard from './Dashboard'
 import Lecturers from './Lecturer'
 import Students from './Student'
-import CreateLecturer from './CreateLecturer'
-
 
 const Route = ({ component: Component, layout: Layout, ...rest }) => {
   return (
@@ -42,7 +41,9 @@ const Admin = memo(() => {
 
   console.log('Admin', { users }, { currentUser })
 
-  if (currentUser?.email !== 'quack@domain.com') {
+  if (!currentUser) return ''
+
+  if (currentUser.email !== 'quack@domain.com') {
     return <Redirect to="/error" />
   }
 

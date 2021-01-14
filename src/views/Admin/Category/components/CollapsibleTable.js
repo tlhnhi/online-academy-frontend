@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeCategory } from 'store/app/category'
+import Add from './Add'
 import Edit from './Edit'
 
 const useRowStyles = makeStyles({
@@ -68,7 +69,7 @@ function Row(props) {
         <td className="text-right">{row.courses}</td>
         <td className="text-right">{row.students}</td>
         <td className="text-center">
-          <i className="fas">&#xf067;</i>
+          <Add id={row.id} />
         </td>
         <td className="text-center">
           <Edit id={row.id} />
@@ -111,9 +112,6 @@ function Row(props) {
                       </th>
                       <td className="text-right">{subCatRow[1]}</td>
                       <td className="text-right">{subCatRow[2]}</td>
-                      <td className="text-center">
-                        <i className="fas">&#xf067;</i>
-                      </td>
                       <td className="text-center">
                         <Edit id={subCatRow[3]} />
                       </td>

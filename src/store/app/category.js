@@ -29,32 +29,30 @@ const categorySlice = createSlice({
   }
 })
 
-const {
-  _setCategories,
-  _addCategory,
-  _editCategory,
-  _removeCategory
-} = categorySlice.actions
+const { _setCategories, _removeCategory } = categorySlice.actions
 
 export const setCategories = () => async dispatch => {
   const categories = await fetchCategories()
   if (categories.length > 0) dispatch(_setCategories(categories))
 }
 
-export const addCategory = name => async dispatch => {
-  const category = await createCategory(name)
-  dispatch(_addCategory(category))
+export const addCategory = (name, parent) => async dispatch => {
+  await createCategory(name, parent)
+  alert('Category created')
+  window.location.reload()
 }
 
 export const editCategory = (id, name) => async dispatch => {
   await updateCategory(id, name)
   alert('Category updated')
-  dispatch(_editCategory({ _id: id, name }))
+  window.location.reload()
 }
 
 export const removeCategory = id => async dispatch => {
   await deleteCategory(id)
+  alert('Category removed')
   dispatch(_removeCategory(id))
+  window.location.reload()
 }
 
 export default categorySlice.reducer
