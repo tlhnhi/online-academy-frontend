@@ -3,7 +3,7 @@ import Pagination from '@material-ui/lab/Pagination'
 import React, { memo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
-import { Container } from 'shards-react'
+import { Container, FormSelect, Row } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
 
 const Category = memo(() => {
@@ -154,7 +154,7 @@ const Category = memo(() => {
             ))}
         </tbody>
       </table>
-      {/* <Box mx = {85}> */}
+      <Row>
       <Pagination
         count={Math.ceil(courses.length / pageSize)}
         page={page}
@@ -163,7 +163,11 @@ const Category = memo(() => {
         onChange={handlePageChange}
         style={{ justifyContent: 'center' }}
       />
-      {/* </Box> */}
+      <FormSelect className="ml-4" style={{width:`100px`}}>
+        <option value="first">Newest</option>
+        <option value="second">Oldest</option>
+      </FormSelect>
+      </Row>
     </Container>
   )
 })
