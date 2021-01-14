@@ -57,7 +57,7 @@ const UserAccountDetails = memo(({ other }) => {
                       <Col md="4" className="form-group">
                         <label htmlFor="feRating">Rating</label> <br />
                         <span className="card-title text-warning">
-                          {other.star}&nbsp;
+                          {other.star.toFixed(1)}&nbsp;
                           {[
                             ...Array(
                               other.star - Math.floor(other.star) < 0.79

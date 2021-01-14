@@ -94,7 +94,7 @@ const Category = memo(() => {
                   style={{ width: `180px` }}
                 >
                   <span className="card-title text-warning">
-                    {item.star}&nbsp;
+                    {item.star.toFixed(1)}&nbsp;
                     {[
                       ...Array(
                         item.star - Math.floor(item.star) < 0.79
@@ -161,24 +161,32 @@ const Category = memo(() => {
                   >
                     {item.discount ? item.price + '$' : ''}
                   </p>
+                  {item.enrollments > 5 ? 
+                    <img
+                      src={require('../../../images/avatars/bs.png').default}
+                      alt=""
+                      width="40"
+                      height="40"
+                      object-fit="cover"
+                    /> : ''}
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
       <Row>
-      <Pagination
-        count={Math.ceil(courses.length / pageSize)}
-        page={page}
-        showFirstButton
-        showLastButton
-        onChange={handlePageChange}
-        style={{ justifyContent: 'center' }}
-      />
-      <FormSelect className="ml-4" style={{width:`100px`}}>
-        <option value="first">Newest</option>
-        <option value="second">Oldest</option>
-      </FormSelect>
+        <Pagination
+          count={Math.ceil(courses.length / pageSize)}
+          page={page}
+          showFirstButton
+          showLastButton
+          onChange={handlePageChange}
+          style={{ justifyContent: 'center' }}
+        />
+        <FormSelect className="ml-4" style={{ width: `100px` }}>
+          <option value="first">Newest</option>
+          <option value="second">Oldest</option>
+        </FormSelect>
       </Row>
     </Container>
   )

@@ -85,7 +85,7 @@ const UsersCourse = memo(() => {
                   style={{ width: `180px` }}
                 >
                   <span className="card-title text-warning">
-                    {item.star}&nbsp;
+                    {item.star.toFixed(1)}&nbsp;
                     {[
                       ...Array(
                         item.star - Math.floor(item.star) < 0.79

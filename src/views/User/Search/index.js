@@ -1,10 +1,9 @@
 import Pagination from '@material-ui/lab/Pagination'
 import { searchCourses } from 'api/course'
-import catTheme from 'constants/category-theme'
 import queryString from 'query-string'
 import React, { memo, useEffect, useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Badge, Container } from 'shards-react'
+import { Container } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
 
 const Search = memo(() => {
@@ -97,7 +96,7 @@ const Search = memo(() => {
                   style={{ width: `180px` }}
                 >
                   <span className="card-title text-warning">
-                    {item.star}&nbsp;
+                    {item.star.toFixed(1)}&nbsp;
                     {[
                       ...Array(
                         item.star - Math.floor(item.star) < 0.79
@@ -146,16 +145,32 @@ const Search = memo(() => {
                   {item.enrollments}
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
-                <td className="text-center" style={{ width: `150px` }}>
-                  <Badge
-                    pill
-                    className={`card-post__category bg-${
-                      catTheme[item.category.name]
-                    }`}
-                    href={`/categories/${item.category._id}`}
+                <td
+                  className="text-center"
+                  style={{ width: `150px`, fontSize: `18px` }}
+                >
+                  {item.discount !== 1
+                    ? (item.price * (1 - item.discount)).toFixed(2)
+                    : item.price}
+                  $
+                  <p
+                    className="text-muted"
+                    style={{
+                      fontSize: `14px`,
+                      textDecorationLine: 'line-through',
+                      textDecorationStyle: 'solid'
+                    }}
                   >
-                    {item.category.name}
-                  </Badge>
+                    {item.discount ? item.price + '$' : ''}
+                  </p>
+                  {item.enrollments > 5 ? 
+                    <img
+                      src={require('../../../images/avatars/bs.png').default}
+                      alt=""
+                      width="40"
+                      height="40"
+                      object-fit="cover"
+                    /> : ''}
                 </td>
               </tr>
             ))}

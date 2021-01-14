@@ -62,7 +62,7 @@ const Newest = memo(({ courses }) => {
                     </p>
                     <br />
                     <span className="card-title d-inline-block text-warning">
-                      {course.star}&nbsp;
+                      {course.star.toFixed(1)}&nbsp;
                       {[
                         ...Array(
                           course.star - Math.floor(course.star) < 0.79
