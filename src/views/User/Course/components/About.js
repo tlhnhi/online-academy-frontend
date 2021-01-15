@@ -127,20 +127,16 @@ const About = memo(({ course, currentUser }) => {
               {new Date(course.updatedAt).toLocaleDateString('vi-VN')}
             </p>
             <div>
-              {currentUser?.isLecturer ? (
-                <div></div>
-              ) : (
-                <Badge
-                  className="my-auto"
-                  style={{ fontSize: `16px`, cursor: 'pointer' }}
-                  outline
-                  theme="danger"
-                  onClick={handleAddToWatchList}
-                >
-                  <i className={isFavorite ? 'fas' : 'far'}>&#xf004;&nbsp;</i>
-                  Watchlist
-                </Badge>
-              )}
+              <Badge
+                className="my-auto"
+                style={{ fontSize: `16px`, cursor: 'pointer' }}
+                outline
+                theme="danger"
+                onClick={handleAddToWatchList}
+              >
+                <i className={isFavorite ? 'fas' : 'far'}>&#xf004;&nbsp;</i>
+                Watchlist
+              </Badge>
             </div>
           </CardBody>
         </Col>
