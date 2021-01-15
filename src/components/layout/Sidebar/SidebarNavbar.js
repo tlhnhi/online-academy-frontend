@@ -1,11 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import { Navbar, NavbarBrand } from 'shards-react'
 
 const SidebarNavbar = () => {
-  const { push } = useHistory()
-
   return (
     <div className="main-navbar">
       <Navbar
@@ -15,7 +12,7 @@ const SidebarNavbar = () => {
         <NavbarBrand
           className="w-100 mr-0"
           style={{ lineHeight: '25px', cursor: 'pointer' }}
-          onClick={() => push('/')}
+          href="/"
         >
           <div className="d-table m-auto">
             <img

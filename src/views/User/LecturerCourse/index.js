@@ -6,6 +6,7 @@ import { Breadcrumb, BreadcrumbItem, Container } from 'shards-react'
 import About from './components/About'
 import Content from './components/Content'
 import Feedback from './components/Feedback'
+import Learn from './components/Learn'
 
 const LecturerCourse = memo(() => {
   const { id } = useParams()
@@ -50,6 +51,7 @@ const LecturerCourse = memo(() => {
             </BreadcrumbItem>
           </Breadcrumb>
           <About course={course} />
+          <Learn detail={course.detail.split('<br>')} />
           {currentUser?._id && <Content course={course} user={currentUser} />}
           <Feedback rating={course.rating} />
         </>

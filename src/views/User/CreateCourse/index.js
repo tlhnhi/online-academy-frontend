@@ -1,4 +1,4 @@
-import { createCourse } from 'api/course'
+import { createCourse, updateCourse } from 'api/course'
 import { useFormik } from 'formik'
 import queryString from 'query-string'
 import React, { memo, useRef } from 'react'
@@ -62,21 +62,24 @@ const CreateCourse = memo(() => {
         category,
         describe,
         price,
+        discount,
         detail,
         content
       } = values
 
-      const data = await createCourse({
+      const obj = {
         // avatar: await toBase64(avatar),
         avatar,
         title,
         describe,
         detail,
         price: parseFloat(price),
-        discount: 0,
+        discount: parseInt(discount),
         category_id: category,
         content
-      })
+      }
+
+      const data = !id ? await createCourse(obj) : await updateCourse(obj)
 
       if (data) {
         alert(`Your course has been ${!id ? 'created' : 'updated'}`)
@@ -156,15 +159,15 @@ const CreateCourse = memo(() => {
               </Col>
               <Col md="2" className="form-group">
                 <InputGroup className="mb-2">
-                  <InputGroupAddon type="prepend" style={{cursor: 'pointer'}}>
+                  <InputGroupAddon type="prepend" style={{ cursor: 'pointer' }}>
                     <InputGroupText>-</InputGroupText>
                   </InputGroupAddon>
                   <FormInput
                     name="discount"
-                    value='0'
-                    // {...formik.getFieldProps('price')}
+                    placeholder="0%"
+                    {...formik.getFieldProps('discount')}
                   />
-                  <InputGroupAddon type="append" style={{cursor: 'pointer'}}> 
+                  <InputGroupAddon type="append" style={{ cursor: 'pointer' }}>
                     <InputGroupText>+</InputGroupText>
                   </InputGroupAddon>
                 </InputGroup>
