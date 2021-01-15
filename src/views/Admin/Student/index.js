@@ -1,3 +1,4 @@
+import { updateAccountByAdmin } from 'api/user'
 import React, { memo, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Container, Row } from 'shards-react'
@@ -10,9 +11,10 @@ const Students = memo(() => {
   const users = useSelector(x => x.user)
   const students = users.filter(x => !x.isLecturer)
 
-  const handleBlockStudent = useCallback(id => dispatch(removeUser(id)), [
-    dispatch
-  ])
+  const handleBlockStudent = useCallback(async id => {
+    await updateAccountByAdmin({ _id: id, isBlocked: true })
+    alert('This student is blocked')
+  }, [])
 
   const handleRemoveStudent = useCallback(id => dispatch(removeUser(id)), [
     dispatch

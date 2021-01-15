@@ -32,8 +32,8 @@ const Login = memo(() => {
 
   async function onSubmit(values) {
     const { email, password } = values
-    const { token } = await signIn(email, password)
-    if (token) localStorage.setItem('token', token)
+    const res = await signIn(email, password)
+    if (res?.token) localStorage.setItem('token', res.token)
     window.location.reload()
   }
 

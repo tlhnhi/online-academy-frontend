@@ -23,6 +23,8 @@ export const setCurrentUser = () => async dispatch => {
 
   if (me?._id) {
     if (me.isBlocked) {
+      dispatch(_removeCurrentUser())
+      localStorage.removeItem('token')
       return alert('Your account has been blocked!')
     }
 
