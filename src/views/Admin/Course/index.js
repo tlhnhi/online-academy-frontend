@@ -22,6 +22,10 @@ const UsersCourse = memo(() => {
     setPage(value)
   }
 
+  const handleBlockCourse = useCallback(id => dispatch(removeCourse(id)), [
+    dispatch
+  ])
+
   const handleRemoveCourse = useCallback(id => dispatch(removeCourse(id)), [
     dispatch
   ])
@@ -142,6 +146,17 @@ const UsersCourse = memo(() => {
                   >
                     {item.category.name}
                   </Badge>
+                </td>
+                <td
+                  className="text-right text-danger"
+                  style={{ width: `80px` }}
+                >
+                  <i
+                    className="fa fa-ban"
+                    aria-hidden="true"
+                    onClick={() => handleBlockCourse(item._id)}
+                    style={{ cursor: 'pointer' }}
+                  ></i>
                 </td>
                 <td
                   className="text-center text-danger"

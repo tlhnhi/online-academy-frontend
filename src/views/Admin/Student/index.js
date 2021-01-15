@@ -10,6 +10,10 @@ const Students = memo(() => {
   const users = useSelector(x => x.user)
   const students = users.filter(x => !x.isLecturer)
 
+  const handleBlockStudent = useCallback(id => dispatch(removeUser(id)), [
+    dispatch
+  ])
+
   const handleRemoveStudent = useCallback(id => dispatch(removeUser(id)), [
     dispatch
   ])
@@ -51,6 +55,7 @@ const Students = memo(() => {
                 Enrolled Courses
               </th>
               <th />
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -70,6 +75,17 @@ const Students = memo(() => {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td className="text-right">{user.enrolled.length}</td>
+                <td
+                  className="text-right text-danger"
+                  style={{ width: `80px` }}
+                >
+                  <i
+                    className="fa fa-ban"
+                    aria-hidden="true"
+                    onClick={() => handleBlockStudent(user._id)}
+                    style={{ cursor: 'pointer' }}
+                  ></i>
+                </td>
                 <td
                   className="text-center text-danger"
                   style={{ width: `80px` }}
