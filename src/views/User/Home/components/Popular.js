@@ -119,14 +119,17 @@ const Popular = memo(({ courses }) => {
                   </span>
                 </Col>
                 <Col className="text-right">
-                  {course.enrollments > 5 ? 
+                  {course.enrollments > 5 ? (
                     <img
                       src={require('../../../../images/avatars/bs.png').default}
                       alt=""
                       width="40"
                       height="40"
                       object-fit="cover"
-                    /> : ''}
+                    />
+                  ) : (
+                    ''
+                  )}
                 </Col>
               </Row>
             </CardBody>
