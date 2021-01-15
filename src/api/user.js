@@ -15,11 +15,11 @@ export const fetchProfile = async () => {
   return success ? data : alert(message)
 }
 
-export const createAccountByAdmin = async (email, password) => {
+export const createAccountByAdmin = async (email, password, name) => {
   const { success, message, data } = await axiosClient({
     url: '/user',
     method: 'post',
-    data: { email, password }
+    data: { email, password, name }
   })
 
   return success ? data : alert(message)

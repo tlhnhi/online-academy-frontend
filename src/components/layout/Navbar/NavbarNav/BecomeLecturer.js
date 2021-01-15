@@ -4,13 +4,13 @@ import { NavItem, NavLink } from 'shards-react'
 const BecomeLecturer = memo(() => {
   return (
     <NavItem className="border-right" style={{ width: `120px` }}>
-      <NavLink className="nav-link-icon text-center">
+      <NavLink
+        className="nav-link-icon text-center"
+        href="/admin/create-lecturer"
+      >
         <div className="nav-link-icon__wrapper">
-          <span
-            className="d-none d-md-inline-block mt-2"
-            style={{ cursor: 'pointer' }}
-          >
-            Become A Lecturer
+          <span className="d-none d-md-inline-block mt-2">
+            Create New Lecturer
           </span>
         </div>
       </NavLink>

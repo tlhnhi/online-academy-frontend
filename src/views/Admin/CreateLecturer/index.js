@@ -1,8 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { signUp } from 'api/auth'
+import { createAccountByAdmin } from 'api/user'
 import React, { memo } from 'react'
 import { useForm } from 'react-hook-form'
-import { Redirect } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -34,13 +33,8 @@ const CreateLecturer = memo(() => {
 
   async function onSubmit(values) {
     const { email, password, name } = values
-    const token = await signUp(name, email, password)
-    if (token) localStorage.setItem('token', token)
-    window.location.reload()
-  }
-
-  if (!!localStorage.getItem('token')) {
-    return <Redirect to="/" />
+    await createAccountByAdmin(email, password, name)
+    alert('Account created')
   }
 
   return (
@@ -77,7 +71,7 @@ const CreateLecturer = memo(() => {
                 <input
                   name="email"
                   type="email"
-                  placeholder="Email Address"
+                  placeholder="Lecturer Email Address"
                   ref={register}
                   className={`form-control ${errors.email ? 'is-invalid' : ''}`}
                 />
@@ -88,7 +82,7 @@ const CreateLecturer = memo(() => {
                 <input
                   name="name"
                   type="text"
-                  placeholder="Your Name"
+                  placeholder="Lecturer Name"
                   ref={register}
                   className={`form-control ${errors.name ? 'is-invalid' : ''}`}
                 />
@@ -100,7 +94,7 @@ const CreateLecturer = memo(() => {
                 <input
                   name="password"
                   type="password"
-                  placeholder="Password"
+                  placeholder="Lecturer Password"
                   ref={register}
                   className={`form-control ${
                     errors.password ? 'is-invalid' : ''
