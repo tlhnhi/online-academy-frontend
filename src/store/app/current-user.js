@@ -20,7 +20,14 @@ const { _setCurrentUser, _removeCurrentUser } = currentUserSlice.actions
 
 export const setCurrentUser = () => async dispatch => {
   const me = await fetchProfile()
-  if (me?._id) dispatch(_setCurrentUser(me))
+
+  if (me?._id) {
+    if (me.isBlocked) {
+      return alert('Your account has been blocked!')
+    }
+
+    dispatch(_setCurrentUser(me))
+  }
 }
 
 export const removeCurrentUser = () => dispatch => {

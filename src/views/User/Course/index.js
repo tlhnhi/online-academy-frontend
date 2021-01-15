@@ -39,6 +39,11 @@ const Course = memo(() => {
     return <Redirect to={`/lecturer-courses/${id}`} />
   }
 
+  if (course?.isBlocked) {
+    alert('This course has been blocked!')
+    return <Redirect to="/" />
+  }
+
   return (
     <Container fluid className="main-content-container p-3">
       <Breadcrumb>

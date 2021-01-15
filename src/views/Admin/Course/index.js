@@ -1,5 +1,6 @@
 // import Box from '@material-ui/core/Box'
 import Pagination from '@material-ui/lab/Pagination'
+import { updateCourseByAdmin } from 'api/course'
 import React, { memo, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -22,9 +23,10 @@ const UsersCourse = memo(() => {
     setPage(value)
   }
 
-  const handleBlockCourse = useCallback(id => dispatch(removeCourse(id)), [
-    dispatch
-  ])
+  const handleBlockCourse = useCallback(async id => {
+    await updateCourseByAdmin({ _id: id, isBlocked: true })
+    alert('Successfully blocked this course')
+  }, [])
 
   const handleRemoveCourse = useCallback(id => dispatch(removeCourse(id)), [
     dispatch
@@ -175,15 +177,15 @@ const UsersCourse = memo(() => {
         </tbody>
       </table>
       <Row>
-      <Pagination
-        count={Math.ceil(courses.length / pageSize)}
-        page={page}
-        showFirstButton
-        showLastButton
-        onChange={handlePageChange}
-        style={{ justifyContent: 'center' }}
-      />
-      <FormSelect
+        <Pagination
+          count={Math.ceil(courses.length / pageSize)}
+          page={page}
+          showFirstButton
+          showLastButton
+          onChange={handlePageChange}
+          style={{ justifyContent: 'center' }}
+        />
+        <FormSelect
           className="ml-2"
           style={{ width: `100px` }}
           // onChange={e => setSort(e.target.value)}

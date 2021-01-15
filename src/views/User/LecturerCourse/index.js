@@ -29,6 +29,11 @@ const LecturerCourse = memo(() => {
 
   console.log('LecturerCourse', { course })
 
+  if (course?.isBlocked) {
+    alert('This course has been blocked!')
+    return <Redirect to="/" />
+  }
+
   if (!localStorage.getItem('token')) {
     return <Redirect to="/error" />
   }
