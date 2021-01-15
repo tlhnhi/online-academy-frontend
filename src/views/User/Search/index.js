@@ -2,21 +2,28 @@ import Pagination from '@material-ui/lab/Pagination'
 import { searchCourses } from 'api/course'
 import queryString from 'query-string'
 import React, { memo, useEffect, useState } from 'react'
+import { Row } from 'react-bootstrap'
 import { Link, Redirect } from 'react-router-dom'
-import { Container } from 'shards-react'
+import { Container, FormSelect } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
 
 const Search = memo(() => {
   const { q } = queryString.parse(window.location.search)
 
   const [courses, setCourses] = useState([])
+  const [sort, setSort] = useState('newest')
 
   const [currentIndex] = useState(-1)
   const [page, setPage] = useState(1)
   const [pageSize] = useState(5)
   const indexOfLast = page * pageSize
   const indexOfFirst = indexOfLast - pageSize
-  const current = courses.slice(indexOfFirst, indexOfLast)
+  const current = courses.slice(indexOfFirst, indexOfLast).sort((a, b) => {
+    const timeA = new Date(a.updatedAt).getTime()
+    const timeB = new Date(b.updatedAt).getTime()
+
+    return sort === 'newest' ? timeB - timeA : timeA - timeB
+  })
 
   const handlePageChange = (event, value) => {
     setPage(value)
@@ -183,14 +190,24 @@ const Search = memo(() => {
         </tbody>
       </table>
       {/* <Box mx = {85}> */}
-      <Pagination
-        count={Math.ceil(courses.length / pageSize)}
-        page={page}
-        showFirstButton
-        showLastButton
-        onChange={handlePageChange}
-        style={{ justifyContent: 'center' }}
-      />
+      <Row>
+        <Pagination
+          count={Math.ceil(courses.length / pageSize)}
+          page={page}
+          showFirstButton
+          showLastButton
+          onChange={handlePageChange}
+          style={{ justifyContent: 'center' }}
+        />
+        <FormSelect
+          className="ml-4"
+          style={{ width: `100px` }}
+          onChange={e => setSort(e.target.value)}
+        >
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+        </FormSelect>
+      </Row>
       {/* </Box> */}
     </Container>
   )

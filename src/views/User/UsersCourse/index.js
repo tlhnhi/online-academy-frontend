@@ -2,9 +2,10 @@
 import Pagination from '@material-ui/lab/Pagination'
 import { fetchEnrolledCourses, fetchUploadedCourses } from 'api/course'
 import React, { memo, useCallback, useEffect, useState } from 'react'
+import { Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect, useHistory } from 'react-router-dom'
-import { Badge, Container } from 'shards-react'
+import { Badge, Container, FormSelect } from 'shards-react'
 import { removeCourseLecturer } from 'store/app/course'
 import PageTitle from '../../../components/PageTitle'
 
@@ -15,13 +16,19 @@ const UsersCourse = memo(() => {
   const currentUser = useSelector(x => x.currentUser)
 
   const [myCourses, setMyCourses] = useState([])
+  const [sort, setSort] = useState('newest')
 
   const [currentIndex] = useState(-1)
   const [page, setPage] = useState(1)
   const [pageSize] = useState(5)
   const indexOfLast = page * pageSize
   const indexOfFirst = indexOfLast - pageSize
-  const current = myCourses.slice(indexOfFirst, indexOfLast)
+  const current = myCourses.slice(indexOfFirst, indexOfLast).sort((a, b) => {
+    const timeA = new Date(a.updatedAt).getTime()
+    const timeB = new Date(b.updatedAt).getTime()
+
+    return sort === 'newest' ? timeB - timeA : timeA - timeB
+  })
 
   const handlePageChange = (event, value) => {
     setPage(value)
@@ -210,14 +217,24 @@ const UsersCourse = memo(() => {
         </tbody>
       </table>
       {/* <Box mx = {85}> */}
-      <Pagination
-        count={Math.ceil(myCourses.length / pageSize)}
-        page={page}
-        showFirstButton
-        showLastButton
-        onChange={handlePageChange}
-        style={{ justifyContent: 'center' }}
-      />
+      <Row>
+        <Pagination
+          count={Math.ceil(myCourses.length / pageSize)}
+          page={page}
+          showFirstButton
+          showLastButton
+          onChange={handlePageChange}
+          style={{ justifyContent: 'center' }}
+        />
+        <FormSelect
+          className="ml-4"
+          style={{ width: `100px` }}
+          onChange={e => setSort(e.target.value)}
+        >
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+        </FormSelect>
+      </Row>
       {/* </Box> */}
     </Container>
   )

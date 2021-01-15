@@ -12,6 +12,8 @@ const Category = memo(() => {
   const categories = useSelector(x => x.category)
   const courses = useSelector(x => x.course).filter(x => x.category._id === id)
 
+  const [sort, setSort] = useState('newest')
+
   let category = null
 
   if (categories.length > 0) {
@@ -29,7 +31,12 @@ const Category = memo(() => {
   const [pageSize] = useState(5)
   const indexOfLast = page * pageSize
   const indexOfFirst = indexOfLast - pageSize
-  const current = courses.slice(indexOfFirst, indexOfLast)
+  const current = courses.slice(indexOfFirst, indexOfLast).sort((a, b) => {
+    const timeA = new Date(a.updatedAt).getTime()
+    const timeB = new Date(b.updatedAt).getTime()
+
+    return sort === 'newest' ? timeB - timeA : timeA - timeB
+  })
 
   const handlePageChange = (event, value) => setPage(value)
 
@@ -161,14 +168,17 @@ const Category = memo(() => {
                   >
                     {item.discount ? item.price + '$' : ''}
                   </p>
-                  {item.enrollments > 5 ? 
+                  {item.enrollments > 5 ? (
                     <img
                       src={require('../../../images/avatars/bs.png').default}
                       alt=""
                       width="40"
                       height="40"
                       object-fit="cover"
-                    /> : ''}
+                    />
+                  ) : (
+                    ''
+                  )}
                 </td>
               </tr>
             ))}
@@ -183,9 +193,13 @@ const Category = memo(() => {
           onChange={handlePageChange}
           style={{ justifyContent: 'center' }}
         />
-        <FormSelect className="ml-4" style={{ width: `100px` }}>
-          <option value="first">Newest</option>
-          <option value="second">Oldest</option>
+        <FormSelect
+          className="ml-4"
+          style={{ width: `100px` }}
+          onChange={e => setSort(e.target.value)}
+        >
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
         </FormSelect>
       </Row>
     </Container>
