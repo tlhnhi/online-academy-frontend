@@ -7,14 +7,20 @@ import {
 } from 'api/course'
 import PropTypes from 'prop-types'
 import React, { memo, useCallback, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Badge, Button, Card, CardBody, Col, Row } from 'shards-react'
 
 const About = memo(({ course, currentUser }) => {
+  const { push } = useHistory()
+
   const [isFavorite, setIsFavorite] = useState(false)
   const [isEnroll, setIsEnroll] = useState(false)
 
   const handleAddToWatchList = useCallback(async () => {
+    if (!localStorage.getItem('token')) {
+      return push('/login')
+    }
+
     const data = isFavorite
       ? await removeCourseFromFavorite(course._id)
       : await addCourseToFavorite(course._id)
@@ -23,9 +29,13 @@ const About = memo(({ course, currentUser }) => {
       setIsFavorite(!isFavorite)
       alert(data)
     }
-  }, [isFavorite, course])
+  }, [isFavorite, course, push])
 
   const handleEnrollCourse = useCallback(async () => {
+    if (!localStorage.getItem('token')) {
+      return push('/login')
+    }
+
     const data = await enrollNewCourse(course._id)
 
     if (data) {
@@ -33,7 +43,7 @@ const About = memo(({ course, currentUser }) => {
       alert(data)
       window.location.reload()
     }
-  }, [isEnroll, course])
+  }, [isEnroll, course, push])
 
   useEffect(() => {
     const getIsFavorite = async () => {
