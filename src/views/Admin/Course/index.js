@@ -1,5 +1,6 @@
 // import Box from '@material-ui/core/Box'
 import Pagination from '@material-ui/lab/Pagination'
+import { updateCourseByAdmin } from 'api/course'
 import React, { memo, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -9,22 +10,34 @@ import PageTitle from '../../../components/PageTitle'
 
 const UsersCourse = memo(() => {
   const dispatch = useDispatch()
+
   const courses = useSelector(x => x.course)
+  const lecturers = useSelector(x => x.user).filter(x => x.isLecturer)
+
+  const [filterCategory, setFilterCategory] = useState('')
+  const [filterLecturer, setFilterLecturer] = useState('')
 
   const [currentIndex] = useState(-1)
   const [page, setPage] = useState(1)
   const [pageSize] = useState(5)
   const indexOfLast = page * pageSize
   const indexOfFirst = indexOfLast - pageSize
-  const current = courses.slice(indexOfFirst, indexOfLast)
+  const current = courses
+    .filter(
+      x =>
+        x.category._id.includes(filterCategory) &&
+        x.lecturer._id.includes(filterLecturer)
+    )
+    .slice(indexOfFirst, indexOfLast)
 
   const handlePageChange = (event, value) => {
     setPage(value)
   }
 
-  const handleBlockCourse = useCallback(id => dispatch(removeCourse(id)), [
-    dispatch
-  ])
+  const handleBlockCourse = useCallback(async id => {
+    await updateCourseByAdmin({ _id: id, isBlocked: true })
+    alert('Successfully blocked this course')
+  }, [])
 
   const handleRemoveCourse = useCallback(id => dispatch(removeCourse(id)), [
     dispatch
@@ -175,29 +188,46 @@ const UsersCourse = memo(() => {
         </tbody>
       </table>
       <Row>
-      <Pagination
-        count={Math.ceil(courses.length / pageSize)}
-        page={page}
-        showFirstButton
-        showLastButton
-        onChange={handlePageChange}
-        style={{ justifyContent: 'center' }}
-      />
-      <FormSelect
-          className="ml-4"
+        <Pagination
+          count={Math.ceil(courses.length / pageSize)}
+          page={page}
+          showFirstButton
+          showLastButton
+          onChange={handlePageChange}
+          style={{ justifyContent: 'center' }}
+        />
+        <FormSelect
+          className="ml-2"
           style={{ width: `100px` }}
-          // onChange={e => setSort(e.target.value)}
+          onChange={e => setFilterLecturer(e.target.value)}
         >
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
+          <option value="">All</option>
+          {lecturers.length > 0 &&
+            lecturers.map(x => (
+              <option key={x._id} value={x._id}>
+                {x.name}
+              </option>
+            ))}
         </FormSelect>
         <FormSelect
-          className="ml-4"
+          className="ml-2"
           style={{ width: `100px` }}
-          // onChange={e => setSort(e.target.value)}
+          onChange={e => setFilterCategory(e.target.value)}
         >
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
+        
+          <option value="Web">Web</option>
+          <option value="Mobile">Mobile</option>
+          <option value="Software Testing">Software Testing</option>
+          <option value="Data Science">Data Science</option>
+          <option value="E-Commerce">E-Commerce</option>
+          <option value="Media">Media</option>
+          <option value="Human Resources">Human Resouces</option>
+          <option value="Project Management">Project Management</option>
+          <option value="UI/UX">UI/UX</option>
+          <option value="Design Tools">Design Tools</option>
+          <option value="Game Design">Game Design</option>
+          <option value="3D & Animation">3D & Animation</option>
+          <option value="Design Thinking">Design Thinking</option>
         </FormSelect>
       </Row>
     </Container>
