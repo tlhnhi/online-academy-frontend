@@ -10,14 +10,25 @@ import PageTitle from '../../../components/PageTitle'
 
 const UsersCourse = memo(() => {
   const dispatch = useDispatch()
+
   const courses = useSelector(x => x.course)
+  const lecturers = useSelector(x => x.user).filter(x => x.isLecturer)
+
+  const [filterCategory, setFilterCategory] = useState('')
+  const [filterLecturer, setFilterLecturer] = useState('')
 
   const [currentIndex] = useState(-1)
   const [page, setPage] = useState(1)
   const [pageSize] = useState(5)
   const indexOfLast = page * pageSize
   const indexOfFirst = indexOfLast - pageSize
-  const current = courses.slice(indexOfFirst, indexOfLast)
+  const current = courses
+    .filter(
+      x =>
+        x.category._id.includes(filterCategory) &&
+        x.lecturer._id.includes(filterLecturer)
+    )
+    .slice(indexOfFirst, indexOfLast)
 
   const handlePageChange = (event, value) => {
     setPage(value)
@@ -188,17 +199,22 @@ const UsersCourse = memo(() => {
         <FormSelect
           className="ml-2"
           style={{ width: `100px` }}
-          // onChange={e => setSort(e.target.value)}
+          onChange={e => setFilterLecturer(e.target.value)}
         >
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
+          <option value="">All</option>
+          {lecturers.length > 0 &&
+            lecturers.map(x => (
+              <option key={x._id} value={x._id}>
+                {x.name}
+              </option>
+            ))}
         </FormSelect>
         <FormSelect
           className="ml-2"
           style={{ width: `100px` }}
-          // onChange={e => setSort(e.target.value)}
+          onChange={e => setFilterCategory(e.target.value)}
         >
-          <option value="newest">Newest</option>
+          <option value="">All</option>
           <option value="oldest">Oldest</option>
         </FormSelect>
       </Row>
