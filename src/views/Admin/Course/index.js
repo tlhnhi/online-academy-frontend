@@ -3,7 +3,7 @@ import Pagination from '@material-ui/lab/Pagination'
 import React, { memo, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Badge, Container, Row, FormSelect } from 'shards-react'
+import { Badge, Container, FormSelect, Row } from 'shards-react'
 import { removeCourse } from 'store/app/course'
 import PageTitle from '../../../components/PageTitle'
 
@@ -184,7 +184,7 @@ const UsersCourse = memo(() => {
         style={{ justifyContent: 'center' }}
       />
       <FormSelect
-          className="ml-2"
+          className="ml-4"
           style={{ width: `100px` }}
           // onChange={e => setSort(e.target.value)}
         >
@@ -192,7 +192,7 @@ const UsersCourse = memo(() => {
           <option value="oldest">Oldest</option>
         </FormSelect>
         <FormSelect
-          className="ml-2"
+          className="ml-4"
           style={{ width: `100px` }}
           // onChange={e => setSort(e.target.value)}
         >

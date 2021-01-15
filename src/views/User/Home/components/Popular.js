@@ -123,8 +123,8 @@ const Popular = memo(({ courses }) => {
                     <img
                       src={require('../../../../images/avatars/bs.png').default}
                       alt=""
-                      width="40"
-                      height="40"
+                      width="80"
+                      height="80"
                       object-fit="cover"
                     /> : ''}
                 </Col>
