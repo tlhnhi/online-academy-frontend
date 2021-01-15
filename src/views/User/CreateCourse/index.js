@@ -74,7 +74,7 @@ const CreateCourse = memo(() => {
         describe,
         detail,
         price: parseFloat(price),
-        discount: parseInt(discount),
+        discount: parseFloat(+discount / 100).toFixed(2),
         category_id: category,
         content
       }

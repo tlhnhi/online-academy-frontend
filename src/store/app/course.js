@@ -39,7 +39,7 @@ const {
 
 export const setCourses = () => async dispatch => {
   const courses = await fetchCourses()
-  if (courses.length > 0) dispatch(_setCourses(courses))
+  if (courses?.length > 0) dispatch(_setCourses(courses))
 }
 
 export const addCourse = course => async dispatch => {

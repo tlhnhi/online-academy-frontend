@@ -100,7 +100,7 @@ const About = memo(({ course }) => {
             <span className="my-3">
               <h2 className="card-title d-inline-block my-auto">
                 {course.discount !== 0
-                  ? (course.price * course.discount).toFixed(2)
+                  ? (course.price * (1 - course.discount)).toFixed(2)
                   : course.price}
                 $&nbsp;
               </h2>

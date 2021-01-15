@@ -164,7 +164,7 @@ const About = memo(({ course, currentUser }) => {
               <Row className="mx-5 justify-content-between">
                 <span className="my-auto">
                   <h2 className="card-title d-inline-block my-auto">
-                    {course.discount !== 1
+                    {course.discount !== 0
                       ? (course.price * (1 - course.discount)).toFixed(2)
                       : course.price}
                     $&nbsp;

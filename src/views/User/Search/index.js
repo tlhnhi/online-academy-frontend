@@ -3,7 +3,7 @@ import { searchCourses } from 'api/course'
 import queryString from 'query-string'
 import React, { memo, useEffect, useState } from 'react'
 import { Row } from 'react-bootstrap'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Container, FormSelect } from 'shards-react'
 import PageTitle from '../../../components/PageTitle'
 
@@ -39,10 +39,6 @@ const Search = memo(() => {
   }, [courses, q])
 
   console.log('Search', { q }, { courses })
-
-  if (!localStorage.getItem('token')) {
-    return <Redirect to="/error" />
-  }
 
   return (
     <Container fluid className="main-content-container px-3">
