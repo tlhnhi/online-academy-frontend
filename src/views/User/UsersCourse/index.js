@@ -3,13 +3,15 @@ import Pagination from '@material-ui/lab/Pagination'
 import { fetchEnrolledCourses, fetchUploadedCourses } from 'api/course'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import { Badge, Container } from 'shards-react'
 import { removeCourseLecturer } from 'store/app/course'
 import PageTitle from '../../../components/PageTitle'
 
 const UsersCourse = memo(() => {
   const dispatch = useDispatch()
+  const { push } = useHistory()
+
   const currentUser = useSelector(x => x.currentUser)
 
   const [myCourses, setMyCourses] = useState([])
@@ -165,30 +167,43 @@ const UsersCourse = memo(() => {
                   <i className="material-icons">&#xe7fb;</i>
                 </td>
                 <td className="text-center" style={{ width: `150px` }}>
-                <Badge
-              className="my-auto"
-              style={{ fontSize: `16px` }}
-              outline
-              theme={item.isDone ? 'success' : 'secondary'}
-              // onClick={handleSetCourseDone}
-            >
-              <i className={item.isDone ? 'fas' : 'far'}>&#xf058;&nbsp;</i>
-              {item.isDone ? 'Completed' : 'In progress'}
-            </Badge>
+                  <Badge
+                    className="my-auto"
+                    style={{ fontSize: `16px` }}
+                    outline
+                    theme={item.isDone ? 'success' : 'secondary'}
+                    // onClick={handleSetCourseDone}
+                  >
+                    <i className={item.isDone ? 'fas' : 'far'}>
+                      &#xf058;&nbsp;
+                    </i>
+                    {item.isDone ? 'Completed' : 'In progress'}
+                  </Badge>
                 </td>
                 {currentUser?.isLecturer && (
-                  <td
-                    className="text-center text-danger"
-                    style={{ width: `50px` }}
-                  >
-                    <i
-                      className="fas"
-                      onClick={() => handleRemoveCourse(item._id)}
-                      style={{ cursor: 'pointer' }}
+                  <>
+                    <td className="text-center" style={{ width: `50px` }}>
+                      <i
+                        className="fas"
+                        onClick={() => push(`/create-course?id=${item._id}`)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        &#xf044;
+                      </i>
+                    </td>
+                    <td
+                      className="text-center text-danger"
+                      style={{ width: `50px` }}
                     >
-                      &#xf2ed;
-                    </i>
-                  </td>
+                      <i
+                        className="fas"
+                        onClick={() => handleRemoveCourse(item._id)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        &#xf2ed;
+                      </i>
+                    </td>
+                  </>
                 )}
               </tr>
             ))}

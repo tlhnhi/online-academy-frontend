@@ -42,7 +42,10 @@ const Search = memo(() => {
       <div className="page-header py-4">
         <PageTitle
           sm="12"
-          title={`Found ${courses.length} courses by keyword: ${q}`}
+          title={
+            courses.length > 0 &&
+            `Found ${courses.length} courses by keyword: ${q}`
+          }
           subtitle=""
           className="text-sm-left"
         />
@@ -163,14 +166,17 @@ const Search = memo(() => {
                   >
                     {item.discount ? item.price + '$' : ''}
                   </p>
-                  {item.enrollments > 5 ? 
+                  {item.enrollments > 5 ? (
                     <img
                       src={require('../../../images/avatars/bs.png').default}
                       alt=""
                       width="40"
                       height="40"
                       object-fit="cover"
-                    /> : ''}
+                    />
+                  ) : (
+                    ''
+                  )}
                 </td>
               </tr>
             ))}

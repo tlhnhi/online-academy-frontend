@@ -23,7 +23,7 @@ const About = memo(({ course }) => {
 
             <p className="card-title mb-0">
               <span className="card-title d-inline-block text-warning">
-                {course.star}&nbsp;
+                {course.star.toFixed(1)}&nbsp;
                 {[
                   ...Array(
                     course.star - Math.floor(course.star) < 0.79
@@ -104,7 +104,7 @@ const About = memo(({ course }) => {
                   : course.price}
                 $&nbsp;
               </h2>
-              {course.discount ? 
+              {course.discount ? (
                 <h4
                   className="card-title d-inline-block my-auto text-muted"
                   style={{
@@ -113,7 +113,10 @@ const About = memo(({ course }) => {
                   }}
                 >
                   {course.price + '$'}
-                </h4> : ''}
+                </h4>
+              ) : (
+                ''
+              )}
               {/* ) : (
                 <Button size="sm" theme="secondary" className="mb-3">
                   Discount

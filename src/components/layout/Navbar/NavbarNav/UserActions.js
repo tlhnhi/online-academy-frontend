@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
   Collapse,
@@ -10,15 +10,18 @@ import {
   NavItem,
   NavLink
 } from 'shards-react'
+import { removeCurrentUser } from 'store/app/current-user'
 
 const UserActions = memo(() => {
+  const dispatch = useDispatch()
   const currentUser = useSelector(x => x.currentUser)
   const [visible, setVisible] = useState(false)
 
   const handleSignOut = useCallback(() => {
     localStorage.removeItem('token')
+    dispatch(removeCurrentUser())
     window.location.reload()
-  }, [])
+  }, [dispatch])
 
   const student = useMemo(
     () => (
