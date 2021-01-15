@@ -4,7 +4,7 @@ import { updateCourseByAdmin } from 'api/course'
 import React, { memo, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Badge, Container, Row, FormSelect } from 'shards-react'
+import { Badge, Container, FormSelect, Row } from 'shards-react'
 import { removeCourse } from 'store/app/course'
 import PageTitle from '../../../components/PageTitle'
 
@@ -214,8 +214,20 @@ const UsersCourse = memo(() => {
           style={{ width: `100px` }}
           onChange={e => setFilterCategory(e.target.value)}
         >
-          <option value="">All</option>
-          <option value="oldest">Oldest</option>
+        
+          <option value="Web">Web</option>
+          <option value="Mobile">Mobile</option>
+          <option value="Software Testing">Software Testing</option>
+          <option value="Data Science">Data Science</option>
+          <option value="E-Commerce">E-Commerce</option>
+          <option value="Media">Media</option>
+          <option value="Human Resources">Human Resouces</option>
+          <option value="Project Management">Project Management</option>
+          <option value="UI/UX">UI/UX</option>
+          <option value="Design Tools">Design Tools</option>
+          <option value="Game Design">Game Design</option>
+          <option value="3D & Animation">3D & Animation</option>
+          <option value="Design Thinking">Design Thinking</option>
         </FormSelect>
       </Row>
     </Container>
